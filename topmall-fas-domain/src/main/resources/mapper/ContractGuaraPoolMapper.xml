@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.ContractGuaraPoolRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.ContractGuaraPool">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="bill_no" property="billNo" jdbcType="VARCHAR" />  
+           <result column="ref_id" property="refId" jdbcType="VARCHAR" />  
+           <result column="balance_date_id" property="balanceDateId" jdbcType="VARCHAR" />  
+           <result column="counter_cost_id" property="counterCostId" jdbcType="VARCHAR" />  
+           <result column="cost_no" property="costNo" jdbcType="VARCHAR" />  
+           <result column="cost_name" property="costName" jdbcType="VARCHAR" />  
+           <result column="division_no" property="divisionNo" jdbcType="VARCHAR" />   
+           <result column="base_number" property="baseNumber" jdbcType="TINYINT" />  
+           <result column="number" property="number" jdbcType="INTEGER" />  
+           <result column="counter_no" property="counterNo" jdbcType="VARCHAR" />  
+           <result column="counter_name" property="counterName" jdbcType="VARCHAR" />  
+           <result column="base_cycle" property="baseCycle" jdbcType="TINYINT" />  
+           <result column="base_algorithm" property="baseAlgorithm" jdbcType="TINYINT" />  
+           <result column="base_amount" property="baseAmount" jdbcType="DECIMAL" />  
+           <result column="base_discount" property="baseDiscount" jdbcType="DECIMAL" />  
+           <result column="discount" property="discount" jdbcType="DECIMAL" />  
+           <result column="tax_flag" property="taxFlag" jdbcType="TINYINT" />  
+           <result column="rax_rate" property="raxRate" jdbcType="DECIMAL" />  
+           <result column="start_date" property="startDate" jdbcType="DATE" />  
+           <result column="end_date" property="endDate" jdbcType="DATE" />  
+           <result column="bill_debit" property="billDebit" jdbcType="INTEGER" />  
+           <result column="account_debit" property="accountDebit" jdbcType="INTEGER" />  
+           <result column="base_calculate_num" property="baseCalculateNum" jdbcType="TINYINT" />  
+           <result column="create_user" property="createUser" jdbcType="VARCHAR" />  
+           <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />  
+           <result column="update_user" property="updateUser" jdbcType="VARCHAR" />  
+           <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />  
+           <result column="remark" property="remark" jdbcType="VARCHAR" />  
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,bill_no,ref_id,balance_date_id,counter_cost_id,cost_no,cost_name,division_no,base_number,number,counter_no,counter_name,base_cycle,base_algorithm,base_amount,base_discount,discount,tax_flag,rax_rate,start_date,end_date,bill_debit,account_debit,base_calculate_num,create_user,create_time,update_user,update_time,remark
+    </sql>
+
+    <sql id="condition">  1=1
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.billNo and ''!=params.billNo">
+    			And bill_no=#{params.billNo}
+    		</if>
+    		<if test="null!=params.refId and ''!=params.refId">
+    			And ref_id=#{params.refId}
+    		</if>
+    		<if test="null!=params.balanceDateId and ''!=params.balanceDateId">
+    			And balance_date_id=#{params.balanceDateId}
+    		</if>
+    		<if test="null!=params.counterCostId and ''!=params.counterCostId">
+    			And counter_cost_id=#{params.counterCostId}
+    		</if>
+    		<if test="null!=params.costNo and ''!=params.costNo">
+    			And cost_no=#{params.costNo}
+    		</if>
+    		<if test="null!=params.costName and ''!=params.costName">
+                And cost_name like '%${params.costName}%'
+    		</if>
+    		<if test="null!=params.divisionNo and ''!=params.divisionNo">
+    			And division_no=#{params.divisionNo}
+    		</if>
+    		<if test="null!=params.baseNumber and ''!=params.baseNumber">
+    			And base_number=#{params.baseNumber}
+    		</if>
+    		<if test="null!=params.number and ''!=params.number">
+    			And number=#{params.number}
+    		</if>
+    		<if test="null!=params.counterNo and ''!=params.counterNo">
+    			And counter_no=#{params.counterNo}
+    		</if>
+    		<if test="null!=params.counterName and ''!=params.counterName">
+                And counter_name like '%${params.counterName}%'
+    		</if>
+    		<if test="null!=params.baseCycle and ''!=params.baseCycle">
+    			And base_cycle=#{params.baseCycle}
+    		</if>
+    		<if test="null!=params.baseAlgorithm and ''!=params.baseAlgorithm">
+    			And base_algorithm=#{params.baseAlgorithm}
+    		</if>
+    		<if test="null!=params.baseAmount and ''!=params.baseAmount">
+    			And base_amount=#{params.baseAmount}
+    		</if>
+    		<if test="null!=params.baseDiscount and ''!=params.baseDiscount">
+    			And base_discount=#{params.baseDiscount}
+    		</if>
+    		<if test="null!=params.discount and ''!=params.discount">
+    			And discount=#{params.discount}
+    		</if>
+    		<if test="null!=params.taxFlag and ''!=params.taxFlag">
+    			And tax_flag=#{params.taxFlag}
+    		</if>
+    		<if test="null!=params.raxRate and ''!=params.raxRate">
+    			And rax_rate=#{params.raxRate}
+    		</if>
+    		<if test="null!=params.startDate and ''!=params.startDate">
+    			And start_date=#{params.startDate}
+    		</if>
+    		<if test="null!=params.endDate and ''!=params.endDate">
+    			And end_date=#{params.endDate}
+    		</if>
+    		<if test="null!=params.billDebit and ''!=params.billDebit">
+    			And bill_debit=#{params.billDebit}
+    		</if>
+    		<if test="null!=params.accountDebit and ''!=params.accountDebit">
+    			And account_debit=#{params.accountDebit}
+    		</if>
+    		<if test="null!=params.baseCalculateNum and ''!=params.baseCalculateNum">
+    			And base_calculate_num=#{params.baseCalculateNum}
+    		</if>
+    		<if test="null!=params.createUser and ''!=params.createUser">
+    			And create_user=#{params.createUser}
+    		</if>
+    		<if test="null!=params.createTime and ''!=params.createTime">
+    			And create_time=#{params.createTime}
+    		</if>
+    		<if test="null!=params.updateUser and ''!=params.updateUser">
+    			And update_user=#{params.updateUser}
+    		</if>
+    		<if test="null!=params.updateTime and ''!=params.updateTime">
+    			And update_time=#{params.updateTime}
+    		</if>
+    		<if test="null!=params.remark and ''!=params.remark">
+    			And remark=#{params.remark}
+    		</if>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1  
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_guara_pool
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_guara_pool
+		WHERE  <include refid="uniqe_condition" />
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_guara_pool
+		WHERE  <include refid="condition" />
+        
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_contract_guara_pool WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_guara_pool WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_guara_pool WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_contract_guara_pool
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_contract_guara_pool
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_contract_guara_pool
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.ContractGuaraPool"  >
+		INSERT INTO fas_contract_guara_pool
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="billNo != null">
+				bill_no,
+			</if>
+			<if test="refId != null">
+				ref_id,
+			</if>
+			<if test="balanceDateId != null">
+				balance_date_id,
+			</if>
+			<if test="counterCostId != null">
+				counter_cost_id,
+			</if>
+			<if test="costNo != null">
+				cost_no,
+			</if>
+			<if test="costName != null">
+				cost_name,
+			</if>
+			<if test="divisionNo != null">
+				division_no,
+			</if>
+			<if test="baseNumber != null">
+				base_number,
+			</if>
+			<if test="number != null">
+				number,
+			</if>
+			<if test="counterNo != null">
+				counter_no,
+			</if>
+			<if test="counterName != null">
+				counter_name,
+			</if>
+			<if test="baseCycle != null">
+				base_cycle,
+			</if>
+			<if test="baseAlgorithm != null">
+				base_algorithm,
+			</if>
+			<if test="baseAmount != null">
+				base_amount,
+			</if>
+			<if test="baseDiscount != null">
+				base_discount,
+			</if>
+			<if test="discount != null">
+				discount,
+			</if>
+			<if test="taxFlag != null">
+				tax_flag,
+			</if>
+			<if test="raxRate != null">
+				rax_rate,
+			</if>
+			<if test="startDate != null">
+				start_date,
+			</if>
+			<if test="endDate != null">
+				end_date,
+			</if>
+			<if test="billDebit != null">
+				bill_debit,
+			</if>
+			<if test="accountDebit != null">
+				account_debit,
+			</if>
+			<if test="baseCalculateNum != null">
+				base_calculate_num,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="billNo != null">
+				 #{billNo},
+			</if>
+			<if test="refId != null">
+				 #{refId},
+			</if>
+			<if test="balanceDateId != null">
+				 #{balanceDateId},
+			</if>
+			<if test="counterCostId != null">
+				 #{counterCostId},
+			</if>
+			<if test="costNo != null">
+				 #{costNo},
+			</if>
+			<if test="costName != null">
+				 #{costName},
+			</if>
+			<if test="divisionNo != null">
+				 #{divisionNo},
+			</if>
+			<if test="baseNumber != null">
+				 #{baseNumber},
+			</if>
+			<if test="number != null">
+				 #{number},
+			</if>
+			<if test="counterNo != null">
+				 #{counterNo},
+			</if>
+			<if test="counterName != null">
+				 #{counterName},
+			</if>
+			<if test="baseCycle != null">
+				 #{baseCycle},
+			</if>
+			<if test="baseAlgorithm != null">
+				 #{baseAlgorithm},
+			</if>
+			<if test="baseAmount != null">
+				 #{baseAmount},
+			</if>
+			<if test="baseDiscount != null">
+				 #{baseDiscount},
+			</if>
+			<if test="discount != null">
+				 #{discount},
+			</if>
+			<if test="taxFlag != null">
+				 #{taxFlag},
+			</if>
+			<if test="raxRate != null">
+				 #{raxRate},
+			</if>
+			<if test="startDate != null">
+				 #{startDate},
+			</if>
+			<if test="endDate != null">
+				 #{endDate},
+			</if>
+			<if test="billDebit != null">
+				 #{billDebit},
+			</if>
+			<if test="accountDebit != null">
+				 #{accountDebit},
+			</if>
+			<if test="baseCalculateNum != null">
+				 #{baseCalculateNum},
+			</if>
+			<if test="createUser != null">
+				 #{createUser},
+			</if>
+			<if test="createTime != null">
+				 #{createTime},
+			</if>
+			<if test="updateUser != null">
+				 #{updateUser},
+			</if>
+			<if test="updateTime != null">
+				 #{updateTime},
+			</if>
+			<if test="remark != null">
+				 #{remark},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.ContractGuaraPool">
+		UPDATE fas_contract_guara_pool
+		<set>
+			<if test="billNo != null">
+				bill_no = #{billNo},
+			</if>
+			<if test="refId != null">
+				ref_id = #{refId},
+			</if>
+			<if test="balanceDateId != null">
+				balance_date_id = #{balanceDateId},
+			</if>
+			<if test="counterCostId != null">
+				counter_cost_id = #{counterCostId},
+			</if>
+			<if test="costNo != null">
+				cost_no = #{costNo},
+			</if>
+			<if test="costName != null">
+				cost_name = #{costName},
+			</if>
+			<if test="divisionNo != null">
+				division_no = #{divisionNo},
+			</if>
+			<if test="baseNumber != null">
+				base_number = #{baseNumber},
+			</if>
+			<if test="number != null">
+				number = #{number},
+			</if>
+			<if test="counterNo != null">
+				counter_no = #{counterNo},
+			</if>
+			<if test="counterName != null">
+				counter_name = #{counterName},
+			</if>
+			<if test="baseCycle != null">
+				base_cycle = #{baseCycle},
+			</if>
+			<if test="baseAlgorithm != null">
+				base_algorithm = #{baseAlgorithm},
+			</if>
+			<if test="baseAmount != null">
+				base_amount = #{baseAmount},
+			</if>
+			<if test="baseDiscount != null">
+				base_discount = #{baseDiscount},
+			</if>
+			<if test="discount != null">
+				discount = #{discount},
+			</if>
+			<if test="taxFlag != null">
+				tax_flag = #{taxFlag},
+			</if>
+			<if test="raxRate != null">
+				rax_rate = #{raxRate},
+			</if>
+			<if test="startDate != null">
+				start_date = #{startDate},
+			</if>
+			<if test="endDate != null">
+				end_date = #{endDate},
+			</if>
+			<if test="billDebit != null">
+				bill_debit = #{billDebit},
+			</if>
+			<if test="accountDebit != null">
+				account_debit = #{accountDebit},
+			</if>
+			<if test="baseCalculateNum != null">
+				base_calculate_num = #{baseCalculateNum},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+    
+    <select id="selectValidGuara" resultType="topmall.fas.model.ContractGuaraPool"  parameterType="map">
+    	SELECT
+			id AS ref_id ,bill_no,cost_no,cost_name,division_no,base_number,number,counter_no,
+			counter_name,base_cycle,base_algorithm,base_amount,base_discount,discount,
+			tax_flag,rax_rate,start_date,end_date,bill_debit,account_debit,base_calculate_num
+		FROM
+			con_cu_contract_guara
+		WHERE
+			bill_no = #{params.billNo}
+		AND ((start_date &lt;= #{params.startDate} AND end_date &gt;= #{params.startDate})
+		  OR (start_date &lt;= #{params.endDate} AND end_date &gt;= #{params.endDate})
+		  OR (start_date &lt;= #{params.startDate} AND end_date &gt;= #{params.endDate})
+		  OR (start_date &gt;= #{params.startDate} AND end_date &lt;= #{params.endDate}))
+    </select>    
+</mapper>

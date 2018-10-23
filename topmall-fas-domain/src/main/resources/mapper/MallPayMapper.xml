@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.MallPayRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.MallPay">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="seq_id" property="seqId" jdbcType="VARCHAR" />  
+           <result column="balance_bill_no" property="balanceBillNo" jdbcType="VARCHAR" />  
+           <result column="mall_no" property="mallNo" jdbcType="VARCHAR" />  
+           <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />  
+           <result column="status" property="status" jdbcType="TINYINT" />  
+           <result column="settle_month" property="settleMonth" jdbcType="VARCHAR" />  
+           <result column="settle_start_date" property="settleStartDate" jdbcType="DATE" />  
+           <result column="settle_end_date" property="settleEndDate" jdbcType="DATE" />  
+           <result column="pay_no" property="payNo" jdbcType="VARCHAR" />  
+           <result column="pay_name" property="payName" jdbcType="VARCHAR" />  
+           <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+           <result column="diff_pay_amount" property="diffPayAmount" jdbcType="DECIMAL" />
+           <result column="mall_pay_amount" property="mallPayAmount" jdbcType="DECIMAL" />
+           <result column="paid_way" property="paidWay" jdbcType="TINYINT" />  
+           <result column="bunk_group_no" property="bunkGroupNo" jdbcType="VARCHAR" /> 
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,seq_id,balance_bill_no,mall_no,shop_no,status,settle_month,settle_start_date,settle_end_date,pay_no,pay_name,pay_amount,paid_way,bunk_group_no,diff_pay_amount,mall_pay_amount
+    </sql>
+
+    <sql id="condition">  1=1
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.seqId and ''!=params.seqId">
+    			And seq_id=#{params.seqId}
+    		</if>
+    		<if test="null!=params.balanceBillNo and ''!=params.balanceBillNo">
+    			And balance_bill_no=#{params.balanceBillNo}
+    		</if>
+    		<if test="null!=params.mallNo and ''!=params.mallNo">
+    			And mall_no=#{params.mallNo}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.status and ''!=params.status">
+    			And status=#{params.status}
+    		</if>
+    		<if test="null!=params.settleMonth and ''!=params.settleMonth">
+    			And settle_month=#{params.settleMonth}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And settle_start_date=#{params.settleStartDate}
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And settle_end_date=#{params.settleEndDate}
+    		</if>
+    		<if test="null!=params.payNo and ''!=params.payNo">
+    			And pay_no=#{params.payNo}
+    		</if>
+    		<if test="null!=params.payName and ''!=params.payName">
+                And pay_name like '%${params.payName}%'
+    		</if>
+    		<if test="null!=params.payAmount and ''!=params.payAmount">
+    			And pay_amount=#{params.payAmount}
+    		</if>
+    		<if test="null!=params.paidWay and ''!=params.paidWay">
+    			And paid_way=#{params.paidWay}
+    		</if>
+    		<if test="null!=params.bunkGroupNo and ''!=params.bunkGroupNo">
+    			And bunk_group_no=#{params.bunkGroupNo}
+    		</if>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1  
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_pay
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_pay
+		WHERE  <include refid="uniqe_condition" />
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_pay
+		WHERE  <include refid="condition" />
+        
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_mall_pay WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_pay WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_pay WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_mall_pay
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_mall_pay
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_mall_pay
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.MallPay"  >
+		INSERT INTO fas_mall_pay
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="seqId != null">
+				seq_id,
+			</if>
+			<if test="balanceBillNo != null">
+				balance_bill_no,
+			</if>
+			<if test="mallNo != null">
+				mall_no,
+			</if>
+			<if test="shopNo != null">
+				shop_no,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="settleMonth != null">
+				settle_month,
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date,
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date,
+			</if>
+			<if test="payNo != null">
+				pay_no,
+			</if>
+			<if test="payName != null">
+				pay_name,
+			</if>
+			<if test="payAmount != null">
+				pay_amount,
+			</if>
+			<if test="paidWay != null">
+				paid_way,
+			</if>
+			<if test="mallPayAmount != null">
+				mall_pay_amount,
+			</if>
+			<if test="diffPayAmount != null">
+				diff_pay_amount,
+			</if>
+			<if test="bunkGroupNo != null">
+				bunk_group_no,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="seqId != null">
+				 #{seqId},
+			</if>
+			<if test="balanceBillNo != null">
+				 #{balanceBillNo},
+			</if>
+			<if test="mallNo != null">
+				 #{mallNo},
+			</if>
+			<if test="shopNo != null">
+				 #{shopNo},
+			</if>
+			<if test="status != null">
+				 #{status},
+			</if>
+			<if test="settleMonth != null">
+				 #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				 #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				 #{settleEndDate},
+			</if>
+			<if test="payNo != null">
+				 #{payNo},
+			</if>
+			<if test="payName != null">
+				 #{payName},
+			</if>
+			<if test="payAmount != null">
+				 #{payAmount},
+			</if>
+			<if test="paidWay != null">
+				 #{paidWay},
+			</if>
+			<if test="mallPayAmount != null">
+				 #{mallPayAmount},
+			</if>
+			<if test="diffPayAmount != null">
+				 #{diffPayAmount},
+			</if>
+			<if test="bunkGroupNo != null">
+				 #{bunkGroupNo},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.MallPay">
+		UPDATE fas_mall_pay
+		<set>
+			<if test="seqId != null">
+				seq_id = #{seqId},
+			</if>
+			<if test="balanceBillNo != null">
+				balance_bill_no = #{balanceBillNo},
+			</if>
+			<if test="mallNo != null">
+				mall_no = #{mallNo},
+			</if>
+			<if test="shopNo != null">
+				shop_no = #{shopNo},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="settleMonth != null">
+				settle_month = #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date = #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date = #{settleEndDate},
+			</if>
+			<if test="payNo != null">
+				pay_no = #{payNo},
+			</if>
+			<if test="payName != null">
+				pay_name = #{payName},
+			</if>
+			<if test="payAmount != null">
+				pay_amount = #{payAmount},
+			</if>
+			<if test="paidWay != null">
+				paid_way = #{paidWay},
+			</if>
+			<if test="bunkGroupNo != null">
+				bunk_group_no = #{bunkGroupNo},
+			</if>
+			<if test="mallPayAmount != null">
+				mall_pay_amount = #{mallPayAmount},
+			</if>
+			<if test="diffPayAmount != null">
+				diff_pay_amount = #{diffPayAmount},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+    
+    <select id="selectMallPayList" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		bg.company_no mall_no, sds.shop_no, #{params.settleMonth} settle_month, 
+		#{params.settleStartDate} settle_start_date, #{params.settleEndDate} settle_end_date, 
+		sdsd.pay_no, sdsd.pay_name, pay.paid_way, sum(sdsd.pay_amount) pay_amount,
+		#{params.bunkGroupNo} bunk_group_no
+		from pos_shop_day_sale sds INNER JOIN pos_shop_day_sale_dtl sdsd
+		on sds.bill_no = sdsd.bill_no 
+		INNER JOIN mdm_counter c on c.counter_no = sds.counter_no
+		INNER JOIN mdm_bunk b on b.bunk_no = c.bunk_no and c.shop_no=b.shop_no
+		INNER JOIN mdm_bunk_group bg on bg.bunk_group_no = b.bunk_group_no and bg.shop_no= sds.shop_no
+		INNER JOIN pos_shop_payment pay on pay.payment_no = sdsd.pay_no and sds.shop_no=pay.shop_no
+		where 1=1
+    	<if test="null!=params">
+            <if test="null!=params.mallNo and ''!=params.mallNo">
+    			and bg.company_no =#{params.mallNo}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			and sds.shop_no =#{params.shopNo}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate
+    				and null!=params.settleEndDate and ''!=params.settleEndDate">
+    			and sds.sale_date BETWEEN #{params.settleStartDate} and #{params.settleEndDate}
+    		</if>
+    		<if test="null!=params.bunkGroupNo and ''!=params.bunkGroupNo">
+    			and bg.bunk_group_no =#{params.bunkGroupNo}
+    		</if>
+    	</if>
+		GROUP BY sdsd.pay_no
+	</select>
+	
+	<update id="updateToUnsettled" >
+      update fas_mall_pay set balance_bill_no = null WHERE id = #{id}
+   </update> 
+   
+   <select id="getMallPayGroupPaidWay" resultMap="baseResultMap" parameterType="map">
+		SELECT
+			balance_bill_no,paid_way,sum(pay_amount) pay_amount,
+			sum(mall_pay_amount) mall_pay_amount, sum(diff_pay_amount) diff_pay_amount
+		FROM fas_mall_pay WHERE 
+			<include refid="condition" />
+		group by paid_way
+	</select>
+	<select id="queryConditionSum" resultMap="baseResultMap" parameterType="map">
+	 	SELECT
+			'合计' pay_name,
+			sum(ROUND(pay_amount,2)) pay_amount
+		 FROM fas_mall_pay WHERE 
+		<include refid="condition" />
+    </select>
+</mapper>

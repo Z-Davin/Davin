@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.ShopBalanceDateRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.ShopBalanceDate">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="zone_no" property="zoneNo" jdbcType="VARCHAR" />  
+           <result column="company_no" property="companyNo" jdbcType="VARCHAR" />  
+           <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />  
+           <result column="end_date" property="endDate" jdbcType="INTEGER" />  
+           <result column="status" property="status" jdbcType="TINYINT" />  
+           <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />  
+           <result column="create_user" property="createUser" jdbcType="VARCHAR" />  
+           <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />  
+           <result column="update_user" property="updateUser" jdbcType="VARCHAR" />  
+           <result column="remark" property="remark" jdbcType="VARCHAR" /> 
+           <result column="close_date" property="closeDate" jdbcType="TIMESTAMP" />   
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,zone_no,company_no,shop_no,end_date,status,create_time,create_user,update_time,update_user,remark,close_date
+    </sql>
+
+    <sql id="condition">  1=1
+    		--  and @Shop!shop_no
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.zoneNo and ''!=params.zoneNo">
+    			And zone_no=#{params.zoneNo}
+    		</if>
+    		<if test="null!=params.companyNo and ''!=params.companyNo">
+    			And company_no=#{params.companyNo}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.endDate and ''!=params.endDate">
+    			And end_date=#{params.endDate}
+    		</if>
+    		<if test="null!=params.status and ''!=params.status">
+    			And status=#{params.status}
+    		</if>
+    		<if test="null!=params.createTime and ''!=params.createTime">
+    			And create_time=#{params.createTime}
+    		</if>
+    		<if test="null!=params.createUser and ''!=params.createUser">
+    			And create_user=#{params.createUser}
+    		</if>
+    		<if test="null!=params.updateTime and ''!=params.updateTime">
+    			And update_time=#{params.updateTime}
+    		</if>
+    		<if test="null!=params.updateUser and ''!=params.updateUser">
+    			And update_user=#{params.updateUser}
+    		</if>
+    		<if test="null!=params.remark and ''!=params.remark">
+    			And remark=#{params.remark}
+    		</if>
+    		<if test="null!=params.closeDate and ''!=params.closeDate">
+    			And close_date=#{params.closeDate}
+    		</if>
+    		<if test="null!=params.ids">
+    			And id in (${params.ids})
+    		</if>
+    		<if test="null!=params.targetStatus and ''!=params.targetStatus">
+    			And status!=#{params.targetStatus}
+    		</if>
+        </if>
+    </sql>
+    
+
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date
+		WHERE 
+		<if test="null!=shopNo and ''!=shopNo">
+    		 shop_no=#{shopNo}
+    	</if>
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date
+		WHERE  <include refid="condition" /> 
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_shop_balance_date WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_shop_balance_date
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_shop_balance_date
+		WHERE 1=1
+		<if test="null!=shopNo and ''!=shopNo">
+    		and shop_no=#{shopNo}
+    	</if>
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_shop_balance_date
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.ShopBalanceDate"  >
+		INSERT INTO fas_shop_balance_date
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="shopNo != null">
+				shop_no,
+				company_no,
+				zone_no,
+			</if>
+			<if test="endDate != null">
+				end_date,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="null!=closeDate">
+    			close_dat,
+    		</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="shopNo != null">
+				 #{shopNo},
+				 (select company_no from mdm_shop where shop_no= #{shopNo}),
+				 (select zone_no from mdm_shop where shop_no= #{shopNo}),
+			</if>
+			<if test="endDate != null">
+				 #{endDate},
+			</if>
+			<if test="status != null">
+				 #{status},
+			</if>
+			<if test="createTime != null">
+				 #{createTime},
+			</if>
+			<if test="createUser != null">
+				 #{createUser},
+			</if>
+			<if test="updateUser != null">
+				 #{updateUser},
+			</if>
+			<if test="remark != null">
+				 #{remark},
+			</if>
+			<if test="null!=closeDate">
+    			#{closeDate},
+    		</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.ShopBalanceDate">
+		UPDATE fas_shop_balance_date
+		<set>
+			<if test="zoneNo != null">
+				zone_no = #{zoneNo},
+			</if>
+			<if test="companyNo != null">
+				company_no = #{companyNo},
+			</if>
+			<if test="shopNo != null">
+				shop_no = #{shopNo},
+			</if>
+			<if test="endDate != null">
+				end_date = #{endDate},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="null!=closeDate">
+    			close_date = #{closeDate},
+    		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+    
+        
+</mapper>

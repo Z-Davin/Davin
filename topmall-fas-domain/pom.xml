@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.wonhigh.topmall</groupId>
+		<artifactId>topmall-fas</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>topmall-fas-domain</artifactId>
+	<name>topmall-fas-domain</name>
+	<url>http://maven.apache.org</url>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-common-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-framework-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-framework-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-framework-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-fas-model</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-common-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-framework-servicemodel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-pos-api</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>topmall-card-api</artifactId>
+					<groupId>cn.wonhigh.topmall</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-mps-api</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-mdm-open-api</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-contract-api</artifactId>
+		</dependency>
+		
+	</dependencies>
+</project>

@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="Keywords" content="滔博运动城管理系统"/>
+    <meta name="Description" content="滔博运动城管理系统"/>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+    <title>${title}</title>
+    <#include "/fas/header.html" />
+
+</head>
+<body>
+<div id="loading"><p>加载中，请稍后...</p></div>
+<div data-options="fit:true,border:false" id="mainPanel" style="height:100%;">
+</div>
+
+<script>
+    $(function () {
+        seajs.use(["mdm_plugin","utils/plugin","counter_balance/counter.balance.view.js"]);
+    });
+</script>
+</body>
+</html>

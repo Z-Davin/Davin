@@ -1,0 +1,40 @@
+topmall-fas调度任务配置
+1:生成每月结算期明细的调度
+名称:生成结算明细
+dubbo接口名称:tomall.fas.api.job.IShopBalanceDateDtlGenerateJob
+超时时间:20
+cron表达式:0 0 1 * * ?
+dubbo版本号:0.1.0
+调用参数:{"a":1}
+2:费用生成任务(废弃)
+名称:生成专柜费用
+dubbo接口名称:tomall.fas.api.job.ICounterCostGenerateJob
+超时时间:20
+cron表达式:0 0 1 * * ?
+dubbo版本号:0.1.0
+调用参数:{"a":1}
+
+3:FAS异步任务
+名称:FAS异步任务
+dubbo接口名称:tomall.fas.api.IUnAccountBillSchedulerApi
+超时时间:20
+cron表达式:0/30 * * * * ?
+dubbo版本号:0.1.0
+调用参数:{"sourceSystem":"2"}
+
+
+4:生成物业结算期明细调度
+名称:生成物业结算期
+dubbo接口名称:tomall.fas.api.job.IMallBalanceDateJob
+超时时间:20
+cron表达式:0 0 1 * * ?
+dubbo版本号:0.1.0
+调用参数:{"a":1}
+
+说明:
+生成每月结算期明细的调度:生产当月的结算期明细数据,如果店铺结算期有设置且生效,则按照设置的时间生成,如果没有设置,则不生成
+
+
+
+
+

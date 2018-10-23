@@ -1,0 +1,48 @@
+package topmall.fas.manager;
+
+import java.util.List;
+
+import topmall.fas.dto.QuotaStepDTO;
+import topmall.fas.model.ContractOtherPool;
+import topmall.fas.model.CounterCost;
+import topmall.fas.model.ShopBalanceDateDtl;
+import cn.mercury.basic.query.Query;
+import cn.mercury.manager.IManager;
+
+public interface IContractOtherPoolManager extends IManager<ContractOtherPool,String>{
+    
+	/**
+	 * 查询有效的合同其他条款
+	 * @param query 查询条件
+	 * @return 有效的合同其他条款列表
+	 */
+	List<ContractOtherPool> selectValidOther(Query query);
+	
+	/**
+	 * 生成专柜合同其他费用
+	 * @param shopBalanceDate 结算期
+	 * @return 专柜费用list
+	 */
+	List<CounterCost> createOtherCost(ShopBalanceDateDtl shopBalanceDateDtl);
+	
+	/**
+	 * 汇总其它条款的记录 （按照扣费项，计费模式，计费基数，支付方式，生效日期段）
+	 * @param query 查询条件
+	 * @return 汇总记录List
+	 */
+	List<ContractOtherPool> selectGroupOtherData(Query query);
+	
+	/**
+	 * 根据其他的条款唯一条件 查询出此条款的额度阶梯扣列表
+	 * @param query 其他条款的唯一性条件
+	 * @return 额度阶梯扣DTO列表
+	 */
+	List<QuotaStepDTO> selectQuotaStep(Query query);
+}
+
+
+
+
+
+
+

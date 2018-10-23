@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.report.BalanceSummaryRepostitory"> 
+	<select id="queryPriceTypeList" resultType="topmall.fas.dto.PriceTypeDto" parameterType="map">
+		SELECT 
+			DISTINCT substring(a.division_no, 7) as type
+		FROM
+		fas_counter_sale_cost a 
+		WHERE 1=1
+			<include refid="condition"></include>
+	</select>
+	
+	<sql id="condition">
+		--  and @a.Shop!shop_no
+		 <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    	</if>
+        <if test="null!=params.shopNo and ''!=params.shopNo">
+   			and a.shop_no=#{params.shopNo}
+   		</if>
+   		<if test="null!=params.counterNo and ''!=params.counterNo">
+   			and a.counter_no=#{params.counterNo}
+   		</if>
+   		<if test="null!=params.settleMonth and ''!=params.settleMonth">
+   			and a.settle_month=#{params.settleMonth}
+   		</if>
+   		<if test="null!=params.zoneNo and ''!=params.zoneNo">
+   			and a.shop_no in (select shop_no From mdm_shop where zone_no=#{params.zoneNo})
+   		</if>
+	</sql>
+	
+	<select id="queryCostTypeList" resultType="topmall.fas.dto.CostTypeDto" parameterType="map">
+			SELECT 
+				a.cost_no,b.name as costName
+			FROM
+			   fas_counter_cost a
+			inner join mdm_deduction b on a.cost_no=b.deduction_no
+			WHERE 1=1
+				<include refid="condition"></include>
+			GROUP BY
+				a.cost_no
+	</select>
+	
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			(
+				SELECT
+					a.counter_no,a.shop_no,a.settle_month
+				FROM
+					fas_shop_balance_date_dtl a
+				WHERE
+					1 = 1
+					and a.status in (5,6)
+					<include refid="condition"></include>
+				GROUP BY
+					a.counter_no,a.shop_no,a.settle_month
+			) k
+	</select>
+    
+    
+    <select id="selectReportByPage" resultType="java.util.Map" >
+    	SELECT
+    		a.settle_month settleMonth,a.counter_no counterNo,a.shop_no shopNo,a.supplier_no supplierNo,b.business_type businessType,b.area_counter areaCounter
+		FROM 
+			fas_shop_balance_date_dtl a 
+			inner join mdm_counter b on b.counter_no=a.counter_no
+		WHERE 
+			1=1
+			and a.status in (5,6)
+			<include refid="condition"></include>
+		GROUP BY
+			a.counter_no,a.shop_no,a.settle_month
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+    
+    </select>
+    
+     <select id="selectSaleCostInfo"  resultType="java.util.Map">
+    	SELECT
+    		b.counter_no counterNo,b.shop_no shopNo,b.settle_month as settleMonth,right(b.division_no,2) as priceType,sum(b.profit_amount) profitAmount
+        FROM
+    		fas_counter_sale_cost b 
+    	WHERE 
+    		1=1
+    		and b.status in (2,5,6,7)
+    		<if test="params.counterList != null and params.counterList.size() != 0">
+    			and b.counter_no in
+    			<foreach item="counterNo" index="index" collection="params.counterList" open="(" separator="," close=")">
+					#{counterNo}
+				</foreach>
+			</if>
+			<if test="null!=params.settleMonth and ''!=params.settleMonth">
+   				and b.settle_month=#{params.settleMonth}
+   			</if>
+		group by
+			b.counter_no,b.shop_no,b.settle_month,right(b.division_no,2)
+    </select>
+    
+     <select id="selectSaleAmount"  resultType="java.util.Map">
+    	SELECT
+    		b.counter_no counterNo,b.shop_no shopNo,b.settle_month as settleMonth,SUM(b.settle_sum) settleSum
+        FROM
+    		fas_counter_sale_cost b 
+    	WHERE 
+    		1=1
+    		and b.status in (2,5,6,7)
+    		<if test="params.counterList != null and params.counterList.size() != 0">
+    			and b.counter_no in
+    			<foreach item="counterNo" index="index" collection="params.counterList" open="(" separator="," close=")">
+					#{counterNo}
+				</foreach>
+			</if>
+			<if test="null!=params.settleMonth and ''!=params.settleMonth">
+   				and b.settle_month=#{params.settleMonth}
+   			</if>
+		group by
+			b.counter_no,b.shop_no,b.settle_month
+    </select>
+    
+    <select id="selectCostInfo"  resultType="java.util.Map">
+    	SELECT
+    		b.counter_no counterNo,b.shop_no shopNo,b.cost_no costNo,sum(b.able_sum) cost,b.settle_month as settleMonth
+        FROM
+    		fas_counter_cost b 
+    	WHERE 
+    		1=1
+    		and b.status in (2,5,6,7)
+    		<if test="params.counterList != null and params.counterList.size() != 0">
+    			and b.counter_no in
+    			<foreach item="counterNo" index="index" collection="params.counterList" open="(" separator="," close=")">
+					#{counterNo}
+				</foreach>
+			</if>
+			<if test="null!=params.settleMonth and ''!=params.settleMonth">
+   				and b.settle_month=#{params.settleMonth}
+   			</if>
+		group by
+			b.counter_no,b.shop_no,b.settle_month,b.cost_no
+    </select>
+    
+    <select id="selectGuaraInfo"  resultType="java.util.Map">
+    	SELECT
+    		b.counter_no counterNo,b.shop_no shopNo,sum(b.able_sum) cost,b.settle_month as settleMonth
+        FROM
+    		 fas_counter_cost b 
+    	WHERE 
+    		1=1
+    		and ref_type=1
+    		and b.status in (2,5,6,7)
+    		<if test="params.counterList != null and params.counterList.size() != 0">
+    			and b.counter_no in
+    			<foreach item="counterNo" index="index" collection="params.counterList" open="(" separator="," close=")">
+					#{counterNo}
+				</foreach>
+			</if>
+			<if test="null!=params.settleMonth and ''!=params.settleMonth">
+   				and b.settle_month=#{params.settleMonth}
+   			</if>
+		group by
+			b.counter_no,b.shop_no,b.settle_month
+    </select>
+    
+</mapper>

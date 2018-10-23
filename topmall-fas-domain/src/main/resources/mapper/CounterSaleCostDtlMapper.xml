@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.CounterSaleCostDtlRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.CounterSaleCostDtl">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />  
+           <result column="seq_id" property="seqId" jdbcType="VARCHAR" />
+            <result column="balance_bill_no" property="balanceBillNo" jdbcType="VARCHAR" />    
+           <result column="counter_no" property="counterNo" jdbcType="VARCHAR" />  
+           <result column="division_no" property="divisionNo" jdbcType="VARCHAR" />  
+           <result column="discount" property="discount" jdbcType="DECIMAL" />  
+           <result column="account_debit" property="accountDebit" jdbcType="INTEGER" />  
+           <result column="bill_debit" property="billDebit" jdbcType="INTEGER" />  
+           <result column="rax_rate" property="raxRate" jdbcType="DECIMAL" />  
+           <result column="settle_sum" property="settleSum" jdbcType="DECIMAL" />
+           <result column="net_income_sum" property="netIncomeSum" jdbcType="DECIMAL" />    
+           <result column="discount_amount" property="discountAmount" jdbcType="DECIMAL" />  
+           <result column="absorption_amount" property="absorptionAmount" jdbcType="DECIMAL" />  
+           <result column="selling_cost" property="sellingCost" jdbcType="DECIMAL" />  
+           <result column="profit_amount" property="profitAmount" jdbcType="DECIMAL" />  
+           <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" /> 
+           <result column="settle_month" property="settleMonth" jdbcType="VARCHAR" />  
+           <result column="settle_start_date" property="settleStartDate" jdbcType="DATE" />  
+           <result column="settle_end_date" property="settleEndDate" jdbcType="DATE" />
+           <result column="actual_month" property="actualMonth" jdbcType="VARCHAR" />  
+           <result column="actual_start_date" property="actualStartDate" jdbcType="DATE" />  
+           <result column="actual_end_date" property="actualEndDate" jdbcType="DATE" />  
+           <result column="sale_date" property="saleDate" jdbcType="DATE" />
+           <result column="status" property="status" jdbcType="TINYINT" />  
+           <result column="type" property="type" jdbcType="TINYINT" /> 
+           <result column="rate_value" property="rateValue" jdbcType="DECIMAL" />  
+           <result column="sale_qty" property="saleQty" jdbcType="TINYINT" />  
+           <result column="supplier_no" property="supplierNo" jdbcType="VARCHAR" /> 
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,seq_id,counter_no,division_no,discount,account_debit,bill_debit,rax_rate,settle_sum, net_income_sum,discount_amount,absorption_amount,selling_cost,profit_amount,
+        update_time,balance_bill_no,shop_no,settle_month,settle_end_date,settle_start_date,actual_month,actual_start_date,actual_end_date,
+        status,rate_value,sale_date,type,sale_qty,supplier_no
+    </sql>
+
+    <sql id="condition">  1=1
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.counterNo and ''!=params.counterNo">
+    			And counter_no=#{params.counterNo}
+    		</if>
+    		<if test="null!=params.divisionNo and ''!=params.divisionNo">
+    			And division_no=#{params.divisionNo}
+    		</if>
+    		<if test="null!=params.discount and ''!=params.discount">
+    			And discount=#{params.discount}
+    		</if>
+    		<if test="null!=params.accountDebit and ''!=params.accountDebit">
+    			And account_debit=#{params.accountDebit}
+    		</if>
+    		<if test="null!=params.billDebit and ''!=params.billDebit">
+    			And bill_debit=#{params.billDebit}
+    		</if>
+    		<if test="null!=params.raxRate and ''!=params.raxRate">
+    			And rax_rate=#{params.raxRate}
+    		</if>
+    		<if test="null!=params.settleSum and ''!=params.settleSum">
+    			And settle_sum=#{params.settleSum}
+    		</if>
+    		<if test="null!=params.discountAmount and ''!=params.discountAmount">
+    			And discount_amount=#{params.discountAmount}
+    		</if>
+    		<if test="null!=params.absorptionAmount and ''!=params.absorptionAmount">
+    			And absorption_amount=#{params.absorptionAmount}
+    		</if>
+    		<if test="null!=params.sellingCost and ''!=params.sellingCost">
+    			And selling_cost=#{params.sellingCost}
+    		</if>
+    		<if test="null!=params.profitAmount and ''!=params.profitAmount">
+    			And profit_amount=#{params.profitAmount}
+    		</if>
+    		<if test="null!=params.updateTime and ''!=params.updateTime">
+    			And update_time=#{params.updateTime}
+    		</if>
+    		<if test="null!=params.balanceBillNo and ''!=params.balanceBillNo">
+    			And balance_bill_no=#{params.balanceBillNo}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And settle_start_date= STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And settle_end_date=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.saleDate and ''!=params.saleDate">
+    			And sale_date=STR_TO_DATE(#{params.saleDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.actualMonth and ''!=params.actualMonth">
+    			And actual_month=#{params.actualMonth}
+    		</if>
+    		<if test="null!=params.actualStartDate and ''!=params.actualStartDate">
+    			And actual_start_date= STR_TO_DATE(#{params.actualStartDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.actualEndDate and ''!=params.actualEndDate">
+    			And actual_end_date=STR_TO_DATE(#{params.actualEndDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.status and ''!=params.status">
+    			And status=#{params.status}
+    		</if>
+    		<if test="null!=params.type and ''!=params.type">
+    			And type=#{params.type}
+    		</if>
+    		<if test="null!=params.startDate and ''!=params.startDate">
+    			And sale_date &gt;= STR_TO_DATE(#{params.startDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.endDate and ''!=params.endDate">
+    			And sale_date &lt;= STR_TO_DATE(#{params.endDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.settleMonth and ''!=params.settleMonth">
+    			And settle_month=#{params.settleMonth}
+    		</if>
+    		<if test="null!=params.supplierNo and ''!=params.supplierNo">
+    			And supplier_no=#{params.supplierNo}
+    		</if>
+    		<choose>
+    			<when test="params.isHisCost">
+    			And type = 2
+    			</when>
+    			<otherwise>
+    			And type = 0
+    			</otherwise>
+    		</choose>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1  
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_counter_sale_cost_dtl
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_counter_sale_cost_dtl
+		WHERE  <include refid="uniqe_condition" />
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_counter_sale_cost_dtl
+		WHERE  <include refid="condition" />
+        
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_counter_sale_cost_dtl WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_counter_sale_cost_dtl WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_counter_sale_cost_dtl WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_counter_sale_cost_dtl
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM counter_sale_cost
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_counter_sale_cost_dtl
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.CounterSaleCostDtl"  >
+		INSERT INTO fas_counter_sale_cost_dtl
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="seqId != null">
+				seq_id,
+			</if>
+			<if test="counterNo != null">
+				counter_no,
+				supplier_no,
+			</if>
+			<if test="divisionNo != null">
+				division_no,
+			</if>
+			<if test="discount != null">
+				discount,
+			</if>
+			<if test="accountDebit != null">
+				account_debit,
+			</if>
+			<if test="billDebit != null">
+				bill_debit,
+			</if>
+			<if test="raxRate != null">
+				rax_rate,
+			</if>
+			<if test="settleSum != null">
+				settle_sum,
+			</if>
+			<if test="netIncomeSum != null">
+				net_income_sum,
+			</if>
+			<if test="discountAmount != null">
+				discount_amount,
+			</if>
+			<if test="absorptionAmount != null">
+				absorption_amount,
+			</if>
+			<if test="sellingCost != null">
+				selling_cost,
+			</if>
+			<if test="profitAmount != null">
+				profit_amount,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="settleMonth != null">
+				settle_month,
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date,
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date,
+			</if>
+			<if test="actualMonth != null">
+				actual_month,
+			</if>
+			<if test="actualStartDate != null">
+				actual_start_date,
+			</if>
+			<if test="actualEndDate != null">
+				actual_end_date,
+			</if>
+			<if test="shopNo != null">
+				shop_no,
+			</if>
+			<if test="balanceBillNo != null">
+				balance_bill_no,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="rateValue != null">
+				rate_value,
+			</if>
+			<if test="saleDate != null">
+				sale_date,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="saleQty != null">
+				sale_qty ,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="seqId != null">
+				 #{seqId},
+			</if>
+			<if test="counterNo != null">
+				 #{counterNo},
+				  (select supplier_no from  mdm_counter where counter_no= #{counterNo} ),
+			</if>
+			<if test="divisionNo != null">
+				 #{divisionNo},
+			</if>
+			<if test="discount != null">
+				 #{discount},
+			</if>
+			<if test="accountDebit != null">
+				 #{accountDebit},
+			</if>
+			<if test="billDebit != null">
+				 #{billDebit},
+			</if>
+			<if test="raxRate != null">
+				 #{raxRate},
+			</if>
+			<if test="settleSum != null">
+				 #{settleSum},
+			</if>
+			<if test="netIncomeSum != null">
+				#{netIncomeSum},
+			</if>
+			<if test="discountAmount != null">
+				 #{discountAmount},
+			</if>
+			<if test="absorptionAmount != null">
+				 #{absorptionAmount},
+			</if>
+			<if test="sellingCost != null">
+				 #{sellingCost},
+			</if>
+			<if test="profitAmount != null">
+				 #{profitAmount},
+			</if>
+			<if test="updateTime != null">
+				 #{updateTime},
+			</if>
+			<if test="settleMonth != null">
+				 #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				 #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				 #{settleEndDate},
+			</if>
+			<if test="actualMonth != null">
+				 #{actualMonth},
+			</if>
+			<if test="actualStartDate != null">
+				 #{actualStartDate},
+			</if>
+			<if test="actualEndDate != null">
+				 #{actualEndDate},
+			</if>
+			<if test="shopNo != null">
+				 #{shopNo},
+			</if>
+			<if test="balanceBillNo != null">
+				#{balanceBillNo},
+			</if>
+			<if test="status != null">
+				 #{status},
+			</if>
+			<if test="rateValue != null">
+				 #{rateValue},
+			</if>
+			<if test="saleDate != null">
+				#{saleDate},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="saleQty != null">
+				 #{saleQty},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.CounterSaleCostDtl">
+		UPDATE fas_counter_sale_cost_dtl
+		<set>
+			<if test="seqId != null">
+				seq_id = #{seqId},
+			</if>
+			<if test="counterNo != null">
+				counter_no = #{counterNo},
+				supplier_no= (select supplier_no from  mdm_counter where counter_no= #{counterNo}),
+			</if>
+			<if test="divisionNo != null">
+				division_no = #{divisionNo},
+			</if>
+			<if test="discount != null">
+				discount = #{discount},
+			</if>
+			<if test="accountDebit != null">
+				account_debit = #{accountDebit},
+			</if>
+			<if test="billDebit != null">
+				bill_debit = #{billDebit},
+			</if>
+			<if test="raxRate != null">
+				rax_rate = #{raxRate},
+			</if>
+			<if test="settleSum != null">
+				settle_sum = #{settleSum},
+			</if>
+			<if test="netIncomeSum != null">
+				net_income_sum = #{netIncomeSum},
+			</if>
+			<if test="discountAmount != null">
+				discount_amount = #{discountAmount},
+			</if>
+			<if test="absorptionAmount != null">
+				absorption_amount = #{absorptionAmount},
+			</if>
+			<if test="sellingCost != null">
+				selling_cost = #{sellingCost},
+			</if>
+			<if test="profitAmount != null">
+				profit_amount = #{profitAmount},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="settleMonth != null">
+				settle_month = #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date = #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date = #{settleEndDate},
+			</if>
+			<if test="actualMonth != null">
+				actual_month = #{actualMonth},
+			</if>
+			<if test="actualStartDate != null">
+				actual_start_date = #{actualStartDate},
+			</if>
+			<if test="actualEndDate != null">
+				actual_end_date = #{actualEndDate},
+			</if>
+			<if test="shopNo != null">
+				shop_no = #{shopNo},
+			</if>
+			<if test="balanceBillNo != null">
+				balance_bill_no = #{balanceBillNo},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="rateValue != null">
+				 rate_value = #{rateValue},
+			</if>
+			<if test="saleDate != null">
+				sale_date= #{saleDate},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="saleQty != null">
+				 sale_qty = #{saleQty},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+    <update id="updateToUnsettled" >
+      update fas_counter_sale_cost_dtl set balance_bill_no = null,status=2  WHERE id = #{id}
+    </update>
+    
+        
+    <select id="selectRecalculateDtlHisList" resultType="topmall.fas.model.CounterSaleCostDtl" parameterType="map">
+    select
+    	counter_no,division_no,sale_date,rate_value,account_debit,bill_debit,rax_rate,-settle_sum, -net_income_sum ,-discount_amount,
+    	-absorption_amount,-selling_cost,-profit_amount,'1' as type
+    from
+    	fas_counter_sale_cost_dtl
+    where 
+    	1=1
+    	<if test="null!=params.type and ''!=params.type">
+    		And type=#{params.type}
+    	</if>
+   		<if test="null!=params.startDate and ''!=params.startDate">
+   			And sale_date &gt;= STR_TO_DATE(#{params.startDate},'%Y-%m-%d')
+   		</if>
+   		<if test="null!=params.endDate and ''!=params.endDate">
+   			And sale_date &lt;= STR_TO_DATE(#{params.endDate},'%Y-%m-%d')
+   		</if>
+   		<if test="null!=params.divisionNo and ''!=params.divisionNo">
+    		And division_no=#{params.divisionNo}
+    	</if>
+    </select>
+    
+     <select id="selectRecalculateHisList" resultType="topmall.fas.model.CounterSaleCostDtl" parameterType="map">
+    select
+    	counter_no,division_no,rate_value,account_debit,bill_debit,rax_rate,sum(-settle_sum) settle_sum,sum(-net_income_sum)  net_income_sum, sum(-discount_amount) discount_amount,
+    	sum(-absorption_amount) absorption_amount,sum(-selling_cost) selling_cost,sum(-profit_amount) profit_amount,'1' as type
+    from
+    	fas_counter_sale_cost_dtl
+    where 
+    	1=1
+    	<if test="null!=params.type and ''!=params.type">
+    		And type=#{params.type}
+    	</if>
+   		<if test="null!=params.startDate and ''!=params.startDate">
+   			And sale_date &gt;= STR_TO_DATE(#{params.startDate},'%Y-%m-%d')
+   		</if>
+   		<if test="null!=params.endDate and ''!=params.endDate">
+   			And sale_date &lt;= STR_TO_DATE(#{params.endDate},'%Y-%m-%d')
+   		</if>
+   		<if test="null!=params.divisionNo and ''!=params.divisionNo">
+    		And division_no=#{params.divisionNo}
+    	</if>
+    group by
+    	division_no,rate_value,account_debit,bill_debit,rax_rate
+    </select>
+    
+    <select id="querySaleProfit"  resultType="java.math.BigDecimal" parameterType="map">
+    	SELECT
+			IFNULL(SUM(profit_amount),0) profitAmount
+		FROM
+			fas_counter_sale_cost_dtl
+		WHERE <include refid="condition" />
+    </select>
+</mapper>

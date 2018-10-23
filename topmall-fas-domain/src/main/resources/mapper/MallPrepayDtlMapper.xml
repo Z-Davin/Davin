@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.MallPrepayDtlRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.MallPrepayDtl">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="bill_no" property="billNo" jdbcType="VARCHAR" />  
+           <result column="cost_no" property="costNo" jdbcType="VARCHAR" />  
+           <result column="settle_month" property="settleMonth" jdbcType="VARCHAR" />  
+           <result column="settle_start_date" property="settleStartDate" jdbcType="DATE" />  
+           <result column="settle_end_date" property="settleEndDate" jdbcType="DATE" />  
+           <result column="con_amount" property="conAmount" jdbcType="DECIMAL" />  
+           <result column="prepay_amount" property="prepayAmount" jdbcType="DECIMAL" />  
+           <result column="remark" property="remark" jdbcType="VARCHAR" />  
+           <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />  
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,bill_no,cost_no,settle_month,settle_start_date,settle_end_date,con_amount,prepay_amount,remark,update_time
+    </sql>
+
+    <sql id="condition">  1=1
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.billNo and ''!=params.billNo">
+    			And bill_no=#{params.billNo}
+    		</if>
+    		<if test="null!=params.costNo and ''!=params.costNo">
+    			And cost_no=#{params.costNo}
+    		</if>
+    		<if test="null!=params.settleMonth and ''!=params.settleMonth">
+    			And settle_month=#{params.settleMonth}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And settle_start_date=#{params.settleStartDate}
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And settle_end_date=#{params.settleEndDate}
+    		</if>
+    		<if test="null!=params.conAmount and ''!=params.conAmount">
+    			And con_amount=#{params.conAmount}
+    		</if>
+    		<if test="null!=params.prepayAmount and ''!=params.prepayAmount">
+    			And prepay_amount=#{params.prepayAmount}
+    		</if>
+    		<if test="null!=params.remark and ''!=params.remark">
+    			And remark=#{params.remark}
+    		</if>
+    		<if test="null!=params.updateTime and ''!=params.updateTime">
+    			And update_time=#{params.updateTime}
+    		</if>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1  
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay_dtl
+		WHERE id = #{id} limit 1;
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay_dtl
+		WHERE  <include refid="uniqe_condition" />
+        limit 1;
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay_dtl
+        WHERE
+		<include refid="condition" />
+        limit 1;
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_mall_prepay_dtl 
+        where
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay_dtl 
+		where
+		    <include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay_dtl 
+		where
+		    <include refid="condition" />
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_mall_prepay_dtl
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_mall_prepay_dtl
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_mall_prepay_dtl
+		WHERE 
+        where <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.MallPrepayDtl"  >
+		INSERT INTO fas_mall_prepay_dtl
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="billNo != null">
+				bill_no,
+			</if>
+			<if test="costNo != null">
+				cost_no,
+			</if>
+			<if test="settleMonth != null">
+				settle_month,
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date,
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date,
+			</if>
+			<if test="conAmount != null">
+				con_amount,
+			</if>
+			<if test="prepayAmount != null">
+				prepay_amount,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="billNo != null">
+				 #{billNo},
+			</if>
+			<if test="costNo != null">
+				 #{costNo},
+			</if>
+			<if test="settleMonth != null">
+				 #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				 #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				 #{settleEndDate},
+			</if>
+			<if test="conAmount != null">
+				 #{conAmount},
+			</if>
+			<if test="prepayAmount != null">
+				 #{prepayAmount},
+			</if>
+			<if test="remark != null">
+				 #{remark},
+			</if>
+			<if test="updateTime != null">
+				 #{updateTime},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.MallPrepayDtl">
+		UPDATE fas_mall_prepay_dtl
+		<set>
+			<if test="billNo != null">
+				bill_no = #{billNo},
+			</if>
+			<if test="costNo != null">
+				cost_no = #{costNo},
+			</if>
+			<if test="settleMonth != null">
+				settle_month = #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date = #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date = #{settleEndDate},
+			</if>
+			<if test="conAmount != null">
+				con_amount = #{conAmount},
+			</if>
+			<if test="prepayAmount != null">
+				prepay_amount = #{prepayAmount},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="queryByMallBalance" resultType="topmall.fas.model.MallPrepayDtl" parameterType="map">
+		select 
+			a.bill_no,cost_no,a.settle_month,a.settle_start_date,
+			a.settle_end_date,a.con_amount,a.prepay_amount
+		from fas_mall_prepay_dtl a inner join fas_mall_prepay b on
+			a.bill_no=b.bill_no and b.status=4
+		where 1=1
+		<if test="null!=params">
+			<if test="null!=params.settleMonth and ''!=params.settleMonth">
+    			And a.settle_month=#{params.settleMonth}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And b.shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.bunkGroupNo and ''!=params.bunkGroupNo">
+    			And b.bunk_group_no=#{params.bunkGroupNo}
+    		</if>
+    		<if test="null!=params.mallNo and ''!=params.mallNo">
+    			And b.mall_no=#{params.mallNo}
+    		</if>
+    	</if>
+	</select>
+    <!-- auto generate end-->
+    
+        
+</mapper>

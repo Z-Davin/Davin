@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.ContractDiscoPoolRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.ContractDiscoPool">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="bill_no" property="billNo" jdbcType="VARCHAR" />  
+           <result column="ref_id" property="refId" jdbcType="VARCHAR" />  
+           <result column="balance_date_id" property="balanceDateId" jdbcType="VARCHAR" />  
+           <result column="counter_cost_id" property="counterCostId" jdbcType="VARCHAR" />  
+           <result column="division_no" property="divisionNo" jdbcType="VARCHAR" />  
+           <result column="discount_name" property="discountName" jdbcType="VARCHAR" />  
+           <result column="quota_no" property="quotaNo" jdbcType="VARCHAR" />  
+           <result column="bill_debit" property="billDebit" jdbcType="INTEGER" />  
+           <result column="account_debit" property="accountDebit" jdbcType="INTEGER" />  
+           <result column="start_date" property="startDate" jdbcType="DATE" />  
+           <result column="end_date" property="endDate" jdbcType="DATE" />  
+           <result column="minimum_flag" property="minimumFlag" jdbcType="TINYINT" />  
+           <result column="tax_flag" property="taxFlag" jdbcType="TINYINT" />  
+           <result column="rax_rate" property="raxRate" jdbcType="DECIMAL" />  
+           <result column="start_value" property="startValue" jdbcType="DECIMAL" />  
+           <result column="end_value" property="endValue" jdbcType="DECIMAL" />  
+           <result column="discount_rate" property="discountRate" jdbcType="DECIMAL" />  
+           <result column="update_user" property="updateUser" jdbcType="VARCHAR" />  
+           <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />  
+           <result column="create_user" property="createUser" jdbcType="VARCHAR" />  
+           <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />  
+           <result column="remark" property="remark" jdbcType="VARCHAR" />  
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,bill_no,ref_id,balance_date_id,counter_cost_id,division_no,discount_name,quota_no,bill_debit,account_debit,start_date,end_date,minimum_flag,tax_flag,rax_rate,start_value,end_value,discount_rate,update_user,update_time,create_user,create_time,remark
+    </sql>
+
+    <sql id="condition">  1=1
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.billNo and ''!=params.billNo">
+    			And bill_no=#{params.billNo}
+    		</if>
+    		<if test="null!=params.refId and ''!=params.refId">
+    			And ref_id=#{params.refId}
+    		</if>
+    		<if test="null!=params.balanceDateId and ''!=params.balanceDateId">
+    			And balance_date_id=#{params.balanceDateId}
+    		</if>
+    		<if test="null!=params.counterCostId and ''!=params.counterCostId">
+    			And counter_cost_id=#{params.counterCostId}
+    		</if>
+    		<if test="null!=params.divisionNo and ''!=params.divisionNo">
+    			And division_no=#{params.divisionNo}
+    		</if>
+    		<if test="null!=params.discountName and ''!=params.discountName">
+                And discount_name like '%${params.discountName}%'
+    		</if>
+    		<if test="null!=params.quotaNo and ''!=params.quotaNo">
+    			And quota_no=#{params.quotaNo}
+    		</if>
+    		<if test="null!=params.billDebit and ''!=params.billDebit">
+    			And bill_debit=#{params.billDebit}
+    		</if>
+    		<if test="null!=params.accountDebit and ''!=params.accountDebit">
+    			And account_debit=#{params.accountDebit}
+    		</if>
+    		<if test="null!=params.startDate and ''!=params.startDate">
+    			And start_date=#{params.startDate}
+    		</if>
+    		<if test="null!=params.endDate and ''!=params.endDate">
+    			And end_date=#{params.endDate}
+    		</if>
+    		<if test="null!=params.minimumFlag and ''!=params.minimumFlag">
+    			And minimum_flag=#{params.minimumFlag}
+    		</if>
+    		<if test="null!=params.taxFlag and ''!=params.taxFlag">
+    			And tax_flag=#{params.taxFlag}
+    		</if>
+    		<if test="null!=params.raxRate and ''!=params.raxRate">
+    			And rax_rate=#{params.raxRate}
+    		</if>
+    		<if test="null!=params.startValue and ''!=params.startValue">
+    			And start_value=#{params.startValue}
+    		</if>
+    		<if test="null!=params.endValue and ''!=params.endValue">
+    			And end_value=#{params.endValue}
+    		</if>
+    		<if test="null!=params.discountRate and ''!=params.discountRate">
+    			And discount_rate=#{params.discountRate}
+    		</if>
+    		<if test="null!=params.updateUser and ''!=params.updateUser">
+    			And update_user=#{params.updateUser}
+    		</if>
+    		<if test="null!=params.updateTime and ''!=params.updateTime">
+    			And update_time=#{params.updateTime}
+    		</if>
+    		<if test="null!=params.createUser and ''!=params.createUser">
+    			And create_user=#{params.createUser}
+    		</if>
+    		<if test="null!=params.createTime and ''!=params.createTime">
+    			And create_time=#{params.createTime}
+    		</if>
+    		<if test="null!=params.remark and ''!=params.remark">
+    			And remark=#{params.remark}
+    		</if>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1  
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_disco_pool
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_disco_pool
+		WHERE  <include refid="uniqe_condition" />
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_disco_pool
+		WHERE  <include refid="condition" />
+        
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_contract_disco_pool WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_disco_pool WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_contract_disco_pool WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_contract_disco_pool
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_contract_disco_pool
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_contract_disco_pool
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.ContractDiscoPool"  >
+		INSERT INTO fas_contract_disco_pool
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="billNo != null">
+				bill_no,
+			</if>
+			<if test="refId != null">
+				ref_id,
+			</if>
+			<if test="balanceDateId != null">
+				balance_date_id,
+			</if>
+			<if test="counterCostId != null">
+				counter_cost_id,
+			</if>
+			<if test="divisionNo != null">
+				division_no,
+			</if>
+			<if test="discountName != null">
+				discount_name,
+			</if>
+			<if test="quotaNo != null">
+				quota_no,
+			</if>
+			<if test="billDebit != null">
+				bill_debit,
+			</if>
+			<if test="accountDebit != null">
+				account_debit,
+			</if>
+			<if test="startDate != null">
+				start_date,
+			</if>
+			<if test="endDate != null">
+				end_date,
+			</if>
+			<if test="minimumFlag != null">
+				minimum_flag,
+			</if>
+			<if test="taxFlag != null">
+				tax_flag,
+			</if>
+			<if test="raxRate != null">
+				rax_rate,
+			</if>
+			<if test="startValue != null">
+				start_value,
+			</if>
+			<if test="endValue != null">
+				end_value,
+			</if>
+			<if test="discountRate != null">
+				discount_rate,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="billNo != null">
+				 #{billNo},
+			</if>
+			<if test="refId != null">
+				 #{refId},
+			</if>
+			<if test="balanceDateId != null">
+				 #{balanceDateId},
+			</if>
+			<if test="counterCostId != null">
+				 #{counterCostId},
+			</if>
+			<if test="divisionNo != null">
+				 #{divisionNo},
+			</if>
+			<if test="discountName != null">
+				 #{discountName},
+			</if>
+			<if test="quotaNo != null">
+				 #{quotaNo},
+			</if>
+			<if test="billDebit != null">
+				 #{billDebit},
+			</if>
+			<if test="accountDebit != null">
+				 #{accountDebit},
+			</if>
+			<if test="startDate != null">
+				 #{startDate},
+			</if>
+			<if test="endDate != null">
+				 #{endDate},
+			</if>
+			<if test="minimumFlag != null">
+				 #{minimumFlag},
+			</if>
+			<if test="taxFlag != null">
+				 #{taxFlag},
+			</if>
+			<if test="raxRate != null">
+				 #{raxRate},
+			</if>
+			<if test="startValue != null">
+				 #{startValue},
+			</if>
+			<if test="endValue != null">
+				 #{endValue},
+			</if>
+			<if test="discountRate != null">
+				 #{discountRate},
+			</if>
+			<if test="updateUser != null">
+				 #{updateUser},
+			</if>
+			<if test="updateTime != null">
+				 #{updateTime},
+			</if>
+			<if test="createUser != null">
+				 #{createUser},
+			</if>
+			<if test="createTime != null">
+				 #{createTime},
+			</if>
+			<if test="remark != null">
+				 #{remark},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.ContractDiscoPool">
+		UPDATE fas_contract_disco_pool
+		<set>
+			<if test="billNo != null">
+				bill_no = #{billNo},
+			</if>
+			<if test="refId != null">
+				ref_id = #{refId},
+			</if>
+			<if test="balanceDateId != null">
+				balance_date_id = #{balanceDateId},
+			</if>
+			<if test="counterCostId != null">
+				counter_cost_id = #{counterCostId},
+			</if>
+			<if test="divisionNo != null">
+				division_no = #{divisionNo},
+			</if>
+			<if test="discountName != null">
+				discount_name = #{discountName},
+			</if>
+			<if test="quotaNo != null">
+				quota_no = #{quotaNo},
+			</if>
+			<if test="billDebit != null">
+				bill_debit = #{billDebit},
+			</if>
+			<if test="accountDebit != null">
+				account_debit = #{accountDebit},
+			</if>
+			<if test="startDate != null">
+				start_date = #{startDate},
+			</if>
+			<if test="endDate != null">
+				end_date = #{endDate},
+			</if>
+			<if test="minimumFlag != null">
+				minimum_flag = #{minimumFlag},
+			</if>
+			<if test="taxFlag != null">
+				tax_flag = #{taxFlag},
+			</if>
+			<if test="raxRate != null">
+				rax_rate = #{raxRate},
+			</if>
+			<if test="startValue != null">
+				start_value = #{startValue},
+			</if>
+			<if test="endValue != null">
+				end_value = #{endValue},
+			</if>
+			<if test="discountRate != null">
+				discount_rate = #{discountRate},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+    
+   
+    <!-- 查询有效的合同扣率条款 -->
+    <select id="selectValidDisco" resultType="topmall.fas.model.ContractDiscoPool"  parameterType="map">
+    	SELECT
+			id AS ref_id, bill_no,
+			division_no,discount_name,quota_no,bill_debit,account_debit,start_date,end_date,
+			minimum_flag,tax_flag,rax_rate,start_value,end_value,discount_rate
+		FROM
+			con_cu_contract_disco
+		WHERE
+			bill_no = #{params.billNo}
+		AND ((start_date &lt;= #{params.startDate} AND end_date &gt;= #{params.startDate})
+		  OR (start_date &lt;= #{params.endDate} AND end_date &gt;= #{params.endDate})
+		  OR (start_date &lt;= #{params.startDate} AND end_date &gt;= #{params.endDate})
+		  OR (start_date &gt;= #{params.startDate} AND end_date &lt;= #{params.endDate}))	
+    </select> 
+    
+    <select id="selectGroupContractDiscoData"  resultType="topmall.fas.model.ContractDiscoPool"  parameterType="map">
+    	SELECT
+    		bill_no,division_no,discount_name,bill_debit,account_debit,start_date,
+    		end_date,rax_rate,start_value,end_value,discount_rate
+    	FROM
+			fas_contract_disco_pool
+		WHERE <include refid="condition" />
+		GROUP BY division_no,start_date,end_date,bill_debit,account_debit
+       </select>
+    <select id="selectGroupShopDaySaleData" resultType="topmall.fas.vo.CounterDaySale" parameterType="map">
+    	SELECT 
+    		 A.counter_no, B.division_no, A.discount,A.rate_value,A.absorption_rate,A.sale_date,A.pro_no,
+    		 sum(A.tag_price_amount) tag_price_amount,sum(A.settle_amount) settle_amount,sum(A.net_income_amount)  net_income_amount, a.recalculate_flag as type,sum(a.sale_qty) sale_qty
+    	FROM
+    		pos_shop_day_sale A INNER JOIN mdm_sale_code B
+    	ON  A.counter_no = B.counter_no AND A.sale_code_no = B.sale_code_no
+    	WHERE 1=1
+    		<if test="null!=params.counterNo and ''!=params.counterNo">
+    			And A.counter_no=#{params.counterNo}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And A.shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And A.sale_date &gt;=STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And A.sale_date &lt;=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+    		</if>
+    		<!-- 表示历史费用重算 -->
+    		<if test="params.isHisCost">
+    			and A.recalculate_flag IN (1,2)
+    		</if>
+    	GROUP BY 
+    		A.sale_date,B.division_no,A.discount,A.rate_value,A.pro_no,a.recalculate_flag
+    </select>
+    
+     <select id="selectbagSaleQty" resultType="java.lang.Integer" parameterType="map">
+     	SELECT
+			sum(a.qty) sale_qty
+		FROM
+			pos_order_dtl a
+		INNER JOIN pos_order_main b ON a.order_no = b.order_no
+		INNER JOIN mdm_sale_code c on a.counter_no=c.counter_no
+		and a.sale_code_no=c.sale_code_no
+		WHERE
+			b.shop_no = #{params.shopNo}
+		AND a.counter_no = #{params.counterNo}
+		AND b.sale_datetime &gt;=STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+		AND b.sale_datetime &lt;=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+		AND a.category_no = '07'
+     </select>
+    
+     <select id="selectGroupShopDaySaleDataForMall" resultType="topmall.fas.vo.CounterDaySale" parameterType="map">
+    	SELECT 
+    		 A.counter_no,right(b.division_no,2) as price_type,c.mall_rate_value rate_value,a.sale_date,
+    		 sum(d.pay_amount) settle_amount,sum(if(d.pay_no='P60',d.pay_amount,0)) points_amount,'0' as type
+    	FROM
+    		pos_shop_day_sale A INNER JOIN mdm_sale_code B
+    	ON  A.counter_no = B.counter_no AND A.sale_code_no = B.sale_code_no
+    	inner join pos_mall_day_sale c on a.bill_no=c.bill_no
+    	INNER JOIN pos_shop_day_sale_dtl d on a.bill_no=d.bill_no
+    	WHERE 1=1
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And a.shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And a.sale_date &gt;=STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And a.sale_date &lt;=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.mallNo and ''!=params.mallNo">
+    			and c.mall_no=#{params.mallNo}
+    		</if>
+    		<if test="null!=params.bunkGroupNo and ''!=params.bunkGroupNo">
+    			and c.bunk_group_no=#{params.bunkGroupNo}
+    		</if>
+    	GROUP BY 
+    		right(b.division_no,2),c.mall_rate_value,a.counter_no,a.sale_date
+    </select>
+    
+    <select id="ticketAbsorptionAmonut" resultType="java.math.BigDecimal" parameterType="map">
+		SELECT
+			sum((ctdc.share_ratio / 100) *pop.amount) AS ticket_share_amount
+		FROM
+			(
+				SELECT
+					pod.order_no,
+					pod.counter_no
+				FROM
+					pos_order_dtl pod,
+					pos_order_main pom
+				WHERE
+					pod.order_no = pom.order_no
+				AND pom.status IN (12, 22)
+				AND pom.sale_datetime &gt;=STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+				AND pom.sale_datetime &lt;=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+				AND pom.shop_no = #{params.shopNo}
+				AND pod.counter_no = #{params.counterNo}
+				GROUP BY
+					pom.order_no,
+					pod.counter_no
+			) AS ticket_order,
+			pos_order_payway pop,
+			card_ticket ct,
+			card_ticket_define_counter ctdc
+		WHERE
+			pop.card_no = ct.ticket_code
+		AND ct.ticket_define_no = ctdc.bill_no
+		AND ctdc.counter_no = ticket_order.counter_no
+		AND ticket_order.order_no = pop.order_no
+		AND pop.status IN (3, 4, 5)
+    </select>
+    
+     <select id="vipAbsorptionAmonut" resultType="java.math.BigDecimal" parameterType="map">
+		SELECT
+ 			sum((dtl.tag_price-dtl.settle_price)*dtl.qty* IFNULL(IFNULL(c.absorption_rate,d.absorption_rate),0)/100) as absorption_amount 
+		from 
+			pos_order_dtl dtl INNER JOIN pos_order_main m on dtl.order_no=m.order_no
+			LEFT JOIN mps_member_discount_counter c on c.counter_no=dtl.counter_no and c.rank_no=m.vip_level
+			LEFT JOIN mps_member_discount d on d.rank_no=m.vip_level 
+			inner join mdm_shop k on m.shop_no=k.shop_no and d.zone_no=k.zone_no
+		where 1=1 
+			and m.vip_no is not NULL
+			and m.vip_no !=''
+			and (dtl.pro_no is null or dtl.pro_no='')
+			and m.status in(12,22)
+			and m.sale_datetime  &gt;=STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+			and m.sale_datetime &lt;=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+			and m.shop_no=#{params.shopNo} 
+			and dtl.counter_no=#{params.counterNo}
+			GROUP BY  m.shop_no,dtl.counter_no
+    </select>
+    
+      <select id="queryReduceDiffAmount" resultType="java.math.BigDecimal" parameterType="map">
+    	SELECT
+    		sum(net_income_sum)-sum(settle_sum)
+    	FROM
+			fas_counter_sale_cost
+		WHERE 1=1
+		<if test="null!=params.shopNo and ''!=params.shopNo">
+    		And shop_no=#{params.shopNo}
+    	</if>
+    	<if test="null!=params.counterNo and ''!=params.counterNo">
+    		And counter_no=#{params.counterNo}
+    	</if>
+    	<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    		And settle_start_date= STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+   		</if>
+   		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+   			And settle_end_date=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+   		</if>
+    </select>
+    
+    <select id="materialAmount"  resultType="java.math.BigDecimal" parameterType="map">
+    	select 
+    		sum(settle_amount)
+    	from pos_material_day_sale A
+    	where 1=1
+    		<if test="null!=params.counterNo and ''!=params.counterNo">
+    			And A.counter_no=#{params.counterNo}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And A.shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And A.sale_date &gt;=STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And A.sale_date &lt;=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+    		</if>
+    </select>
+    
+    <select id="pointsAmount"  resultType="java.math.BigDecimal" parameterType="map">
+    	SELECT
+    	<choose>
+    		<when test="null!=params.queryType and ''!=params.queryType">
+			sum(pdtl.amount)
+			</when>
+			<otherwise>
+			sum(pdtl.amount * (100-dtl.points_absor_rate) / 100)
+			</otherwise>
+		</choose>	
+		FROM
+			pos_order_dtl dtl
+		INNER JOIN pos_order_main m ON dtl.order_no = m.order_no
+		INNER JOIN pos_order_payway a ON m.order_no = a.order_no
+		INNER JOIN pos_order_payway_dtl pdtl ON dtl.id = pdtl.order_dtl_id
+		AND a.order_no = pdtl.order_no
+		AND pdtl.order_payway_id = a.id
+		WHERE
+			1 = 1
+		AND a.pay_no = 'P60'
+		AND m. STATUS IN (12, 22)
+		<if test="null!=params.counterNo and ''!=params.counterNo">
+			AND dtl.counter_no = #{params.counterNo}
+		</if>
+		<if test="null!=params.shopNo and ''!=params.shopNo">
+    		And m.shop_no=#{params.shopNo}
+   		</if>
+   		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+   			And m.sale_dateTime &gt;=STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+   		</if>
+   		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+   			And m.sale_dateTime &lt;=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+   		</if>
+		GROUP BY
+			m.shop_no,dtl.counter_no
+    </select>
+    
+     <select id="selectMinimumMall" resultType="topmall.fas.vo.CounterDaySale" parameterType="map">
+    	SELECT 
+    		 c.mall_rate_value rate_value,
+    		 sum(if(c.mall_minimum_flag=1,d.pay_amount,0)) minimumAmount,sum(if(c.mall_minimum_flag!=1,d.pay_amount,0)) notMinimumAmount
+    	FROM
+    		pos_shop_day_sale A 
+    	inner join pos_mall_day_sale c on a.bill_no=c.bill_no
+    	INNER JOIN pos_shop_day_sale_dtl d on a.bill_no=d.bill_no
+    	WHERE 1=1
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And a.shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And a.sale_date &gt;=STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And a.sale_date &lt;=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.mallNo and ''!=params.mallNo">
+    			and c.mall_no=#{params.mallNo}
+    		</if>
+    		<if test="null!=params.bunkGroupNo and ''!=params.bunkGroupNo">
+    			and c.bunk_group_no=#{params.bunkGroupNo}
+    		</if>
+    		<if test="params.pointsCalculateFlag">
+    			and d.pay_no!='P60'
+    		</if>
+    	GROUP BY 
+    		c.mall_rate_value
+    </select>
+    
+</mapper>

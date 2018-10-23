@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.CounterCostRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.CounterCost">
+           <id column="id" property="id" jdbcType="VARCHAR" />
+           <result column="ref_id" property="refId" jdbcType="VARCHAR" />
+           <result column="ref_type" property="refType" jdbcType="TINYINT" />   
+           <result column="company_no" property="companyNo" jdbcType="VARCHAR" />  
+           <result column="supplier_no" property="supplierNo" jdbcType="VARCHAR" />  
+           <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />  
+           <result column="counter_no" property="counterNo" jdbcType="VARCHAR" />  
+           <result column="cost_no" property="costNo" jdbcType="VARCHAR" />  
+           <result column="settle_month" property="settleMonth" jdbcType="VARCHAR" />  
+           <result column="settle_start_date" property="settleStartDate" jdbcType="DATE" />  
+           <result column="settle_end_date" property="settleEndDate" jdbcType="DATE" />  
+           <result column="actual_month" property="actualMonth" jdbcType="VARCHAR" />  
+           <result column="actual_start_date" property="actualStartDate" jdbcType="DATE" />  
+           <result column="actual_end_date" property="actualEndDate" jdbcType="DATE" /> 
+           <result column="status" property="status" jdbcType="TINYINT" />  
+           <result column="able_amount" property="ableAmount" jdbcType="DECIMAL" />  
+           <result column="able_sum" property="ableSum" jdbcType="DECIMAL" />  
+           <result column="tax_amount" property="taxAmount" jdbcType="DECIMAL" />  
+           <result column="tax_flag" property="taxFlag" jdbcType="TINYINT" />  
+           <result column="tax_rate" property="taxRate" jdbcType="DECIMAL" />  
+           <result column="bill_debit" property="billDebit" jdbcType="INTEGER" />  
+           <result column="account_debit" property="accountDebit" jdbcType="INTEGER" />  
+           <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />  
+           <result column="create_user" property="createUser" jdbcType="VARCHAR" />  
+           <result column="auditor" property="auditor" jdbcType="VARCHAR" />  
+           <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />  
+           <result column="remark" property="remark" jdbcType="VARCHAR" />  
+           <result column="seq_id" property="seqId" jdbcType="VARCHAR" />
+           <result column="source" property="source" jdbcType="TINYINT" />  
+           <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+           <result column="balance_bill_no" property="balanceBillNo" jdbcType="VARCHAR" />  
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,ref_id,ref_type,company_no,supplier_no,shop_no,counter_no,cost_no,settle_month,settle_start_date,settle_end_date,actual_month,actual_start_date,actual_end_date,
+        status,able_amount,able_sum,tax_amount,tax_flag,tax_rate,bill_debit,account_debit,create_time,create_user,auditor,audit_time,remark,source,update_time,seq_id,balance_bill_no
+    </sql>
+    <sql id="column_list1"> 
+        settle_month,settle_start_date,settle_end_date
+    </sql>
+    <sql id="condition">  1=1
+    	--  and @Shop!shop_no
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.ids">
+    			And id in (${params.ids})
+    		</if>
+    		<if test="null!=params.targetStatus and ''!=params.targetStatus">
+    			And status!=#{params.targetStatus}
+    		</if>
+    		<if test="null!=params.refId and ''!=params.refId">
+    			And ref_id=#{params.refId}
+    		</if>
+    		<if test="null!=params.refType and ''!=params.refType">
+    			And ref_type=#{params.refType}
+    		</if>
+    		<if test="null!=params.companyNo and ''!=params.companyNo">
+    			And company_no=#{params.companyNo}
+    		</if>
+    		<if test="null!=params.supplierNo and ''!=params.supplierNo">
+    			And supplier_no=#{params.supplierNo}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And shop_no= #{params.shopNo}
+    		</if>
+    		<if test="null!=params.counterNo and ''!=params.counterNo">
+    			And counter_no= #{params.counterNo}
+    		</if>
+    		<if test="null!=params.costNo and ''!=params.costNo">
+    			And cost_no= #{params.costNo}
+    		</if>
+    		<if test="null!=params.settleMonth and ''!=params.settleMonth">
+    			And settle_month=#{params.settleMonth}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And settle_start_date= STR_TO_DATE(#{params.settleStartDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And settle_end_date=STR_TO_DATE(#{params.settleEndDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.actualMonth and ''!=params.actualMonth">
+    			And actual_month=#{params.actualMonth}
+    		</if>
+    		<if test="null!=params.actualStartDate and ''!=params.actualStartDate">
+    			And actual_start_date= STR_TO_DATE(#{params.actualStartDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.actualEndDate and ''!=params.actualEndDate">
+    			And actual_end_date=STR_TO_DATE(#{params.actualEndDate},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.status and ''!=params.status">
+    			And status=#{params.status}
+    		</if>
+    		<if test="null!=params.ableAmount and ''!=params.ableAmount">
+    			And able_amount=#{params.ableAmount}
+    		</if>
+    		<if test="null!=params.ableSum and ''!=params.ableSum">
+    			And able_sum=#{params.ableSum}
+    		</if>
+    		<if test="null!=params.taxAmount and ''!=params.taxAmount">
+    			And tax_amount=#{params.taxAmount}
+    		</if>
+    		<if test="null!=params.taxFlag and ''!=params.taxFlag">
+    			And tax_flag=#{params.taxFlag}
+    		</if>
+    		<if test="null!=params.taxRate and ''!=params.taxRate">
+    			And tax_rate=#{params.taxRate}
+    		</if>
+    		<if test="null!=params.billDebit and ''!=params.billDebit">
+    			And bill_debit=#{params.billDebit}
+    		</if>
+    		<if test="null!=params.accountDebit and ''!=params.accountDebit">
+    			And account_debit=#{params.accountDebit}
+    		</if>
+    		<if test="null!=params.createTime and ''!=params.createTime">
+    			And create_time=#{params.createTime}
+    		</if>
+    		<if test="null!=params.createUser and ''!=params.createUser">
+    			And create_user=#{params.createUser}
+    		</if>
+    		<if test="null!=params.auditor and ''!=params.auditor">
+    			And auditor=#{params.auditor}
+    		</if>
+    		<if test="null!=params.auditTime and ''!=params.auditTime">
+    			And audit_time=#{params.auditTime}
+    		</if>
+    		<if test="null!=params.remark and ''!=params.remark">
+    			And remark=#{params.remark}
+    		</if>
+    		<if test="null!=params.source and ''!=params.source">
+    			And source=#{params.source}
+    		</if>
+    		<if test="null!=params.updateTime and ''!=params.updateTime">
+    			And update_time=#{params.updateTime}
+    		</if>
+    		<if test="null!=params.balanceBillNo and ''!=params.balanceBillNo">
+    			And balance_bill_no=#{params.balanceBillNo}
+    		</if>
+    		<if test="null!=params.balanceBillNoIsNull and ''!=params.balanceBillNoIsNull">
+    			And balance_bill_no is null
+    		</if>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1  
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_counter_cost
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_counter_cost
+		WHERE  <include refid="uniqe_condition" />
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_counter_cost
+		WHERE  
+        <include refid="condition" />
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_counter_cost WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		 FROM fas_counter_cost WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+	
+	<select id="queryConditionSum" resultMap="baseResultMap">
+		SELECT
+			'合计' counter_no,
+			sum(able_amount) able_amount,
+			sum(able_sum) able_sum,
+			sum(tax_amount) tax_amount
+		 FROM fas_counter_cost WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_counter_cost WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_counter_cost
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_counter_cost
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_counter_cost
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.CounterCost"  >
+		INSERT INTO fas_counter_cost
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="refId != null">
+				ref_id,
+			</if>
+			<if test="refType != null">
+				ref_type,
+			</if>
+			<if test="shopNo != null">
+				shop_no,
+				company_no,
+			</if>
+			<if test="counterNo != null">
+				counter_no,
+				supplier_no,
+			</if>
+			<if test="costNo != null">
+				cost_no,
+			</if>
+			<if test="settleMonth != null">
+				settle_month,
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date,
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date,
+			</if>
+			<if test="actualMonth != null">
+				actual_month,
+			</if>
+			<if test="actualStartDate != null">
+				actual_start_date,
+			</if>
+			<if test="actualEndDate != null">
+				actual_end_date,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="ableAmount != null">
+				able_amount,
+			</if>
+			<if test="ableSum != null">
+				able_sum,
+			</if>
+			<if test="taxAmount != null">
+				tax_amount,
+			</if>
+			<if test="taxFlag != null">
+				tax_flag,
+			</if>
+			<if test="taxRate != null">
+				tax_rate,
+			</if>
+			<if test="billDebit != null">
+				bill_debit,
+			</if>
+			<if test="accountDebit != null">
+				account_debit,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="auditor != null">
+				auditor,
+			</if>
+			<if test="auditTime != null">
+				audit_time,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="source != null">
+				source,
+			</if>
+			<if test="seqId != null">
+				seq_id,
+			</if>
+			<if test="balanceBillNo != null">
+				balance_bill_no,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="refId != null">
+				 #{refId},
+			</if>
+			<if test="refType != null">
+				#{refType},
+			</if>
+			<if test="shopNo != null">
+				 #{shopNo},
+				 (select company_no from  mdm_shop where shop_no= #{shopNo} ),
+			</if>
+			<if test="counterNo != null">
+				 #{counterNo},
+				 (select supplier_no from  mdm_counter where counter_no= #{counterNo} ),
+			</if>
+			<if test="costNo != null">
+				 #{costNo},
+			</if>
+			<if test="settleMonth != null">
+				 #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				 #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				 #{settleEndDate},
+			</if>
+			<if test="actualMonth != null">
+				 #{actualMonth},
+			</if>
+			<if test="actualStartDate != null">
+				 #{actualStartDate},
+			</if>
+			<if test="actualEndDate != null">
+				 #{actualEndDate},
+			</if>
+			<if test="status != null">
+				 #{status},
+			</if>
+			<if test="ableAmount != null">
+				 #{ableAmount},
+			</if>
+			<if test="ableSum != null">
+				 #{ableSum},
+			</if>
+			<if test="taxAmount != null">
+				 #{taxAmount},
+			</if>
+			<if test="taxFlag != null">
+				 #{taxFlag},
+			</if>
+			<if test="taxRate != null">
+				 #{taxRate},
+			</if>
+			<if test="billDebit != null">
+				 #{billDebit},
+			</if>
+			<if test="accountDebit != null">
+				 #{accountDebit},
+			</if>
+			<if test="createTime != null">
+				 #{createTime},
+			</if>
+			<if test="createUser != null">
+				 #{createUser},
+			</if>
+			<if test="auditor != null">
+				 #{auditor},
+			</if>
+			<if test="auditTime != null">
+				 #{auditTime},
+			</if>
+			<if test="remark != null">
+				 #{remark},
+			</if>
+			<if test="source != null">
+				 #{source},
+			</if>
+			<if test="seqId != null">
+				 #{seqId},
+			</if>
+			<if test="balanceBillNo != null">
+				#{balanceBillNo},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.CounterCost">
+		UPDATE fas_counter_cost
+		<set>
+			<if test="refId != null">
+				ref_id = #{refId},
+			</if>
+			<if test="refType != null">
+				ref_type = #{refType},
+			</if>
+			<if test="companyNo != null">
+				company_no = #{companyNo},
+			</if>
+			<if test="supplierNo != null">
+				supplier_no = #{supplierNo},
+			</if>
+			<if test="shopNo != null">
+				shop_no = #{shopNo},
+			</if>
+			<if test="counterNo != null">
+				counter_no = #{counterNo},
+			</if>
+			<if test="costNo != null">
+				cost_no = #{costNo},
+			</if>
+			<if test="settleMonth != null">
+				settle_month = #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date = #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date = #{settleEndDate},
+			</if>
+			<if test="actualMonth != null">
+				actual_month = #{actualMonth},
+			</if>
+			<if test="actualStartDate != null">
+				actual_start_date = #{actualStartDate},
+			</if>
+			<if test="actualEndDate != null">
+				actual_end_date = #{actualEndDate},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="ableAmount != null">
+				able_amount = #{ableAmount},
+			</if>
+			<if test="ableSum != null">
+				able_sum = #{ableSum},
+			</if>
+			<if test="taxAmount != null">
+				tax_amount = #{taxAmount},
+			</if>
+			<if test="taxFlag != null">
+				tax_flag = #{taxFlag},
+			</if>
+			<if test="taxRate != null">
+				tax_rate = #{taxRate},
+			</if>
+			<if test="billDebit != null">
+				bill_debit = #{billDebit},
+			</if>
+			<if test="accountDebit != null">
+				account_debit = #{accountDebit},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser},
+			</if>
+			<if test="auditor != null">
+				auditor = #{auditor},
+			</if>
+			<if test="auditTime != null">
+				audit_time = #{auditTime},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="source != null">
+				source = #{source},
+			</if>
+			<if test="seqId != null">
+				 seq_id=#{seqId},
+			</if>
+			<if test="balanceBillNo != null">
+				balance_bill_no = #{balanceBillNo},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+    <update id="updateToUnsettled" >
+      update fas_counter_cost set balance_bill_no = null,status = 2  WHERE id = #{id} AND status = 5
+    </update>
+    
+    <update id="updateStatus" parameterType="map">
+    	update fas_counter_cost 
+    	<set>
+			<if test="params.operate != null">
+				${params.operate} = #{params.user},
+			</if>
+			<if test="params.operateTime != null">
+				${params.operateTime}= #{params.time},
+			</if>
+			<if test="params.status != null">
+				status = #{params.status},
+			</if>
+		</set>
+    	where ${params.keyName} in
+    	<foreach item="item" index="index" collection="params.keyValue" open="(" separator="," close=")">  
+		 	#{item}  
+		</foreach> 
+    	<if test="null!=params.originStatus and ''!=params.originStatus">
+   			and status = #{params.originStatus}
+   		</if>
+    </update>
+    
+   <select id="findBySettle" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list1" />
+		FROM fas_shop_balance_date_dtl
+		WHERE  
+        <include refid="condition" />
+	</select>
+</mapper>

@@ -1,0 +1,359 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.MallBalanceDateDtlRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.MallBalanceDateDtl">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="zone_no" property="zoneNo" jdbcType="VARCHAR" />  
+           <result column="company_no" property="companyNo" jdbcType="VARCHAR" />  
+           <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />  
+           <result column="mall_no" property="mallNo" jdbcType="VARCHAR" />  
+           <result column="settle_month" property="settleMonth" jdbcType="VARCHAR" />  
+           <result column="settle_start_date" property="settleStartDate" jdbcType="DATE" />  
+           <result column="settle_end_date" property="settleEndDate" jdbcType="DATE" />  
+           <result column="check_date" property="checkDate" jdbcType="DATE" />  
+           <result column="pay_ticket_date" property="payTicketDate" jdbcType="DATE" />  
+           <result column="payment_date" property="paymentDate" jdbcType="DATE" />  
+           <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />  
+           <result column="status" property="status" jdbcType="TINYINT" />  
+           <result column="remark" property="remark" jdbcType="VARCHAR" />
+           <result column="bunk_group_no" property="bunkGroupNo" jdbcType="VARCHAR" />   
+           <result column="points_calculate_flag" property="pointsCalculateFlag" jdbcType="TINYINT" />  
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,zone_no,company_no,shop_no,mall_no,settle_month,settle_start_date,settle_end_date,check_date,pay_ticket_date,payment_date,create_time,status,remark,bunk_group_no,points_calculate_flag
+    </sql>
+
+    <sql id="condition">  1=1
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.zoneNo and ''!=params.zoneNo">
+    			And zone_no=#{params.zoneNo}
+    		</if>
+    		<if test="null!=params.companyNo and ''!=params.companyNo">
+    			And company_no=#{params.companyNo}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.mallNo and ''!=params.mallNo">
+    			And mall_no=#{params.mallNo}
+    		</if>
+    		<if test="null!=params.settleMonth and ''!=params.settleMonth">
+    			And settle_month=#{params.settleMonth}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And settle_start_date=#{params.settleStartDate}
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And settle_end_date=#{params.settleEndDate}
+    		</if>
+    		<if test="null!=params.checkDate and ''!=params.checkDate">
+    			And check_date=#{params.checkDate}
+    		</if>
+    		<if test="null!=params.payTicketDate and ''!=params.payTicketDate">
+    			And pay_ticket_date=#{params.payTicketDate}
+    		</if>
+    		<if test="null!=params.paymentDate and ''!=params.paymentDate">
+    			And payment_date=#{params.paymentDate}
+    		</if>
+    		<if test="null!=params.createTime and ''!=params.createTime">
+    			And create_time=#{params.createTime}
+    		</if>
+    		<if test="null!=params.status and ''!=params.status">
+    			And status=#{params.status}
+    		</if>
+    		<if test="null!=params.remark and ''!=params.remark">
+    			And remark=#{params.remark}
+    		</if>
+    		<if test="null!=params.bunkGroupNo and ''!=params.bunkGroupNo">
+    			And bunk_group_no=#{params.bunkGroupNo}
+    		</if>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1  
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_balance_date_dtl
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_balance_date_dtl
+		WHERE  <include refid="uniqe_condition" />
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_balance_date_dtl
+		WHERE  <include refid="condition" />
+        
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_mall_balance_date_dtl WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_balance_date_dtl WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_balance_date_dtl WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_mall_balance_date_dtl
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_mall_balance_date_dtl
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_mall_balance_date_dtl
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.MallBalanceDateDtl"  >
+		INSERT INTO fas_mall_balance_date_dtl
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="zoneNo != null">
+				zone_no,
+			</if>
+			<if test="companyNo != null">
+				company_no,
+			</if>
+			<if test="shopNo != null">
+				shop_no,
+			</if>
+			<if test="mallNo != null">
+				mall_no,
+			</if>
+			<if test="settleMonth != null">
+				settle_month,
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date,
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date,
+			</if>
+			<if test="checkDate != null">
+				check_date,
+			</if>
+			<if test="payTicketDate != null">
+				pay_ticket_date,
+			</if>
+			<if test="paymentDate != null">
+				payment_date,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="bunkGroupNo != null">
+				bunk_group_no,
+			</if>
+			<if test="pointsCalculateFlag != null">
+				points_calculate_flag,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="zoneNo != null">
+				 #{zoneNo},
+			</if>
+			<if test="companyNo != null">
+				 #{companyNo},
+			</if>
+			<if test="shopNo != null">
+				 #{shopNo},
+			</if>
+			<if test="mallNo != null">
+				 #{mallNo},
+			</if>
+			<if test="settleMonth != null">
+				 #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				 #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				 #{settleEndDate},
+			</if>
+			<if test="checkDate != null">
+				 #{checkDate},
+			</if>
+			<if test="payTicketDate != null">
+				 #{payTicketDate},
+			</if>
+			<if test="paymentDate != null">
+				 #{paymentDate},
+			</if>
+			<if test="createTime != null">
+				 #{createTime},
+			</if>
+			<if test="status != null">
+				 #{status},
+			</if>
+			<if test="remark != null">
+				 #{remark},
+			</if>
+			<if test="bunkGroupNo != null">
+				 #{bunkGroupNo},
+			</if>
+			<if test="pointsCalculateFlag != null">
+				 #{pointsCalculateFlag},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.MallBalanceDateDtl">
+		UPDATE fas_mall_balance_date_dtl
+		<set>
+			<if test="zoneNo != null">
+				zone_no = #{zoneNo},
+			</if>
+			<if test="companyNo != null">
+				company_no = #{companyNo},
+			</if>
+			<if test="shopNo != null">
+				shop_no = #{shopNo},
+			</if>
+			<if test="mallNo != null">
+				mall_no = #{mallNo},
+			</if>
+			<if test="settleMonth != null">
+				settle_month = #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date = #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date = #{settleEndDate},
+			</if>
+			<if test="checkDate != null">
+				check_date = #{checkDate},
+			</if>
+			<if test="payTicketDate != null">
+				pay_ticket_date = #{payTicketDate},
+			</if>
+			<if test="paymentDate != null">
+				payment_date = #{paymentDate},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="bunkGroupNo != null">
+				bunk_group_no = #{bunkGroupNo},
+			</if>
+			<if test="pointsCalculateFlag != null">
+				points_calculate_flag = #{pointsCalculateFlag},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+    
+    <!-- 根据店铺编码和物业编码获取到有效合同的合同编码 -->
+    <select id="selectContractBillNo" resultType="topmall.fas.dto.ContractMainDto" parameterType="map">
+    	SELECT
+    		bill_no,
+			shop_no,
+			mall_no,
+			bunk_group_no,
+			physics_contract_no,
+			business_type,
+			base_cost_type,
+			un_guara_un_profit 
+    	FROM con_mall_contract 
+    	WHERE shop_no = #{params.shopNo} 
+    	  AND mall_no = #{params.mallNo} 
+    	  and bunk_group_no = #{params.bunkGroupNo} 
+    	<choose>
+    		<when test="1 == params.queryType">
+    			AND con_status = 1
+    	  		AND start_date &lt;= #{params.settleStartDate}
+    		</when>
+    		<otherwise>
+    			AND con_status IN (2, 3)
+    			AND start_date &lt;=  #{params.settleStartDate}
+    			AND end_date &gt;= #{params.settleEndDate}
+    			AND actual_end_date &gt;= #{params.settleEndDate}
+    			ORDER BY actual_end_date DESC
+    			limit 1
+    		</otherwise>
+    	</choose>	  
+    </select>
+   	
+   	<select id="getUnGeneralCostMinDate" resultType="java.util.Date" parameterType="map">
+    	select min(settle_end_date) from fas_mall_balance_date_dtl where 1=1
+    	<if test="null!=params.status and ''!=params.status">
+    		And status = #{params.status}
+    	</if>
+    	<if test="null!=params.shopNo and ''!=params.shopNo">
+    		And shop_no = #{params.shopNo}
+    	</if>
+    	<if test="null!=params.mallNo and ''!=params.mallNo">
+    		And mall_no = #{params.mallNo}
+    	</if>
+    	<if test="params.bunkGroupNo != null and ''!=params.bunkGroupNo">
+			And	bunk_group_no = #{params.bunkGroupNo}
+		</if>
+    </select>   
+</mapper>

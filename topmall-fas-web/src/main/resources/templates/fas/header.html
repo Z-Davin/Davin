@@ -1,0 +1,18 @@
+<meta charset="utf-8" />
+<meta name="Keywords" content="滔博运动城管理系统" />
+<meta name="Description" content="滔博运动城管理系统" />
+<#include "/common/head.html" /> 
+<script> 
+var portalUrl = '';
+<#assign portalUrl="" />
+<#if (env?contains("dev"))>
+	APP_SETTINGS.mdm ='//' + APP_SETTINGS.dns +'/mdm'; 
+	APP_SETTINGS.admin ='//'+ APP_SETTINGS.dns +'/admin'; 
+	APP_SETTINGS.mcs ='//'+ APP_SETTINGS.dns +'/mcs';
+	APP_SETTINGS.pos ='//'+ APP_SETTINGS.dns +'/pos';
+	var portalUrl='//'+ APP_SETTINGS.dns ;
+</#if>
+</script> 
+<script src="/fas/js/fas/fas.js"></script>
+<script src="/fas/js/fas/fas.common.js"></script>
+<script src="${resourcesUrl}/resources/js/lib/LodopFuncs.js" type="text/javascript" charset="utf-8"></script>

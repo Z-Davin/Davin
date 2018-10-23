@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.MallPrepayRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.MallPrepay">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="company_no" property="companyNo" jdbcType="VARCHAR" />  
+           <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />  
+           <result column="bunk_group_no" property="bunkGroupNo" jdbcType="VARCHAR" />  
+           <result column="mall_no" property="mallNo" jdbcType="VARCHAR" />  
+           <result column="bill_no" property="billNo" jdbcType="VARCHAR" /> 
+           <result column="bill_type" property="billType" jdbcType="INTEGER" />  
+           <result column="pay_month" property="payMonth" jdbcType="VARCHAR" />  
+           <result column="start_date" property="startDate" jdbcType="DATE" />  
+           <result column="end_date" property="endDate" jdbcType="DATE" />  
+           <result column="status" property="status" jdbcType="TINYINT" />  
+           <result column="bill_debit" property="billDebit" jdbcType="INTEGER" />  
+           <result column="prepay_amount" property="prepayAmount" jdbcType="DECIMAL" />  
+           <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />  
+           <result column="create_user" property="createUser" jdbcType="VARCHAR" />  
+           <result column="auditor" property="auditor" jdbcType="VARCHAR" />  
+           <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />  
+           <result column="remark" property="remark" jdbcType="VARCHAR" />  
+           <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />  
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,shop_no,bunk_group_no,mall_no,bill_no,bill_type,pay_month,start_date,end_date,status,bill_debit,prepay_amount,create_time,create_user,auditor,audit_time,remark,update_time
+    </sql>
+
+    <sql id="condition">  1=1
+    		--  and @Shop!shop_no
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.bunkGroupNo and ''!=params.bunkGroupNo">
+    			And bunk_group_no=#{params.bunkGroupNo}
+    		</if>
+    		<if test="null!=params.mallNo and ''!=params.mallNo">
+    			And mall_no=#{params.mallNo}
+    		</if>
+    		<if test="null!=params.billNo and ''!=params.billNo">
+    			And bill_no=#{params.billNo}
+    		</if>
+    		<if test="null!=params.payMonth and ''!=params.payMonth">
+    			And pay_month=#{params.payMonth}
+    		</if>
+    		<if test="null!=params.startDate and ''!=params.startDate">
+    			And start_date=#{params.startDate}
+    		</if>
+    		<if test="null!=params.endDate and ''!=params.endDate">
+    			And end_date=#{params.endDate}
+    		</if>
+    		<if test="null!=params.status and ''!=params.status">
+    			And status=#{params.status}
+    		</if>
+    		<if test="null!=params.billDebit and ''!=params.billDebit">
+    			And bill_debit=#{params.billDebit}
+    		</if>
+    		<if test="null!=params.prepayAmount and ''!=params.prepayAmount">
+    			And prepay_amount=#{params.prepayAmount}
+    		</if>
+    		<if test="null!=params.createTime and ''!=params.createTime">
+    			And create_time=#{params.createTime}
+    		</if>
+    		<if test="null!=params.createUser and ''!=params.createUser">
+    			And create_user=#{params.createUser}
+    		</if>
+    		<if test="null!=params.auditor and ''!=params.auditor">
+    			And auditor=#{params.auditor}
+    		</if>
+    		<if test="null!=params.auditTime and ''!=params.auditTime">
+    			And audit_time=#{params.auditTime}
+    		</if>
+    		<if test="null!=params.remark and ''!=params.remark">
+    			And remark=#{params.remark}
+    		</if>
+    		<if test="null!=params.updateTime and ''!=params.updateTime">
+    			And update_time=#{params.updateTime}
+    		</if>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1 
+         <if test="null!=params.billNo and ''!=params.billNo">
+    		And bill_no=#{params.billNo}
+    	</if> 
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay
+		WHERE  <include refid="uniqe_condition" />
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay
+		WHERE  <include refid="condition" />
+        
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_mall_prepay WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_mall_prepay WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_mall_prepay
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_mall_prepay
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_mall_prepay
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.MallPrepay"  >
+		INSERT INTO fas_mall_prepay
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="shopNo != null">
+				shop_no,
+			</if>
+			<if test="bunkGroupNo != null">
+				bunk_group_no,
+			</if>
+			<if test="mallNo != null">
+				mall_no,
+			</if>
+			<if test="billNo != null">
+				bill_no,
+			</if>
+			<if test="payMonth != null">
+				pay_month,
+			</if>
+			<if test="startDate != null">
+				start_date,
+			</if>
+			<if test="endDate != null">
+				end_date,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="billDebit != null">
+				bill_debit,
+			</if>
+			<if test="prepayAmount != null">
+				prepay_amount,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="auditor != null">
+				auditor,
+			</if>
+			<if test="auditTime != null">
+				audit_time,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="billType != null">
+				bill_type,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="shopNo != null">
+				 #{shopNo},
+			</if>
+			<if test="bunkGroupNo != null">
+				 #{bunkGroupNo},
+			</if>
+			<if test="mallNo != null">
+				 #{mallNo},
+			</if>
+			<if test="billNo != null">
+				 #{billNo},
+			</if>
+			<if test="payMonth != null">
+				 #{payMonth},
+			</if>
+			<if test="startDate != null">
+				 #{startDate},
+			</if>
+			<if test="endDate != null">
+				 #{endDate},
+			</if>
+			<if test="status != null">
+				 #{status},
+			</if>
+			<if test="billDebit != null">
+				 #{billDebit},
+			</if>
+			<if test="prepayAmount != null">
+				 #{prepayAmount},
+			</if>
+			<if test="createTime != null">
+				 #{createTime},
+			</if>
+			<if test="createUser != null">
+				 #{createUser},
+			</if>
+			<if test="auditor != null">
+				 #{auditor},
+			</if>
+			<if test="auditTime != null">
+				 #{auditTime},
+			</if>
+			<if test="remark != null">
+				 #{remark},
+			</if>
+			<if test="billType != null">
+				 #{billType},
+			</if>
+			<if test="updateTime != null">
+				 #{updateTime},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.MallPrepay">
+		UPDATE fas_mall_prepay
+		<set>
+			<if test="shopNo != null">
+				shop_no = #{shopNo},
+			</if>
+			<if test="bunkGroupNo != null">
+				bunk_group_no = #{bunkGroupNo},
+			</if>
+			<if test="mallNo != null">
+				mall_no = #{mallNo},
+			</if>
+			<if test="billNo != null">
+				bill_no = #{billNo},
+			</if>
+			<if test="payMonth != null">
+				pay_month = #{payMonth},
+			</if>
+			<if test="startDate != null">
+				start_date = #{startDate},
+			</if>
+			<if test="endDate != null">
+				end_date = #{endDate},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="billDebit != null">
+				bill_debit = #{billDebit},
+			</if>
+			<if test="prepayAmount != null">
+				prepay_amount = #{prepayAmount},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser},
+			</if>
+			<if test="auditor != null">
+				auditor = #{auditor},
+			</if>
+			<if test="auditTime != null">
+				audit_time = #{auditTime},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="billType != null">
+				 bill_type = #{billType},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+    
+        
+</mapper>

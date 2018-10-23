@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.SupplierAccountRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.SupplierAccount">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="zone_no" property="zoneNo" jdbcType="VARCHAR" />  
+           <result column="company_no" property="companyNo" jdbcType="VARCHAR" />  
+           <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />  
+           <result column="counter_no" property="counterNo" jdbcType="VARCHAR" />  
+           <result column="supplier_no" property="supplierNo" jdbcType="VARCHAR" />  
+           <result column="bank_name" property="bankName" jdbcType="VARCHAR" />  
+           <result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />  
+           <result column="bank_account_name" property="bankAccountName" jdbcType="VARCHAR" />  
+           <result column="account_set_no" property="accountSetNo" jdbcType="VARCHAR" />  
+           <result column="account_set_name" property="accountSetName" jdbcType="VARCHAR" />  
+           <result column="old_account_set_no" property="oldAccountSetNo" jdbcType="VARCHAR" />  
+           <result column="old_account_set_name" property="oldAccountSetName" jdbcType="VARCHAR" />  
+           <result column="status" property="status" jdbcType="TINYINT" />  
+           <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />  
+           <result column="create_user" property="createUser" jdbcType="VARCHAR" />  
+           <result column="auditor" property="auditor" jdbcType="VARCHAR" />  
+           <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />  
+           <result column="remark" property="remark" jdbcType="VARCHAR" />
+           <result column="tax_no" property="taxNo" jdbcType="VARCHAR" />
+           <result column="address" property="address" jdbcType="VARCHAR" />   
+           <result column="settle_month" property="settleMonth" jdbcType="VARCHAR" />  
+           <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />  
+           <result column="su_company_name" property="suCompanyName" jdbcType="VARCHAR" />  
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,zone_no,company_no,shop_no,counter_no,supplier_no,bank_name,bank_account,bank_account_name,account_set_no,account_set_name,old_account_set_no,old_account_set_name,status,create_time,create_user,auditor,audit_time,remark,settle_month,update_time,tax_no,address,su_company_name
+    </sql>
+
+    <sql id="condition">  1=1
+    	--  and @Shop!shop_no
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.ids">
+    			And id in (${params.ids})
+    		</if>
+    		<if test="null!=params.zoneNo and ''!=params.zoneNo">
+    			And zone_no=#{params.zoneNo}
+    		</if>
+    		<if test="null!=params.companyNo and ''!=params.companyNo">
+    			And company_no=#{params.companyNo}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.counterNo and ''!=params.counterNo">
+    			And counter_no=#{params.counterNo}
+    		</if>
+    		<if test="null!=params.supplierNo and ''!=params.supplierNo">
+    			And supplier_no=#{params.supplierNo}
+    		</if>
+    		<if test="null!=params.bankName and ''!=params.bankName">
+                And bank_name like '%${params.bankName}%'
+    		</if>
+    		<if test="null!=params.bankAccount and ''!=params.bankAccount">
+    			And bank_account=#{params.bankAccount}
+    		</if>
+    		<if test="null!=params.bankAccountName and ''!=params.bankAccountName">
+                And bank_account_name like '%${params.bankAccountName}%'
+    		</if>
+    		<if test="null!=params.accountSetNo and ''!=params.accountSetNo">
+    			And account_set_no=#{params.accountSetNo}
+    		</if>
+    		<if test="null!=params.accountSetName and ''!=params.accountSetName">
+                And account_set_name like '%${params.accountSetName}%'
+    		</if>
+    		<if test="null!=params.oldAccountSetNo and ''!=params.oldAccountSetNo">
+    			And old_account_set_no=#{params.oldAccountSetNo}
+    		</if>
+    		<if test="null!=params.oldAccountSetName and ''!=params.oldAccountSetName">
+                And old_account_set_name like '%${params.oldAccountSetName}%'
+    		</if>
+    		<if test="null!=params.status and ''!=params.status">
+    			And status=#{params.status}
+    		</if>
+    		<if test="null!=params.createTime and ''!=params.createTime">
+    			And create_time=#{params.createTime}
+    		</if>
+    		<if test="null!=params.createUser and ''!=params.createUser">
+    			And create_user=#{params.createUser}
+    		</if>
+    		<if test="null!=params.auditor and ''!=params.auditor">
+    			And auditor=#{params.auditor}
+    		</if>
+    		<if test="null!=params.auditTime and ''!=params.auditTime">
+    			And audit_time=#{params.auditTime}
+    		</if>
+    		<if test="null!=params.remark and ''!=params.remark">
+    			And remark=#{params.remark}
+    		</if>
+    		<if test="null!=params.address and ''!=params.address">
+    			And address=#{params.address}
+    		</if>
+    		<if test="null!=params.taxNo and ''!=params.taxNo">
+    			And tax_no=#{params.taxNo}
+    		</if>
+    		<if test="null!=params.settleMonth and ''!=params.settleMonth">
+    			And settle_month=#{params.settleMonth}
+    		</if>
+    		<if test="null!=params.startDate and ''!=params.startDate">
+    			And start_date=#{params.startDate}
+    		</if>
+    		<if test="null!=params.endDate and ''!=params.endDate">
+    			And end_date=#{params.endDate}
+    		</if>
+    		<if test="null!=params.updateTime and ''!=params.updateTime">
+    			And update_time=#{params.updateTime}
+    		</if>
+    		<if test="null!=params.targetStatus and ''!=params.targetStatus">
+    			And status!=#{params.targetStatus}
+    		</if>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1  
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_supplier_account
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_supplier_account
+		WHERE  <include refid="uniqe_condition" />
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_supplier_account
+		WHERE  <include refid="condition" />
+        
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_supplier_account WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_supplier_account WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_supplier_account WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_supplier_account
+		WHERE id = #{id}
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_supplier_account
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_supplier_account
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.SupplierAccount"  >
+		INSERT INTO fas_supplier_account
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="shopNo != null">
+				shop_no,
+				company_no,
+				zone_no,
+			</if>
+			<if test="counterNo != null">
+				counter_no,
+				supplier_no,
+			</if>
+			<if test="bankName != null">
+				bank_name,
+			</if>
+			<if test="bankAccount != null">
+				bank_account,
+			</if>
+			<if test="bankAccountName != null">
+				bank_account_name,
+			</if>
+			<if test="accountSetNo != null">
+				account_set_no,
+			</if>
+			<if test="accountSetName != null">
+				account_set_name,
+			</if>
+			<if test="oldAccountSetNo != null">
+				old_account_set_no,
+			</if>
+			<if test="oldAccountSetName != null">
+				old_account_set_name,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="auditor != null">
+				auditor,
+			</if>
+			<if test="auditTime != null">
+				audit_time,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="settleMonth != null">
+				settle_month,
+			</if>
+			<if test="taxNo != null">
+				tax_no,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="suCompanyName != null">
+				su_company_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="shopNo != null">
+				 #{shopNo},
+				 (select company_no from mdm_shop where shop_no= #{shopNo}),
+				 (select zone_no from mdm_shop where shop_no= #{shopNo}),
+			</if>
+			<if test="counterNo != null">
+				 #{counterNo},
+				 (select supplier_no from mdm_counter where counter_no= #{counterNo}),
+			</if>
+			<if test="bankName != null">
+				 #{bankName},
+			</if>
+			<if test="bankAccount != null">
+				 #{bankAccount},
+			</if>
+			<if test="bankAccountName != null">
+				 #{bankAccountName},
+			</if>
+			<if test="accountSetNo != null">
+				 #{accountSetNo},
+			</if>
+			<if test="accountSetName != null">
+				 #{accountSetName},
+			</if>
+			<if test="oldAccountSetNo != null">
+				 #{oldAccountSetNo},
+			</if>
+			<if test="oldAccountSetName != null">
+				 #{oldAccountSetName},
+			</if>
+			<if test="status != null">
+				 #{status},
+			</if>
+			<if test="createTime != null">
+				 #{createTime},
+			</if>
+			<if test="createUser != null">
+				 #{createUser},
+			</if>
+			<if test="auditor != null">
+				 #{auditor},
+			</if>
+			<if test="auditTime != null">
+				 #{auditTime},
+			</if>
+			<if test="remark != null">
+				 #{remark},
+			</if>
+			<if test="settleMonth != null">
+				 #{settleMonth},
+			</if>
+			<if test="taxNo != null">
+				#{taxNo},
+			</if>
+			<if test="address != null">
+				#{address},
+			</if>
+			<if test="suCompanyName != null">
+				 #{suCompanyName},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.SupplierAccount">
+		UPDATE fas_supplier_account
+		<set>
+			<if test="zoneNo != null">
+				zone_no = #{zoneNo},
+			</if>
+			<if test="companyNo != null">
+				company_no = #{companyNo},
+			</if>
+			<if test="shopNo != null">
+				shop_no = #{shopNo},
+			</if>
+			<if test="counterNo != null">
+				counter_no = #{counterNo},
+			</if>
+			<if test="supplierNo != null">
+				supplier_no = #{supplierNo},
+			</if>
+			<if test="bankName != null">
+				bank_name = #{bankName},
+			</if>
+			<if test="bankAccount != null">
+				bank_account = #{bankAccount},
+			</if>
+			<if test="bankAccountName != null">
+				bank_account_name = #{bankAccountName},
+			</if>
+			<if test="accountSetNo != null">
+				account_set_no = #{accountSetNo},
+			</if>
+			<if test="accountSetName != null">
+				account_set_name = #{accountSetName},
+			</if>
+			<if test="oldAccountSetNo != null">
+				old_account_set_no = #{oldAccountSetNo},
+			</if>
+			<if test="oldAccountSetName != null">
+				old_account_set_name = #{oldAccountSetName},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser},
+			</if>
+			<if test="auditor != null">
+				auditor = #{auditor},
+			</if>
+			<if test="auditTime != null">
+				audit_time = #{auditTime},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="settleMonth != null">
+				settle_month = #{settleMonth},
+			</if>
+			<if test="taxNo != null">
+				tax_no = #{taxNo},
+			</if>
+			<if test="address != null">
+				address = #{address},
+			</if>
+			<if test="suCompanyName != null">
+				su_company_name =  #{suCompanyName},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+        <update id="updateStatus" parameterType="map">
+    	update fas_supplier_account 
+    	<set>
+			<if test="params.operate != null">
+				${params.operate} = #{params.user},
+			</if>
+			<if test="params.operateTime != null">
+				${params.operateTime}= #{params.time},
+			</if>
+			<if test="params.status != null">
+				status = #{params.status},
+			</if>
+		</set>
+    	where ${params.keyName} in
+    	<foreach item="item" index="index" collection="params.keyValue" open="(" separator="," close=")">  
+		 	#{item}  
+		</foreach> 
+    	<if test="null!=params.originStatus and ''!=params.originStatus">
+   			and status = #{params.originStatus}
+   		</if>
+    </update>
+    
+</mapper>

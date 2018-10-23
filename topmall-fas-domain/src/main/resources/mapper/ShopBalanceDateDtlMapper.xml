@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="topmall.fas.repository.ShopBalanceDateDtlRepository"> 
+    <!-- auto generate -->
+    
+    <resultMap id="baseResultMap" type="topmall.fas.model.ShopBalanceDateDtl">
+           <id column="id" property="id" jdbcType="VARCHAR" />  
+           <result column="zone_no" property="zoneNo" jdbcType="VARCHAR" />  
+           <result column="company_no" property="companyNo" jdbcType="VARCHAR" />  
+           <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />  
+           <result column="counter_no" property="counterNo" jdbcType="VARCHAR" />  
+           <result column="settle_month" property="settleMonth" jdbcType="VARCHAR" />  
+           <result column="settle_start_date" property="settleStartDate" jdbcType="DATE" />  
+           <result column="settle_end_date" property="settleEndDate" jdbcType="DATE" />  
+           <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />  
+           <result column="create_user" property="createUser" jdbcType="VARCHAR" />  
+           <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />  
+           <result column="update_user" property="updateUser" jdbcType="VARCHAR" />  
+           <result column="remark" property="remark" jdbcType="VARCHAR" />
+           <result column="status" property="status" jdbcType="TINYINT" /> 
+           <result column="supplier_no" property="supplierNo" jdbcType="VARCHAR" />  
+    </resultMap>      
+    
+    
+    <sql id="column_list"> 
+        id,zone_no,company_no,shop_no,counter_no,settle_month,settle_start_date,settle_end_date,create_time,create_user,update_time,update_user,remark,status,supplier_no
+    </sql>
+
+    <sql id="condition">  1=1
+    	<if test="null!=params">
+            <if test="null!=params.queryCondition and ''!=params.queryCondition">
+    			And ${params.queryCondition}
+    		</if>
+    		<if test="null!=params.id and ''!=params.id">
+    			And id=#{params.id}
+    		</if>
+    		<if test="null!=params.zoneNo and ''!=params.zoneNo">
+    			And zone_no=#{params.zoneNo}
+    		</if>
+    		<if test="null!=params.companyNo and ''!=params.companyNo">
+    			And company_no=#{params.companyNo}
+    		</if>
+    		<if test="null!=params.shopNo and ''!=params.shopNo">
+    			And shop_no=#{params.shopNo}
+    		</if>
+    		<if test="null!=params.counterNo and ''!=params.counterNo">
+    			And counter_no=#{params.counterNo}
+    		</if>
+    		<if test="null!=params.settleMonth and ''!=params.settleMonth">
+    			And settle_month=#{params.settleMonth}
+    		</if>
+    		<if test="null!=params.settleStartDate and ''!=params.settleStartDate">
+    			And settle_start_date=#{params.settleStartDate}
+    		</if>
+    		<if test="null!=params.settleEndDate and ''!=params.settleEndDate">
+    			And settle_end_date=#{params.settleEndDate}
+    		</if>
+    		<if test="null!=params.createTime and ''!=params.createTime">
+    			And create_time=#{params.createTime}
+    		</if>
+    		<if test="null!=params.createUser and ''!=params.createUser">
+    			And create_user=#{params.createUser}
+    		</if>
+    		<if test="null!=params.updateTime and ''!=params.updateTime">
+    			And update_time=#{params.updateTime}
+    		</if>
+    		<if test="null!=params.updateUser and ''!=params.updateUser">
+    			And update_user=#{params.updateUser}
+    		</if>
+    		<if test="null!=params.remark and ''!=params.remark">
+    			And remark=#{params.remark}
+    		</if>
+    		<if test="null!=params.status and ''!=params.status">
+    			And status=#{params.status}
+    		</if>
+    		<if test="null!=params.settleEndDateEnd and ''!=params.settleEndDateEnd">
+    			And settle_end_date &lt; STR_TO_DATE(#{params.settleEndDateEnd,jdbcType=TIMESTAMP},'%Y-%m-%d')
+    		</if>
+    		<if test="null!=params.supplierNo and ''!=params.supplierNo">
+    			And supplier_no=#{params.supplierNo}
+    		</if>
+        </if>
+    </sql>
+    
+    <sql id="uniqe_condition">   
+        1=1 
+        <choose>
+        	<when test="null!=params.id and ''!=params.id">
+        		AND id = #{params.id}
+        	</when>
+        	<otherwise>
+        		AND shop_no = #{params.shopNo}
+        		AND counter_no = #{params.counterNo}
+        		AND settle_month = #{params.settleMonth}
+        		AND settle_start_date = #{params.settleStartDate}
+        		AND settle_end_date = #{params.settleEndDate}
+        	</otherwise>
+        </choose> 
+    </sql>
+    
+    
+    <select id="findByPrimaryKey" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date_dtl
+		WHERE id = #{id};
+	</select>
+    
+    <select id="findByUnique" resultMap="baseResultMap" > 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date_dtl
+		WHERE  <include refid="uniqe_condition" />
+	</select>
+    
+    <select id="findByParam" resultMap="baseResultMap" parameterType="map"> 
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date_dtl
+		WHERE  <include refid="condition" />
+        
+	</select>
+    
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM fas_shop_balance_date_dtl WHERE 
+		<include refid="condition" />
+	</select>
+    
+	<select id="selectByPage" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date_dtl WHERE 
+		<include refid="condition" />
+		<if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby} 
+		</if>
+		LIMIT #{page.startRowNum} ,#{page.pageSize}
+	</select>
+	
+	<select id="getLastCounterBalanceDate" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date_dtl WHERE 
+		<include refid="condition" />
+			order by settle_end_date desc
+		limit 1
+	</select>
+    
+	<select id="selectByParams" resultMap="baseResultMap" parameterType="map">
+		SELECT
+		<include refid="column_list" />
+		FROM fas_shop_balance_date_dtl WHERE 
+		<include refid="condition" /> 
+        <if test="orderby != null and ''!=orderby">
+			ORDER BY ${orderby}
+		</if>
+	</select> 
+    
+    <delete id="deleteByPrimaryKey">
+		DELETE FROM fas_shop_balance_date_dtl
+		WHERE id = #{id}
+		AND status = 2
+	</delete>
+    
+    <delete id="deleteByUnique">
+		DELETE FROM fas_shop_balance_date_dtl
+		WHERE <include refid="uniqe_condition" />
+	</delete> 
+    
+	<delete id="deleteByParams" parameterType="map">
+		DELETE
+		FROM fas_shop_balance_date_dtl
+		WHERE 
+        <include refid="condition" />
+         <if test="params.ids!=null and ''!=params.ids ">
+			AND id in ( ${params.ids} )
+		</if>
+	</delete>
+    
+    <insert id="insert" parameterType="topmall.fas.model.ShopBalanceDateDtl"  >
+		INSERT INTO fas_shop_balance_date_dtl
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="zoneNo != null">
+				zone_no,
+			</if>
+			<if test="companyNo != null">
+				company_no,
+			</if>
+			<if test="shopNo != null">
+				shop_no,
+			</if>
+			<if test="counterNo != null">
+				counter_no,
+				supplier_no,
+			</if>
+			<if test="settleMonth != null">
+				settle_month,
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date,
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=","> 
+			<if test="id != null">
+				 #{id},
+			</if>
+			<if test="zoneNo != null">
+				 #{zoneNo},
+			</if>
+			<if test="companyNo != null">
+				 #{companyNo},
+			</if>
+			<if test="shopNo != null">
+				 #{shopNo},
+			</if>
+			<if test="counterNo != null">
+				 #{counterNo},
+				 (select supplier_no from  mdm_counter where counter_no= #{counterNo} ),
+			</if>
+			<if test="settleMonth != null">
+				 #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				 #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				 #{settleEndDate},
+			</if>
+			<if test="createTime != null">
+				 #{createTime},
+			</if>
+			<if test="createUser != null">
+				 #{createUser},
+			</if>
+			<if test="updateUser != null">
+				 #{updateUser},
+			</if>
+			<if test="remark != null">
+				 #{remark},
+			</if>
+			<if test="status != null">
+				 #{status},
+			</if>
+		</trim>
+	</insert>
+    
+    <update id="update" parameterType="topmall.fas.model.ShopBalanceDateDtl">
+		UPDATE fas_shop_balance_date_dtl
+		<set>
+			<if test="zoneNo != null">
+				zone_no = #{zoneNo},
+			</if>
+			<if test="companyNo != null">
+				company_no = #{companyNo},
+			</if>
+			<if test="shopNo != null">
+				shop_no = #{shopNo},
+			</if>
+			<if test="counterNo != null">
+				counter_no = #{counterNo},
+				supplier_no= (select supplier_no from  mdm_counter where counter_no= #{counterNo}),
+			</if>
+			<if test="settleMonth != null">
+				settle_month = #{settleMonth},
+			</if>
+			<if test="settleStartDate != null">
+				settle_start_date = #{settleStartDate},
+			</if>
+			<if test="settleEndDate != null">
+				settle_end_date = #{settleEndDate},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    <!-- auto generate end-->
+    
+    <!-- 根据店铺编码和专柜编码获取到有效合同的合同编码 -->
+    <select id="selectContractBillNo" resultType="topmall.fas.dto.ContractMainDto" parameterType="map">
+    	SELECT
+    		bill_no,
+			shop_no,
+			counter_no,
+			physics_contract_no,
+			business_type,
+			base_cost_type,
+			un_guara_un_profit 
+    	FROM con_cu_contract 
+    	WHERE shop_no = #{params.shopNo} 
+    	  AND counter_no = #{params.counterNo}
+    	<choose>
+    		<when test="1 == params.queryType">
+    			AND con_status = 1
+    	  		AND start_date &lt;= #{params.settleStartDate}
+    		</when>
+    		<otherwise>
+    			AND con_status IN (2, 3)
+    			AND start_date &lt;=  #{params.settleStartDate}
+    			AND end_date &gt;= #{params.settleEndDate}
+    			AND actual_end_date &gt;= #{params.settleEndDate}
+    			ORDER BY actual_end_date DESC
+    			limit 1
+    		</otherwise>
+    	</choose>	   
+    </select>
+    
+    <select id="getUnGeneralCostMinMonth" resultType="java.lang.String" parameterType="map">
+    	select min(settle_month) from fas_shop_balance_date_dtl where 1=1
+    	<if test="null!=params.status and ''!=params.status">
+    		And status=#{params.status}
+    	</if>
+    	<if test="null!=params.shopNo and ''!=params.shopNo">
+    		And shop_no=#{params.shopNo}
+    	</if>
+    </select>   
+    <select id="getUnGeneralCostMaxDate" resultType="java.util.Date" parameterType="map">
+    	select Max(settle_end_date) from fas_shop_balance_date_dtl where 1=1
+    	<if test="null!=params.status and ''!=params.status">
+    		And status=#{params.status}
+    	</if>
+    	<if test="null!=params.shopNo and ''!=params.shopNo">
+    		And shop_no=#{params.shopNo}
+    	</if>
+    	<if test="null!=params.settleMonth and ''!=params.settleMonth">
+    		And settle_month=#{params.settleMonth}
+    	</if>
+    </select>  
+</mapper>
