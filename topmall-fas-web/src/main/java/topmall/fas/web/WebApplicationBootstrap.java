@@ -12,7 +12,6 @@ import topmall.framework.web.inspect.SecurityInterceptor;
 		"topmall.fas.web.controller" })
 @ServletComponentScan(basePackageClasses = { SecurityInterceptor.class })
 public class WebApplicationBootstrap extends ApplicationBootstrap {
-
 	public static void main(String[] args) {
 
 		new WebApplicationBootstrap().run(args);
