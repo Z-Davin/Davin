@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -520,8 +519,9 @@ public class BillCounterBalanceManager extends BaseManager<BillCounterBalance, S
 		String billNo = counterBalance.getBillNo();
 		Query query2 = Q.where("balanceBillNo", billNo);
 		List<CounterCost> costList = counterCostService.selectByParams(query2);
+		//division_no,counter_no,shop_no,rax_rate 分组
+		query2.and("templateType", templateType);
 		List<CounterSaleCost> saleCostList = counterSaleCostService.queryListGroupDivisionNo(query2);
-
 		List<CounterCost> counterCostList = new ArrayList<>();
 		List<CounterCost> depositList = new ArrayList<>();
 		for (CounterCost counterCost : costList) {
