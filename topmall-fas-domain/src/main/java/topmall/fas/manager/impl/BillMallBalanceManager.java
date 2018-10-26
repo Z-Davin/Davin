@@ -355,22 +355,29 @@ public class BillMallBalanceManager extends BaseManager<BillMallBalance, String>
 		//2.不同意抵扣：应收物业方=物业方收银-费用为账扣费用(销售费用和物业费用); 应付物业方=0-预付(物业预付款)+费用为付现(销售费用和物业费用)
 		BigDecimal receiveMallTotal = new BigDecimal(0);
 		BigDecimal payMallTotal = new BigDecimal(0);
+		
+		BigDecimal mallReceiveMallTotal = new BigDecimal(0);
+		BigDecimal mallPayMallTotal = new BigDecimal(0);
 		if(0==mallBalanceDate.getBalanceType()){
 			//同意抵扣
 			for(MallPay mallPay: payList){
 				if(mallPay.getPaidWay()==PaidWayEnums.Mall_CASHIER.getValue()){
 					receiveMallTotal = receiveMallTotal.add(mallPay.getPayAmount());
+					mallReceiveMallTotal=mallReceiveMallTotal.add(mallPay.getMallPayAmount());
 				}
 			}
 			for(MallCost mallCost:costList){
 				if(mallCost.getAccountDebit()==AccountDebitEnums.ACCOUNT.getValue()){
 					receiveMallTotal=receiveMallTotal.subtract(mallCost.getAbleSum());
+					mallReceiveMallTotal=mallReceiveMallTotal.subtract(mallCost.getMallAmount());
 				}else{
 					receiveMallTotal=receiveMallTotal.add(mallCost.getAbleSum());
+					mallReceiveMallTotal= receiveMallTotal.add(mallCost.getMallAmount());
 				}
 			}
 			for(MallPrepayDtl dtl :preList){
 				receiveMallTotal=receiveMallTotal.subtract(dtl.getPrepayAmount());
+				mallReceiveMallTotal=receiveMallTotal.subtract(dtl.getPrepayAmount());
 			}
 		}
 		if(1==mallBalanceDate.getBalanceType()){
@@ -378,17 +385,21 @@ public class BillMallBalanceManager extends BaseManager<BillMallBalance, String>
 			for(MallPay mallPay: payList){
 				if(mallPay.getPaidWay()==PaidWayEnums.Mall_CASHIER.getValue()){
 					receiveMallTotal = receiveMallTotal.add(mallPay.getPayAmount());
+					mallReceiveMallTotal = mallReceiveMallTotal.add(mallPay.getMallPayAmount());
 				}
 			}
 			for(MallCost mallCost:costList){
 				if(mallCost.getAccountDebit()==AccountDebitEnums.ACCOUNT.getValue()){
 					receiveMallTotal=receiveMallTotal.subtract(mallCost.getAbleSum());
+					mallReceiveMallTotal = mallReceiveMallTotal.subtract(mallCost.getMallAmount());
 				}else{
 					payMallTotal=payMallTotal.add(mallCost.getAbleSum());
+					mallPayMallTotal=payMallTotal.add(mallCost.getMallAmount());
 				}
 			}
 			for(MallPrepayDtl dtl :preList){
 				payMallTotal=payMallTotal.subtract(dtl.getPrepayAmount());
+				mallPayMallTotal= mallPayMallTotal.subtract(dtl.getPrepayAmount());
 			}
 		}
 		MallBalanceSummary mallBalanceSummary = new MallBalanceSummary();
@@ -401,11 +412,15 @@ public class BillMallBalanceManager extends BaseManager<BillMallBalance, String>
 		receiveMall.setDetail("应收物业方款项");
 		receiveMall.setProjectName("付款");
 		receiveMall.setCurAmount(receiveMallTotal);
+		receiveMall.setMallAmount(mallReceiveMallTotal);
+		receiveMall.setDiffAmount(receiveMallTotal.subtract(mallReceiveMallTotal));
 		list.add(receiveMall);
 		
 		MallBalanceSummary payMall = new MallBalanceSummary();
 		payMall.setDetail("应付物业方款项");
 		payMall.setCurAmount(payMallTotal);
+		receiveMall.setMallAmount(mallPayMallTotal);
+		receiveMall.setDiffAmount(payMallTotal.subtract(mallPayMallTotal));
 		payMall.setProjectName("付款");
 		list.add(payMall);
 		

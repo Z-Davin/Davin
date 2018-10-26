@@ -29,7 +29,7 @@ import cn.mercury.domain.BaseEntity;
 import cn.mercury.manager.IManager;
 
 @SuppressWarnings("rawtypes")
-@Controller
+@Controller 
 public abstract class BaseFasController<B extends BaseEntity,K> extends BaseController<B, K> {
 
 	protected abstract IManager<B, K> getManager();
