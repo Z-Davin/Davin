@@ -368,7 +368,7 @@ public class GuaraMallCalculateHandler extends BaseMallCalculateHandler<Contract
 			} else {
 				tempCost = mallCost.getAbleAmount();
 			}
-			guaraCost = guaraCost.divide(tempCost, 2, BigDecimal.ROUND_HALF_UP);
+			guaraCost =  guaraCost.subtract(tempCost);
 		}
 		return guaraCost;
 	}

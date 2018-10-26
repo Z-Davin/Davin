@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.mercury.annotation.JsonVariable;
-import cn.mercury.basic.query.PageResult;
-import cn.mercury.basic.query.Pagenation;
 import cn.mercury.basic.query.Query;
 import cn.mercury.manager.IManager;
 import cn.mercury.utils.JsonUtils;
@@ -89,20 +86,6 @@ public class CounterCostController extends BaseFasController<CounterCost, String
 	public CommonResult recalculationCost(ShopBalanceDateDtl shopBalanceDateDtl) {
 		return manager.recalculationCost(shopBalanceDateDtl);
 	}
-
-//	@ResponseBody
-//	@RequestMapping("/list")
-//	@Override
-//	public PageResult<CounterCost> selectByPage(Query query, Pagenation page) {
-//		long total = page.getTotal();
-//		if (total < 0) {
-//			total = getManager().selectCount(query);
-//		}
-//		query.orderby("update_time,id", true);
-//		List<CounterCost> rows = getManager().selectByPage(query, page);
-//		List<CounterCost> saleCost = manager.queryConditionSum(query);
-//		return new PageResult<>(rows, total, saleCost);
-//	}
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value = "/create")
