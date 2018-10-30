@@ -201,7 +201,7 @@
 		FROM fas_counter_sale_cost WHERE 
 		<include refid="condition" /> 
 		group by division_no,counter_no,shop_no
-		<if test="templateType!= null">
+		<if test="params.templateType!= null">
 			,rate_value
 		</if>
 	</select>
