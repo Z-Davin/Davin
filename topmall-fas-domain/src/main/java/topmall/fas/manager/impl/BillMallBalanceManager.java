@@ -372,12 +372,12 @@ public class BillMallBalanceManager extends BaseManager<BillMallBalance, String>
 					mallReceiveMallTotal=mallReceiveMallTotal.subtract(mallCost.getMallAmount());
 				}else{
 					receiveMallTotal=receiveMallTotal.add(mallCost.getAbleSum());
-					mallReceiveMallTotal= receiveMallTotal.add(mallCost.getMallAmount());
+					mallReceiveMallTotal= mallReceiveMallTotal.add(mallCost.getMallAmount());
 				}
 			}
 			for(MallPrepayDtl dtl :preList){
 				receiveMallTotal=receiveMallTotal.subtract(dtl.getPrepayAmount());
-				mallReceiveMallTotal=receiveMallTotal.subtract(dtl.getPrepayAmount());
+				mallReceiveMallTotal=mallReceiveMallTotal.subtract(dtl.getPrepayAmount());
 			}
 		}
 		if(1==mallBalanceDate.getBalanceType()){
@@ -394,7 +394,7 @@ public class BillMallBalanceManager extends BaseManager<BillMallBalance, String>
 					mallReceiveMallTotal = mallReceiveMallTotal.subtract(mallCost.getMallAmount());
 				}else{
 					payMallTotal=payMallTotal.add(mallCost.getAbleSum());
-					mallPayMallTotal=payMallTotal.add(mallCost.getMallAmount());
+					mallPayMallTotal=mallPayMallTotal.add(mallCost.getMallAmount());
 				}
 			}
 			for(MallPrepayDtl dtl :preList){

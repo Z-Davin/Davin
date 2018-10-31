@@ -520,7 +520,9 @@ public class BillCounterBalanceManager extends BaseManager<BillCounterBalance, S
 		Query query2 = Q.where("balanceBillNo", billNo);
 		List<CounterCost> costList = counterCostService.selectByParams(query2);
 		//division_no,counter_no,shop_no,rax_rate 分组
-		query2.and("templateType", templateType);
+		if(0!=templateType){
+			query2.and("templateType", templateType);
+		}
 		List<CounterSaleCost> saleCostList = counterSaleCostService.queryListGroupDivisionNo(query2);
 		List<CounterCost> counterCostList = new ArrayList<>();
 		List<CounterCost> depositList = new ArrayList<>();
