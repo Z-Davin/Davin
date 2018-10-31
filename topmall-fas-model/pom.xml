@@ -16,6 +16,9 @@
 			<groupId>cn.wonhigh.topmall</groupId>
 			<artifactId>topmall-framework-core</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>cn.wonhigh.topmall</groupId>
+			<artifactId>topmall-framework-domain</artifactId>
+		</dependency>
 	</dependencies>
 </project>
