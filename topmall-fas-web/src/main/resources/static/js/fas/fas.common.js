@@ -142,7 +142,7 @@ function showExplain(msg){
 			title:'名词解释',
 			msg:msg,
 			timeout:5000,
-			width:400,
+			width:600,
 			showType:'slide'
 		});
 }
