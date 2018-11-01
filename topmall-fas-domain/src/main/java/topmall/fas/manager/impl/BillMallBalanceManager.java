@@ -419,8 +419,8 @@ public class BillMallBalanceManager extends BaseManager<BillMallBalance, String>
 		MallBalanceSummary payMall = new MallBalanceSummary();
 		payMall.setDetail("应付物业方款项");
 		payMall.setCurAmount(payMallTotal);
-		receiveMall.setMallAmount(mallPayMallTotal);
-		receiveMall.setDiffAmount(payMallTotal.subtract(mallPayMallTotal));
+		payMall.setMallAmount(mallPayMallTotal);
+		payMall.setDiffAmount(payMallTotal.subtract(mallPayMallTotal));
 		payMall.setProjectName("付款");
 		list.add(payMall);
 		
