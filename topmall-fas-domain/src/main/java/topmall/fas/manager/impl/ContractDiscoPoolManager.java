@@ -11,7 +11,6 @@ import cn.mercury.basic.query.Query;
 import topmall.fas.domain.handler.ContractDiscoHandler;
 import topmall.fas.domain.handler.MallConDiscoHandler;
 import topmall.fas.manager.IContractDiscoPoolManager;
-import topmall.fas.manager.ICounterCostManager;
 import topmall.fas.model.ContractDiscoPool;
 import topmall.fas.model.CounterCost;
 import topmall.fas.model.CounterSaleCost;
@@ -21,6 +20,7 @@ import topmall.fas.model.MallCost;
 import topmall.fas.model.MallSaleCost;
 import topmall.fas.model.ShopBalanceDateDtl;
 import topmall.fas.service.IContractDiscoPoolService;
+import topmall.fas.service.ICounterCostService;
 import topmall.fas.service.ICounterSaleCostDtlService;
 import topmall.fas.service.ICounterSaleCostService;
 import topmall.fas.service.IMallCostService;
@@ -46,7 +46,7 @@ public class ContractDiscoPoolManager extends BaseManager<ContractDiscoPool, Str
 	@Autowired
 	private IMallCostService mallCostService;
 	@Autowired
-	private ICounterCostManager counterCostManager;
+	private ICounterCostService counterCostService;
 	@Reference
 	private ICounterApiService counterApi;
 	@Reference
@@ -88,7 +88,7 @@ public class ContractDiscoPoolManager extends BaseManager<ContractDiscoPool, Str
 		}
 		if(CommonUtil.hasValue(counterCostList)){
 			for(CounterCost counterCost:counterCostList){
-				counterCostManager.insert(counterCost);
+				counterCostService.insert(counterCost);
 			}
 		}
 	}

@@ -10,10 +10,8 @@ import com.google.common.base.Function;
 import cn.mercury.basic.UUID;
 import cn.mercury.basic.query.Q;
 import cn.mercury.basic.query.Query;
-import topmall.fas.enums.AccountDebitEnums;
-import topmall.fas.enums.BillDebitEnums;
+import cn.mercury.manager.ManagerException;
 import topmall.fas.enums.StatusEnums;
-import topmall.fas.enums.TaxFlagEnums;
 import topmall.fas.manager.ISystemConfigManager;
 import topmall.fas.manager.impl.CommonStaticManager;
 import topmall.fas.model.ContractDiscoPool;
@@ -27,8 +25,10 @@ import topmall.fas.util.GroupByUtils;
 import topmall.fas.util.PublicConstans;
 import topmall.fas.vo.CounterDaySale;
 import topmall.mdm.model.Counter;
+import topmall.mdm.model.Depayment;
 import topmall.mdm.model.Supplier;
 import topmall.mdm.open.api.ICounterApiService;
+import topmall.mdm.open.api.IDepaymentApiService;
 import topmall.mdm.open.api.ISupplierApiService;
 
 public class ContractDiscoHandler {
@@ -38,8 +38,6 @@ public class ContractDiscoHandler {
 	private List<CounterDaySale> list ;
 	//记录00码
 	private List<ContractDiscoPool> fullPriceList = new ArrayList<>();
-	//税率
-	private BigDecimal taxRate;
 	//批次号
 	private String seqId;
 	private ICounterApiService counterApi;
@@ -56,6 +54,8 @@ public class ContractDiscoHandler {
 	//纸袋数量
 	private Integer bagQty =0;
 	
+	private IDepaymentApiService depaymentApiService;
+	
 	
 	public ContractDiscoHandler(ShopBalanceDateDtl shopBalanceDateDtl,IContractDiscoPoolService service,String seqId,boolean isHisCost,ShopBalanceDateDtl newDateDtl){
 		this.shopBalanceDateDtl=shopBalanceDateDtl;
@@ -63,6 +63,7 @@ public class ContractDiscoHandler {
 		this.counterApi=CommonStaticManager.getCounterApiService();
 		this.supplierApi=CommonStaticManager.getSupplierApiService();
 		this.systemConfigManager = CommonStaticManager.getSystemConfigManager();
+		this.depaymentApiService=CommonStaticManager.getDepaymentApiService();
 		this.seqId=seqId;
 		this.isHisCost=isHisCost;
 		this.newDateDtl=newDateDtl;
@@ -93,13 +94,11 @@ public class ContractDiscoHandler {
 		for(ContractDiscoPool discoPool: contractGroupDiscoPoolList){
 			if(discoPool.getDivisionNo().endsWith("00")){
 				fullPriceList.add(discoPool);
-				taxRate=discoPool.getRaxRate();
 			}
 		}
 		//如果没有正价码,则随机取一个
 		if(!CommonUtil.hasValue(fullPriceList)){
 			fullPriceList.add(contractGroupDiscoPoolList.get(0));
-			taxRate=contractGroupDiscoPoolList.get(0).getRaxRate();
 		}
 		//如果在上面没有取到税率,票扣标识,账扣标识 则取正价码的信息
 		for(CounterDaySale daySale : list){
@@ -299,7 +298,7 @@ public class ContractDiscoHandler {
 		return saleCostDtlList;
 	}
 	
-	/**计算固定费用(券分摊,vip分摊,物料费用等)
+	/**计算固定费用(券分摊,vip分摊,物料费用,积分抵现等)
 	 * @return
 	 */
 	public List<CounterCost>  calculateCounterCost(){
@@ -369,6 +368,7 @@ public class ContractDiscoHandler {
 	 * @param amount
 	 * @param itemNo
 	 * @return
+	 * @throws Exception 
 	 */
 	private CounterCost createCounterCost(BigDecimal amount,String itemNo){
 		if(null==amount||amount.compareTo(new BigDecimal(0))==0){
@@ -376,19 +376,34 @@ public class ContractDiscoHandler {
 		}
 		CounterCost counterCost = new CounterCost();
 		shopBalanceDateDtl.copyProperties(counterCost);
-		counterCost.setAbleSum(amount);
 		counterCost.setCostNo(itemNo);
 		counterCost.setSource((short) 1);//设置生成方式为系统生成
 		counterCost.setStatus(StatusEnums.EFFECTIVE.getStatus());
 		counterCost.setCreateUser("系统生成");
 		counterCost.setCreateTime(new Date());
-		counterCost.setTaxRate(taxRate);
 		counterCost.setRefType((short) 0);
-		counterCost.setAccountDebit(AccountDebitEnums.ACCOUNT.getValue());
-		counterCost.setBillDebit(BillDebitEnums.YES.getValue());
 		counterCost.setSeqId(seqId);
-		counterCost.setTaxFlag(TaxFlagEnums.INCLUDE.getFlag());
-		counterCost.setAbleAmount(CommonUtil.getTaxFreeCost(amount, taxRate));
+		Query query =Q.where("zoneNo", shopBalanceDateDtl.getZoneNo()).and("deductionNo", itemNo);
+		Depayment depayment = depaymentApiService.findByParam(query);
+		if(null==depayment){
+			throw new ManagerException("大区:"+shopBalanceDateDtl.getZoneNo()+"扣项编码:"+itemNo+"没有配置");
+		}
+		counterCost.setTaxRate(depayment.getTaxRate());
+		counterCost.setAccountDebit(depayment.getAccountDebit());
+		counterCost.setBillDebit((int)depayment.getBillDebit());
+		counterCost.setTaxFlag(depayment.getTaxFlag());
+		//含税
+		if(counterCost.getTaxFlag()==1){
+			BigDecimal ableAmount = CommonUtil.getTaxFreeCost(amount, depayment.getTaxRate());
+			counterCost.setAbleSum(amount);
+			counterCost.setAbleAmount(ableAmount);
+			counterCost.setTaxAmount(amount.subtract(ableAmount));
+		}else if(counterCost.getTaxFlag()==0){
+			counterCost.setAbleAmount(amount);
+			BigDecimal taxCost = CommonUtil.getTaxCost(amount, depayment.getTaxRate());
+			counterCost.setTaxAmount(taxCost);
+			counterCost.setAbleSum(amount.add(taxCost));
+		}
 		return counterCost;
 	}
 	
