@@ -173,6 +173,9 @@
     		<if test="null!=params.type and ''!=params.type">
     			And type=#{params.type}
     		</if>
+    		<if test="null!=params.zoneNo and ''!=params.zoneNo">
+    			And company_no in (select zone_no from mdm_company where zone_no = #{params.zoneNo})
+    		</if>
         </if>
     </sql>
     
