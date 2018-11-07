@@ -269,7 +269,8 @@ public class BillMallBalanceManager extends BaseManager<BillMallBalance, String>
 			mallBalanceDateDtl.setStatus(StatusEnums.GENERATE_BALANCE.getStatus());
 			mallBalanceDateDtlService.update(mallBalanceDateDtl);
 		}
-		return CommonResult.sucess("successful");
+		mallBalance = service.findByUnique(Q.where("billNo", billNo));
+		return CommonResult.sucess(mallBalance);
 	}
 
 	@Override

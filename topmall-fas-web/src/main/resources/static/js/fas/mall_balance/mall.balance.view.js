@@ -289,8 +289,17 @@ define(function(require, exports, module) {
 						"field": "detail",
 						"type": "textbox",
 						"title": "明细",
-						"width": 80,
-						"hidden": false
+						"width": 140,
+						"hidden": false,
+						"formatter":function (value, row, index) {
+							if(value=="应收物业方款项"){
+								return "<a href='javascript:showExplain(\"同意抵扣：应收物业方=物业方收银-账扣费用(销售费用和物业费用)-预付(物业预付款)+现金(销售费用和物业费用)</br>不同意抵扣：应收物业方=物业方收银-费用为账扣费用(销售费用和物业费用)\");' class='l-btn-text icon-xq l-btn-icon-left'></a>"+value;
+							}else if(value=="应付物业方款项"){
+								return "<a href='javascript:showExplain(\"同意抵扣：应收物业方=0</br>不同意抵扣：应付物业方=0-预付(物业预付款)+费用为付现(销售费用和物业费用)\");' class='l-btn-text icon-xq l-btn-icon-left'></a>"+value;
+							}else{
+								return value;
+							}
+						}
 					},{
 						"field": "curAmount",
 						"type": "textbox",
