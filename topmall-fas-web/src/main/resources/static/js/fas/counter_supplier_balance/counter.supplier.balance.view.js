@@ -104,7 +104,7 @@ define(function(require, exports, module) {
             		showInfoMes(d,'导出');
 					return;
             	}else{
-            		d.templateType = templateType;
+            		d.templateType = 2;
     				this.printer = new printer(d);
     				let html=this.printer.prePdf(d);
     				var zip = new JSZip();
