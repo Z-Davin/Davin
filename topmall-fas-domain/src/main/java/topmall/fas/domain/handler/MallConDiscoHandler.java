@@ -48,6 +48,8 @@ public class MallConDiscoHandler {
 	//是否当月费用重算
 	private boolean isRecalculation;
 	
+	private int status[] ={2,3,4,5,6,7};
+	
 	private List<CounterDaySale> minimumList;
 	
 	private MallMinimumData mallMinimum = new MallMinimumData(); 	
@@ -112,7 +114,7 @@ public class MallConDiscoHandler {
 			Q.LessThen("settleEndDate", mallBalanceDateDtl.getSettleEndDate())).asQuery();
 			carryQuery.and("settleStatus", StatusEnums.MAKEBILL.getStatus().toString()).and("mallNo", mallBalanceDateDtl.getMallNo()).and("bunkGroupNo", mallBalanceDateDtl.getBunkGroupNo());
 			carrySaleList = mallSaleCostService.selectByParams(carryQuery);
-			carryQuery.and(Q.In("status", new int[]{2,3,4,5,6,7}));
+			carryQuery.and(Q.In("status", status));
 			carryCostList = mallCostService.selectByParams(carryQuery);
 		}
 		if(mallBalanceDateDtl.getPointsCalculateFlag()==0){
