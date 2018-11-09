@@ -122,7 +122,6 @@ public class OtherCalculateHandler extends BaseCalculateHandler<ContractOtherPoo
 						shopBalanceDateDtl.getSettleStartDate(), shopBalanceDateDtl.getSettleEndDate());
 				saleDataQuery.setCounterNo(shopBalanceDateDtl.getCounterNo());
 
-				BigDecimal freeCost = shopDaySaleApiService.queryFreeCost(saleDataQuery, freeCostList);
 
 				if (1 == chargingBase.shortValue()) {
 					PosSaleSumCostDto posSaleSumCostDto = shopDaySaleApiService.selectSaleDataSum(saleDataQuery,
@@ -142,7 +141,9 @@ public class OtherCalculateHandler extends BaseCalculateHandler<ContractOtherPoo
 					saleDataQuery.setQueryType(2);
 					chargingBaseCost = shopDaySaleApiService.queryDicountSum(saleDataQuery, freeCostList);//团购折扣
 				}
-
+				
+				BigDecimal freeCost = shopDaySaleApiService.queryFreeCost(saleDataQuery, freeCostList);
+				
 				//根据阶梯扣算出扣率值
 				otherCost = CommonUtil.getQuatoStepCost(quotaStepList, chargingBaseCost,
 						(0 == uniformDiscountFlag.shortValue())).add(freeCost);
