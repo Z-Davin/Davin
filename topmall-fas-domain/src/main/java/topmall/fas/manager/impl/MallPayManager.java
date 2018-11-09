@@ -44,6 +44,7 @@ public class MallPayManager extends BaseManager<MallPay,String> implements IMall
 			String orderNo = mallPayList.get(0).getShopNo() 
 					+ CodingRuleHelper.getBasicCoding(PublicConstans.COUNTER_COST_NO, mallPayList.get(0).getShopNo(), null);
 			for (MallPay mallPay : mallPayList) {
+				//将数据插入到支付明细表中
 				mallPay.setId(generateId());
 				mallPay.setUpdateTime(new Date());
 				mallPay.setStatus(StatusEnums.EFFECTIVE.getStatus());

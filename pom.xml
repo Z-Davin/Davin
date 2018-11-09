@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>cn.wonhigh.topmall</groupId>
 		<artifactId>topmall</artifactId>
-		<version>0.7.0-SNAPSHOT</version> 
+		<version>0.7.1-SNAPSHOT</version> 
 	</parent>
 	<artifactId>topmall-fas</artifactId>
 	<version>2.1.0-SNAPSHOT</version>
@@ -13,13 +13,13 @@
 	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<framework-version>0.7.0-SNAPSHOT</framework-version>
+		<framework-version>0.7.1-SNAPSHOT</framework-version>
 		<pos-version>2.7.0-SNAPSHOT</pos-version>
 		<mdm-version>0.6.0-SNAPSHOT</mdm-version>
 		<card-version>0.5.1-SNAPSHOT</card-version>
 		<mps-version>1.5.0-SNAPSHOT</mps-version>
 		<contract-version>1.2.0-SNAPSHOT</contract-version>
-		<common-api-version>0.5.1-SNAPSHOT</common-api-version>
+		<common-api-version>0.7.1-SNAPSHOT</common-api-version>
 	</properties>
 
 	<modules>

@@ -321,7 +321,7 @@ public class CounterCostManager extends BaseManager<CounterCost, String> impleme
 
 		OtherCalculateHandler otherCalculateHandler = new OtherCalculateHandler(shopBalanceDateDtl,
 				contractOtherPoolManager);
-		List<CounterCost> otherCostList = otherCalculateHandler.calculateCost(isHisCost);
+ 		List<CounterCost> otherCostList = otherCalculateHandler.calculateCost(isHisCost);
 
 		// 获取合同主表表头信息  未达保底，不计算抽成(0-否，1-是)
 		short unGuaraUnProfit = contractMainDto.getUnGuaraUnProfit();
