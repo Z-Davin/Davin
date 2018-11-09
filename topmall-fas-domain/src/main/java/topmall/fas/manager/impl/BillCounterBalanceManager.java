@@ -399,9 +399,6 @@ public class BillCounterBalanceManager extends BaseManager<BillCounterBalance, S
 				counterBalance.setSettleEndDate(balanceDateDtl.getSettleEndDate());
 				// 1.先生成结算单
 				this.save(counterBalance, 1);
-				// 2.然后再修改结算期状态
-//				balanceDateDtl.setStatus(StatusEnums.GENERATE_BALANCE.getStatus());
-//				CommonStaticManager.getShopBalanceDateDtlManager().update(balanceDateDtl);
 			}
 		}
 
@@ -610,7 +607,7 @@ public class BillCounterBalanceManager extends BaseManager<BillCounterBalance, S
 						params.put(shop.getShopNo(), shop.getName());
 					}
 				}else{
-					counterCost.setShopName(params.get(counterCost.getShopNo()).toString());;
+					counterCost.setShopName(params.get(counterCost.getShopNo()).toString());
 				}
 				counterCostList.add(counterCost);
 			}
@@ -632,7 +629,7 @@ public class BillCounterBalanceManager extends BaseManager<BillCounterBalance, S
 						params.put(shop.getShopNo(), shop.getName());
 					}
 				}else{
-					counterSaleCost.setShopName(params.get(counterSaleCost.getShopNo()).toString());;
+					counterSaleCost.setShopName(params.get(counterSaleCost.getShopNo()).toString());
 				}
 			}
 		}
@@ -644,7 +641,6 @@ public class BillCounterBalanceManager extends BaseManager<BillCounterBalance, S
 		counterBalancePrint.setSettleMonth(counterBalance.getSettleMonth());
 		counterBalancePrint.setCounterNo(counterBalance.getCounterNo());
 		counterBalancePrint.setBillNo(billNo);
-		// counterBalancePrint.setPrintDate(new Date());
 		counterBalancePrint.setBusinessType(counterBalance.getBusinessType());
 		counterBalancePrint.setAbleSum(counterBalance.getAbleSum());
 		counterBalancePrint.setAbleBillingSum(counterBalance.getAbleBillingSum());

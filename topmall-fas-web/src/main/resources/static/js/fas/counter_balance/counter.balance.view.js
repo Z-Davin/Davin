@@ -1103,6 +1103,14 @@ define(function(require, exports, module) {
 					"options": { "width": 150,
 						"dateFmt":"yyyyMM"
 						}
+				},{
+					"label": "大区",
+					"type": "combogridmdm",
+					"name": "zoneNo",
+					"options": { 
+						"width": 150,
+						"beanName":"zone"
+					 }
 				}]
 			}
 		}

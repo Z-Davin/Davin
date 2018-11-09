@@ -38,12 +38,12 @@ public class MallPayManager extends BaseManager<MallPay,String> implements IMall
 				.and("settleMonth", mallBalanceDateDtl.getSettleMonth())
 				.and("bunkGroupNo", mallBalanceDateDtl.getBunkGroupNo());
 		//查询支付明细
-		List<MallPay> MallPayList = service.selectMallPayList(query);
+		List<MallPay> mallPayList = service.selectMallPayList(query);
 		//将数据插入到支付明细表中
-		if (CollectionUtils.isNotEmpty(MallPayList)){
-			String orderNo = MallPayList.get(0).getShopNo() 
-					+ CodingRuleHelper.getBasicCoding(PublicConstans.COUNTER_COST_NO, MallPayList.get(0).getShopNo(), null);
-			for (MallPay mallPay : MallPayList) {
+		if (CollectionUtils.isNotEmpty(mallPayList)){
+			String orderNo = mallPayList.get(0).getShopNo() 
+					+ CodingRuleHelper.getBasicCoding(PublicConstans.COUNTER_COST_NO, mallPayList.get(0).getShopNo(), null);
+			for (MallPay mallPay : mallPayList) {
 				mallPay.setId(generateId());
 				mallPay.setUpdateTime(new Date());
 				mallPay.setStatus(StatusEnums.EFFECTIVE.getStatus());
