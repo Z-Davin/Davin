@@ -22,7 +22,7 @@ public class UnAccountBillSchedulerApi extends AbstractSchedulerApiImpl implemen
 	protected void runJobDetail(Map<String, Object> param) {
 		String sourceSystem=(String)param.get("sourceSystem");
 		List<UnAccountBillPool> billList = unAccountBillPoolManager.findBills(null,sourceSystem);
-		if (billList == null || billList.size() == 0) {
+		if (billList == null || billList.isEmpty()) {
 			return;
 		}
 		//每个消息独立的事务 即使一个消息失败了 不影响下一个

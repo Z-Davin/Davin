@@ -26,6 +26,7 @@ import topmall.fas.manager.IShopCostManager;
 import topmall.fas.manager.ISystemConfigManager;
 import topmall.fas.service.IContractDiscoPoolService;
 import topmall.mdm.open.api.ICounterApiService;
+import topmall.mdm.open.api.IDepaymentApiService;
 import topmall.mdm.open.api.ISupplierApiService;
 import topmall.mps.api.client.IPromotionApi;
 import topmall.pos.api.IMallDaySaleApiService;
@@ -94,9 +95,16 @@ public class CommonStaticManager {
 	@Reference
 	private IMallDaySaleApiService mallDaySaleApiService;
 	
+	@Reference
+	private IDepaymentApiService depaymentApiService;
+	
 	@PostConstruct
 	public void init() {
 		instance = this;
+	}
+	
+	public static IDepaymentApiService getDepaymentApiService(){
+		return instance.depaymentApiService;
 	}
 	
 	public static IContractDiscoPoolService getContractDiscoPoolService() {
