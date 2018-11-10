@@ -44,27 +44,24 @@
 		<dependency>
 			<groupId>cn.wonhigh.topmall</groupId>
 			<artifactId>topmall-pos-api</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>topmall-card-api</artifactId>
-					<groupId>cn.wonhigh.topmall</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>cn.wonhigh.topmall</groupId>
 			<artifactId>topmall-mps-api</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>cn.wonhigh.topmall</groupId>
 			<artifactId>topmall-mdm-open-api</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>cn.wonhigh.topmall</groupId>
 			<artifactId>topmall-contract-api</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>		 
 		</dependency>
-		
 	</dependencies>
 </project>
