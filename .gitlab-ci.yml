@@ -24,7 +24,7 @@ build:
   tags:
     - tsc
   only:
-    - dev
+    - /^dev-.*$/
 
 deploy:
   stage: deploy
@@ -37,7 +37,7 @@ deploy:
   tags:
     - tsc
   only:
-    - dev
+    - /^dev-.*$/
 
 docker:
   stage: deploy
@@ -50,7 +50,7 @@ docker:
   tags:
     - tsc
   only:
-    - dev
+    - /^dev-.*$/
       
 finish:
   stage: finish
@@ -62,7 +62,7 @@ finish:
   tags:
     - tsc
   only:
-    - dev
+    - /^dev-.*$/
   
 
  
