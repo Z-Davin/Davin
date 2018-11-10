@@ -76,6 +76,8 @@ EOF
 
     helm package --app-version $VERSION --version $VERSION.$IID ./$APP
 
+    helm push --username=${HELM_ACCOUNT} --password=${HELM_PASSWORD}  "$APP-$VERSION.$IID.tgz" ${HELM_REPOSITORY}
+    
     rm -rf $WORK_DIR/deploy/*.tgz
     
     mv *$IID.tgz $WORK_DIR/deploy/
