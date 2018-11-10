@@ -7,7 +7,7 @@ metadata:
 data:
   args.conf: |
     # Apply this config
-    -Dserver.port=8080
+    -Dserver.port=${randomServerPort.value[1200,2000]}
     -Ddubbo.service.version=1.1.0
     -Ddubbo.consumer.version=1.1.0
     -Ddubbo.protocol.port=-1
