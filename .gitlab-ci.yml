@@ -1,0 +1,68 @@
+# tsc portal cd
+stages:
+  - build
+  - deploy
+  - finish
+
+before_script:
+  - mkdir -p ./deploy  
+cache:
+  paths:
+    - deploy/*.zip
+    - deploy/*.tgz
+    
+build:
+  stage: build
+  script: 
+    - echo "building..."
+    # - ssh root@${HOST} "rm -rf /tmp/topmall && mkdir -p /tmp/topmall"     
+    - mvn package -U -Dmaven.test.skip=true -s /usr/local/apache-maven/conf/settings.xml
+    - cp  ${APP_NAME}-web/target/*.zip ./deploy
+    - cp  ${APP_NAME}-deployer/target/*.zip ./deploy
+    # - scp /root/build/deploy.sh root@${HOST}:/tmp/topmall
+    # - scp -r ./deploy/*.zip  root@${HOST}:/tmp/topmall
+  tags:
+    - tsc
+  only:
+    - dev
+
+deploy:
+  stage: deploy
+  dependencies: 
+    - build
+  script:
+    - ls  ./deploy
+    - echo "sh /tmp/topmall/deploy.sh ${APP_NAME} ${LOCAL}"   
+    # - ssh root@${HOST} "sh /tmp/topmall/deploy.sh ${APP_NAME} ${LOCAL}"     
+  tags:
+    - tsc
+  only:
+    - dev
+
+docker:
+  stage: deploy
+  dependencies: 
+    - build
+  script:
+    - cd ./docker
+    - echo "./build.sh ${DOCKER_REPOSITORY} ${APP_NAME} ${CI_PIPELINE_IID}"
+    - sh ./build.sh ${DOCKER_REPOSITORY} ${APP_NAME} ${CI_PIPELINE_IID}
+  tags:
+    - tsc
+  only:
+    - dev
+      
+finish:
+  stage: finish
+  script: echo "finished."  
+  artifacts:
+    paths:
+      - deploy/*.tgz
+    expire_in: 1 week
+  tags:
+    - tsc
+  only:
+    - dev
+  
+
+ 
