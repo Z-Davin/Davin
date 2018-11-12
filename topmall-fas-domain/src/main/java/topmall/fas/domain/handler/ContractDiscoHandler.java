@@ -56,6 +56,7 @@ public class ContractDiscoHandler {
 	
 	private IDepaymentApiService depaymentApiService;
 	
+	
 	public ContractDiscoHandler(ShopBalanceDateDtl shopBalanceDateDtl,IContractDiscoPoolService service,String seqId,boolean isHisCost,ShopBalanceDateDtl newDateDtl){
 		this.shopBalanceDateDtl=shopBalanceDateDtl;
 		this.service=service;
