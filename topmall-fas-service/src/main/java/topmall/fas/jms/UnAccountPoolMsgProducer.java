@@ -60,11 +60,4 @@ public class UnAccountPoolMsgProducer implements BillPoolMsgProducerInterface {
 		return messageProducer;
 	}
 
-	public static void main(String[] args) {
-		//		for (int i = 0; i < 100; i++) {
-		//			System.out.println( (int)(Math.random()*10%4) );
-		//		}
-		System.out.println("Z".substring("Z".length() - 1));
-	}
-
 }

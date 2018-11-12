@@ -20,6 +20,10 @@ import com.google.common.io.LineReader;
 @SuppressWarnings("deprecation")
 public class ZipUtils {
 	
+	private ZipUtils(){
+		
+	}
+	
 	/**
 	 * 解压压缩的字符串
 	 * @param zipData 压缩的字符串
