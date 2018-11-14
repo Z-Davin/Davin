@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
+import com.google.common.base.Function;
 import cn.mercury.basic.UUID;
 import cn.mercury.basic.query.Q;
 import cn.mercury.basic.query.Query;
@@ -21,6 +21,7 @@ import topmall.fas.model.CounterSaleCostDtl;
 import topmall.fas.model.ShopBalanceDateDtl;
 import topmall.fas.service.IContractDiscoPoolService;
 import topmall.fas.util.CommonUtil;
+import topmall.fas.util.GroupByUtils;
 import topmall.fas.util.PublicConstans;
 import topmall.fas.vo.CounterDaySale;
 import topmall.mdm.model.Counter;
@@ -54,6 +55,7 @@ public class ContractDiscoHandler {
 	private Integer bagQty =0;
 	
 	private IDepaymentApiService depaymentApiService;
+	
 	
 	public ContractDiscoHandler(ShopBalanceDateDtl shopBalanceDateDtl,IContractDiscoPoolService service,String seqId,boolean isHisCost,ShopBalanceDateDtl newDateDtl){
 		this.shopBalanceDateDtl=shopBalanceDateDtl;
@@ -119,7 +121,14 @@ public class ContractDiscoHandler {
 	 */
 	public List<CounterSaleCost> calculateSaleCost(){
 		List<CounterSaleCost> saleCostList =  new ArrayList<>();
-		Map<String, List<CounterDaySale>> counterDayList =list.stream().collect(Collectors.groupingBy(CounterDaySale::getSaleCostKey));
+		Map<String, List<CounterDaySale>> counterDayList = GroupByUtils.groupByKey(list,
+				new Function<CounterDaySale, String>() {
+					@Override
+					public String apply(CounterDaySale dtl) {
+						//部类编码+商品折扣+税率+票扣标识+账扣标识 分组
+						return dtl.getSaleCostKey();
+					}
+				});
 		for (Entry<String, List<CounterDaySale>> entry : counterDayList.entrySet()) {
 			List<CounterDaySale> dtls = entry.getValue();
 			CounterSaleCost saleCost = new CounterSaleCost();
@@ -208,8 +217,14 @@ public class ContractDiscoHandler {
 	 */
 	public List<CounterSaleCostDtl> calculateSaleCostDtl(){
 		List<CounterSaleCostDtl> saleCostDtlList = new ArrayList<>();
-		
-		Map<String, List<CounterDaySale>> counterDayList =list.stream().collect(Collectors.groupingBy(CounterDaySale::getSaleCostDtlKey));
+		Map<String, List<CounterDaySale>> counterDayList = GroupByUtils.groupByKey(list,
+				new Function<CounterDaySale, String>() {
+					@Override
+					public String apply(CounterDaySale dtl) {
+						//部类编码+商品折扣+税率+票扣标识+账扣标识 +销售日期 分组
+						return dtl.getSaleCostDtlKey();
+					}
+				});
 		for (Entry<String, List<CounterDaySale>> entry : counterDayList.entrySet()) {
 			List<CounterDaySale> dtls = entry.getValue();
 			CounterSaleCostDtl saleCostDtl = new CounterSaleCostDtl();
@@ -377,6 +392,7 @@ public class ContractDiscoHandler {
 		counterCost.setAccountDebit(depayment.getAccountDebit());
 		counterCost.setBillDebit((int)depayment.getBillDebit());
 		counterCost.setTaxFlag(depayment.getTaxFlag());
+		counterCost.setId(UUID.newUUID().toString());
 		//含税
 		if(counterCost.getTaxFlag()==1){
 			BigDecimal ableAmount = CommonUtil.getTaxFreeCost(amount, depayment.getTaxRate());
@@ -407,18 +423,20 @@ public class ContractDiscoHandler {
 			//根据大区,状态,参数查
 			Query q =Q.where("zoneNo", shopBalanceDateDtl.getZoneNo()).and("parameterNo", PublicConstans.COUNTER_BALANCE_DIFF).and("status", 1);
 			Integer count= systemConfigManager.selectCount(q);
-			if(0<count&&null!=reduceDiffAmount&&reduceDiffAmount.compareTo(new BigDecimal(0))!=0){
-				CounterSaleCost counterSaleCost=new CounterSaleCost();
-				shopBalanceDateDtl.copyProperties(counterSaleCost);
-				counterSaleCost.setAccountDebit(fullPriceList.get(0).getAccountDebit());
-				counterSaleCost.setBillDebit(fullPriceList.get(0).getBillDebit());
-				counterSaleCost.setSettleSum(reduceDiffAmount);
-				counterSaleCost.setType("0");
-				counterSaleCost.setDivisionNo("99999999");
-				counterSaleCost.setStatus(StatusEnums.EFFECTIVE.getStatus());
-				counterSaleCost.setSeqId(seqId);
-				counterSaleCost.setId(UUID.newUUID().toString());
-				return counterSaleCost;
+			if(0<count){
+				if(null!=reduceDiffAmount&&reduceDiffAmount.compareTo(new BigDecimal(0))!=0){
+					CounterSaleCost counterSaleCost=new CounterSaleCost();
+					shopBalanceDateDtl.copyProperties(counterSaleCost);
+					counterSaleCost.setAccountDebit(fullPriceList.get(0).getAccountDebit());
+					counterSaleCost.setBillDebit(fullPriceList.get(0).getBillDebit());
+					counterSaleCost.setSettleSum(reduceDiffAmount);
+					counterSaleCost.setType("0");
+					counterSaleCost.setDivisionNo("99999999");
+					counterSaleCost.setStatus(StatusEnums.EFFECTIVE.getStatus());
+					counterSaleCost.setSeqId(seqId);
+					counterSaleCost.setId(UUID.newUUID().toString());
+					return counterSaleCost;
+				}
 			}
 		}
 		return null;

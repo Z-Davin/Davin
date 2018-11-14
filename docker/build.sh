@@ -46,9 +46,7 @@ helm_build(){
     rm -rf ./docker/$APP && mkdir ./docker/$APP
 
     cp -rf ./docker/helm/* ./docker/$APP
-
-    tree ./docker/$APP
-
+ 
     if [ ! -e "$DEPLOY_PACKAGE" ]; then
 		echo "remove deployer-deployment.yaml"
         rm -rf  ./docker/$APP/templates/deployer-deployment.yaml
@@ -74,8 +72,12 @@ EOF
 	
     cd $WORK_DIR/docker/
 
+    tree ./docker/$APP
+
     helm package --app-version $VERSION --version $VERSION.$IID ./$APP
 
+    helm push --username=${HELM_ACCOUNT} --password=${HELM_PASSWORD}  "$APP-$VERSION.$IID.tgz" ${HELM_REPOSITORY}
+    
     rm -rf $WORK_DIR/deploy/*.tgz
     
     mv *$IID.tgz $WORK_DIR/deploy/

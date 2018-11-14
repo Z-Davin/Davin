@@ -16,8 +16,8 @@ image:
   configMap: $APP-config
 
 web:
-  livenessProbe: /retail/_manager/health
-  readinessProbe: /retail/_manager/health
+  livenessProbe: /fas/_manager/health
+  readinessProbe: /fas/_manager/health
   initialDelaySeconds: 90
 
 name: "$APP"
