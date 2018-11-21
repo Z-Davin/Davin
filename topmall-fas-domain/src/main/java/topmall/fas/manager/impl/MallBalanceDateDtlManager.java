@@ -3,14 +3,15 @@ package topmall.fas.manager.impl;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import cn.mercury.basic.UUID;
 import cn.mercury.basic.query.Q;
 import cn.mercury.basic.query.Query;
-import cn.mercury.manager.ManagerException;
 import cn.mercury.utils.DateUtil;
 import topmall.fas.dto.ContractMainDto;
 import topmall.fas.enums.StatusEnums;
@@ -58,7 +59,7 @@ public class MallBalanceDateDtlManager extends BaseManager<MallBalanceDateDtl, S
 		return service;
 	}
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void generateMallBalanceDateDtl() throws ManagerException {
+	public void generateMallBalanceDateDtl(){
 		Query query = Q.where("status", StatusEnums.EFFECTIVE.getStatus());//默认生成生效状态的
 		List<MallBalanceDate> list = mallBalanceDateService.selectByParams(query);
 		for (MallBalanceDate mallBalanceDate : list) {
@@ -78,7 +79,7 @@ public class MallBalanceDateDtlManager extends BaseManager<MallBalanceDateDtl, S
 			//根据卖场,物业,结算期,铺位组去查,如果有则不生成
 			query = Q.where("shopNo", mallBalanceDate.getShopNo()).and("mallNo", mallBalanceDate.getMallNo())
 					.and("settleMonth", currentDateStr).and("bunkGroupNo",mallBalanceDate.getBunkGroupNo());
-			MallBalanceDateDtl dtl = service.findByParam(query);
+			List<MallBalanceDateDtl> dtl = service.selectByParams(query);
 			if (null != dtl) {
 				continue;
 			}
@@ -116,7 +117,7 @@ public class MallBalanceDateDtlManager extends BaseManager<MallBalanceDateDtl, S
 					}else if(i==dates.length-1){
 						//倒数第一个也需要特殊处理
 						Date settleStartDate =DateUtil.addDate(currentDate, dates[i-1]);
-						Date settleEndDate=DateUtil.getLastDayOfMonth(new Date());
+						Date settleEndDate=DateUtil.addDate(nextDate, -1);
 						if(dates[dates.length-1] != NATURAL_MONTH){
 							 settleEndDate = DateUtil.addDate(currentDate, dates[i] - 1);
 						}
