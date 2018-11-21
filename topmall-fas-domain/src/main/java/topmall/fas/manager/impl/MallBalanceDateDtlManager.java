@@ -80,7 +80,7 @@ public class MallBalanceDateDtlManager extends BaseManager<MallBalanceDateDtl, S
 			query = Q.where("shopNo", mallBalanceDate.getShopNo()).and("mallNo", mallBalanceDate.getMallNo())
 					.and("settleMonth", currentDateStr).and("bunkGroupNo",mallBalanceDate.getBunkGroupNo());
 			List<MallBalanceDateDtl> dtl = service.selectByParams(query);
-			if (null != dtl) {
+			if (null != dtl&&!dtl.isEmpty()) {
 				continue;
 			}
 			String[] endDates=mallBalanceDate.getEndDate().split(",");
