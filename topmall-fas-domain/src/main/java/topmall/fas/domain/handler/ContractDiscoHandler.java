@@ -402,8 +402,8 @@ public class ContractDiscoHandler {
 		}else if(counterCost.getTaxFlag()==0){
 			counterCost.setAbleAmount(amount);
 			BigDecimal taxCost = CommonUtil.getTaxCost(amount, depayment.getTaxRate());
-			counterCost.setTaxAmount(taxCost);
-			counterCost.setAbleSum(amount.add(taxCost));
+			counterCost.setAbleSum(taxCost);
+			counterCost.setTaxAmount(taxCost.subtract(amount));
 		}
 		return counterCost;
 	}
