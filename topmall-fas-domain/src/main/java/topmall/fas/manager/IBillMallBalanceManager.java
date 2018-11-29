@@ -2,7 +2,6 @@ package topmall.fas.manager;
 
 import java.util.List;
 import cn.mercury.manager.IManager;
-import cn.mercury.manager.ManagerException;
 import topmall.fas.dto.MallBalanceSummary;
 import topmall.fas.model.BillMallBalance;
 import topmall.fas.util.CommonResult;
@@ -13,7 +12,7 @@ public interface IBillMallBalanceManager extends IManager<BillMallBalance,String
 	 * @param counterBalance
 	 * @return
 	 */
-	public BillMallBalance save(BillMallBalance mallBalance) throws ManagerException;
+	public BillMallBalance save(BillMallBalance mallBalance);
 	
 	/** 删除物业结算单
 	 * @param billNo

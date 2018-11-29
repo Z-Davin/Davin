@@ -392,6 +392,7 @@ public class ContractDiscoHandler {
 		counterCost.setAccountDebit(depayment.getAccountDebit());
 		counterCost.setBillDebit((int)depayment.getBillDebit());
 		counterCost.setTaxFlag(depayment.getTaxFlag());
+		counterCost.setId(UUID.newUUID().toString());
 		//含税
 		if(counterCost.getTaxFlag()==1){
 			BigDecimal ableAmount = CommonUtil.getTaxFreeCost(amount, depayment.getTaxRate());
@@ -401,8 +402,8 @@ public class ContractDiscoHandler {
 		}else if(counterCost.getTaxFlag()==0){
 			counterCost.setAbleAmount(amount);
 			BigDecimal taxCost = CommonUtil.getTaxCost(amount, depayment.getTaxRate());
-			counterCost.setTaxAmount(taxCost);
-			counterCost.setAbleSum(amount.add(taxCost));
+			counterCost.setAbleSum(taxCost);
+			counterCost.setTaxAmount(taxCost.subtract(amount));
 		}
 		return counterCost;
 	}

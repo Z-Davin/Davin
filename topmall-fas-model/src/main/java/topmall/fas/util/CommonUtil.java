@@ -5,7 +5,6 @@ package topmall.fas.util;
 
 import java.math.BigDecimal;
 import java.util.List;
-
 import topmall.fas.dto.QuotaStepDTO;
 
 /**

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.google.common.base.Function;
 import cn.mercury.basic.query.Pagenation;
 import cn.mercury.basic.query.Q;
 import cn.mercury.basic.query.Query;
 import cn.mercury.manager.ManagerException;
 import cn.mercury.security.IUser;
-import cn.mercury.utils.CollectionsUtil;
 import topmall.common.enums.BillTypeEnums;
 import topmall.fas.dto.BatchCounterBalanceDto;
 import topmall.fas.dto.CounterBalancePrint;
@@ -685,40 +684,15 @@ public class BillCounterBalanceManager extends BaseManager<BillCounterBalance, S
 		// 数据准备 批量查询
 		List<Supplier> suppliers = supplierService.selectByParams(Q.where(Q.In("supplier_no", supplierNoArray)));
 		List<Company> companys = companyApiService.selectByParams(Q.where(Q.In("company_no", companyNoArray)));
-		supplierMap = CollectionsUtil.groupByKey(suppliers, new Function<Supplier, String>() {
-			@Override
-			public String apply(Supplier input) {
-				return input.getSupplierNo();
-			}
-
-		});
-		compnayMap = CollectionsUtil.groupByKey(companys, new Function<Company, String>() {
-			@Override
-			public String apply(Company input) {
-				return input.getCompanyNo();
-			}
-
-		});
+		supplierMap = suppliers.stream().collect(Collectors.groupingBy(Supplier::getSupplierNo));
+		compnayMap = companys.stream().collect(Collectors.groupingBy(Company::getCompanyNo));
 		List<Shop> shops = null;
 		List<Counter> counters = null;
 		if (templateType != 2) {
 			shops = shopService.selectByParams(Q.where(Q.In("shop_no", shopNoArray)));
 			counters = counterApiService.selectByParams(Q.where(Q.In("counter_no", counterNoArray)));
-			shopMap = CollectionsUtil.groupByKey(shops, new Function<Shop, String>() {
-				@Override
-				public String apply(Shop input) {
-					return input.getShopNo();
-				}
-
-			});
-
-			counterMap = CollectionsUtil.groupByKey(counters, new Function<Counter, String>() {
-				@Override
-				public String apply(Counter input) {
-					return input.getCounterNo();
-				}
-
-			});
+			shopMap = shops.stream().collect(Collectors.groupingBy(Shop::getShopNo));
+			counterMap=counters.stream().collect(Collectors.groupingBy(Counter::getCounterNo));
 		}
 
 		for (BillCounterBalance balance : counterBalances) {
