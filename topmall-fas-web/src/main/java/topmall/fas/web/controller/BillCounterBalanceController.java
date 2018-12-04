@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import cn.mercury.annotation.JsonVariable;
+import cn.mercury.basic.query.PageResult;
+import cn.mercury.basic.query.Pagenation;
 import cn.mercury.basic.query.Query;
 import cn.mercury.manager.IManager;
 import topmall.fas.dto.BatchCounterBalanceDto;
@@ -17,6 +19,7 @@ import topmall.fas.dto.CounterBalancePrint;
 import topmall.fas.manager.IBillCounterBalanceManager;
 import topmall.fas.model.BillCounterBalance;
 import topmall.fas.util.CommonResult;
+import topmall.fas.util.CommonUtil;
 import topmall.fas.util.PublicConstans;
 
 @Controller
@@ -92,6 +95,22 @@ public class BillCounterBalanceController extends BaseFasController<BillCounterB
 	@RequestMapping(method = RequestMethod.POST, value = "/batchprint/{templateType}")
 	public List<CounterBalancePrint> bacthPrint(@PathVariable("templateType") Integer templateType, Query query) {
 		return manager.batchPrint(query, templateType);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/list")
+	@Override
+	public PageResult<BillCounterBalance> selectByPage(Query query, Pagenation page) {
+		long total = page.getTotal();
+		if (total < 0) {
+			total = getManager().selectCount(query);
+		}
+		if(!CommonUtil.hasValue(query.getSort())){
+			query.orderby("update_time",true);
+		}
+		List<BillCounterBalance> rows = getManager().selectByPage(query, page);
+		List<BillCounterBalance> saleCost = manager.selectByPageTotal(query, page);
+		return new PageResult<>(rows, total,saleCost);
 	}
 
 }

@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import topmall.fas.manager.IMallCostManager;
 import topmall.fas.model.MallBalanceDateDtl;
 import topmall.fas.model.MallCost;
 import topmall.fas.util.CommonResult;
+import topmall.fas.util.CommonUtil;
 import cn.mercury.annotation.JsonVariable;
+import cn.mercury.basic.query.PageResult;
+import cn.mercury.basic.query.Pagenation;
 import cn.mercury.basic.query.Query;
 import cn.mercury.manager.IManager;
 import cn.mercury.manager.ManagerException;
@@ -96,6 +98,21 @@ public class MallCostController extends BaseFasController<MallCost,String> {
 		List<MallCost> dtlList = JsonUtils.fromListJson(details, MallCost.class);
 		manager.importBatchSave(dtlList);
 		return CommonResult.getSucessResult();
+	}
+	
+	@RequestMapping("/list")
+	@Override
+	public PageResult<MallCost> selectByPage(Query query, Pagenation page) {
+		long total = page.getTotal();
+		if (total < 0) {
+			total = getManager().selectCount(query);
+		}
+		if(!CommonUtil.hasValue(query.getSort())){
+			query.orderby("update_time",true);
+		}
+		List<MallCost> rows = getManager().selectByPage(query, page);
+		List<MallCost> saleCost = manager.queryConditionSum(query);
+		return new PageResult<>(rows, total,saleCost);
 	}
 	
 }
