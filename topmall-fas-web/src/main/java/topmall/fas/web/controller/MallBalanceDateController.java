@@ -52,4 +52,17 @@ public class MallBalanceDateController extends BaseFasController<MallBalanceDate
 		manager.monthBalance(idList);
 		return CommonResult.getSucessResult();
 	}
+	
+	/**
+	 *  cancel
+	 * @param idList
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value="/cancel")
+	public CommonResult cancel(@JsonVariable String idList) {
+		manager.cancel(idList);
+		return CommonResult.getSucessResult();
+	}
 }

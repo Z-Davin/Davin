@@ -28,4 +28,10 @@ public interface IMallBalanceDateManager extends IManager<MallBalanceDate, Strin
 	 * @return
 	 */
 	MallBalanceDate findByUnique(Query query);
+	
+	/**
+	 * 物业月结
+	 * @param idList id列表用逗号分隔
+	 */
+	void cancel(String idList);
 }

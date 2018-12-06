@@ -53,7 +53,8 @@ $.fas = {
 				settleStatus:[{'id':"0",'name':"未完结"},{'id':"100",'name':"完结"}],
 				refType:[{'id':'0','name':'计费用'},{'id':'1','name':'租金'},{'id':'2','name':'抽成'},{'id':'3','name':'保底'},{'id':'4','name':'其他'},{'id':'5','name':'计成本'}],
 				balanceType:[{'id':"0",'name':"同意抵扣"},{'id':"1",'name':"不同意抵扣"}],
-				pointsCalculateFlag:[{'id':"0",'name':"否"},{'id':"1",'name':"是"}]
+				pointsCalculateFlag:[{'id':"0",'name':"否"},{'id':"1",'name':"是"}],
+				calculationMethod:[{'id':"0",'name':"毛收入"},{'id':"1",'name':"净收入"}]
 		},
 	    datasFunction:function(){
 	    	for(let i=1;i<=28;i++){

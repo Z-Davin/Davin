@@ -7,6 +7,8 @@ import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import cn.mercury.basic.query.Q;
+import cn.mercury.basic.query.Query;
 import cn.mercury.utils.JsonDateDeserializer$10;
 import cn.mercury.utils.JsonDateSerializer$10;
 
@@ -72,6 +74,18 @@ public class MallBalanceDateDtl  extends cn.mercury.domain.BaseEntity<String> {
 	}
 	public void setPointsCalculateFlag(Integer val) {
 		this.pointsCalculateFlag = val;
+	}
+	
+	/**
+	 * 计算方式:0:毛收入,1:净收入
+	 */
+	private Integer calculationMethod;
+	
+	public Integer getCalculationMethod() {
+		return calculationMethod;
+	}
+	public void setCalculationMethod(Integer calculationMethod) {
+		this.calculationMethod = calculationMethod;
 	}
     
     /**
@@ -213,6 +227,11 @@ public class MallBalanceDateDtl  extends cn.mercury.domain.BaseEntity<String> {
 		mallMinimum.setSettleStartDate(this.settleStartDate);
 		mallMinimum.setMallNo(this.mallNo);
 		mallMinimum.setBunkGroupNo(this.bunkGroupNo);
+	}
+	
+	public Query baseQuery(){
+		return  Q.where("shopNo",this.shopNo).and("mallNo",this.mallNo)
+				.and("settleStartDate", this.settleStartDate).and("settleEndDate", this.settleEndDate).and("bunkGroupNo", this.bunkGroupNo).and("settleMonth", this.settleMonth);
 	}
 	
 	@Override

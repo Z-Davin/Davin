@@ -146,6 +146,18 @@ public class MallBalanceDate  extends cn.mercury.domain.BaseEntity<String> {
 	public void setPointsCalculateFlag(Integer val) {
 		this.pointsCalculateFlag = val;
 	}
+	
+	/**
+	 * 计算方式:0:毛收入,1:净收入
+	 */
+	private Integer calculationMethod;
+	
+	public Integer getCalculationMethod() {
+		return calculationMethod;
+	}
+	public void setCalculationMethod(Integer calculationMethod) {
+		this.calculationMethod = calculationMethod;
+	}
 	public Query baseQuery(){
 		Query q=Q.where("bunkGroupNo", this.bunkGroupNo).and("shopNo",this.shopNo).and("mallNo", this.mallNo);
 		return q;

@@ -64,6 +64,18 @@ public class MallCostController extends BaseFasController<MallCost,String> {
 	
 	
 	/**
+	 * 反确认
+	 * 
+	 * @param
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value = "/batchDelete")
+	public CommonResult batchDelete(@JsonVariable String[] ids) {
+		return manager.batchUnConfirm(ids);
+	}
+	
+	/**
 	 * 生成物业费用
 	 * @param query
 	 * @return

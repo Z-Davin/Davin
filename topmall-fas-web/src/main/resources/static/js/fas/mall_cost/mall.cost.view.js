@@ -119,6 +119,10 @@ define(function (require, exports, module) {
 				showFooter:true,
 				columns: [
 					[{
+                        "field": 'ck',
+                        "notexport": true,
+                        "checkbox": true
+                    },{
 						"field": "shopName",
 						"type": "textbox",
 						"title": "卖场名称",
@@ -503,9 +507,9 @@ define(function (require, exports, module) {
 			$('#taxRate').numberbox('setValue', 17);
 		}
 		
-//		 getSelectedRows() {
-//	            return this.currentGrid.datagrid('getChecked');
-//	      }
+		 getSelectedRows() {
+	            return this.currentGrid.datagrid('getChecked');
+	      }
 		//确认
 		confirm(){
             let data = this.getSelectedRows();
@@ -573,26 +577,29 @@ define(function (require, exports, module) {
             let data = this.getSelectedRows();
             if (data == null || data.length == 0)
                 return;
-            var self = this;
-            let key = data[0].id;
-            this.service.getById(key).then(c=>{
-            	if(1 == c.status){
-            		$.messager.confirm('删除', '确认删除所选记录?',
-                            r=> {
-                                if (r) {
-                                    var ids = data.map(i=>i[this.primaryKey]);
-                                    self.service.delete(ids).then(c=> {
-                                        self.search();
-                                    });
-                                }
-                            }
-                        );
-            	}else{
-            		showWarn("该数据不是未生效状态，不能删除");
-            		return;
-            	}
-            });
-            
+            let keys = _.map(data,function(e){ return e.id; });
+			let params = {ids:"'"+keys.join("','")+"'",targetStatus:1};
+			 this.service.selectByParams(params).then(d=>{
+	            	if(!d||d.length<1){
+						$.messager.confirm("确认", "确定要反确认当前所选单据吗？",function (r) {
+							if (r) {
+								fas.common.loading("show", "正在处理中......");
+								self.service.delete(keys).then(d=>{
+									fas.common.loading();
+									self.search();
+									if(d.errorCode=="0000"){
+										showSuc('删除成功');
+									}else{
+										showWarn('删除失败');
+									}
+							});
+							}
+						});
+					}else{
+	                	showWarn("所选单据中存在生效状态的单据,不能删除.");
+	                	return;
+					}
+				});
         }
 		//重写双击事件,判断是否是制单状态
 		 onGridDblClickRow(grid, rowIndex, rowData) {

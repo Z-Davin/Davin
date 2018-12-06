@@ -55,6 +55,14 @@ public interface IMallCostManager extends IManager<MallCost,String>{
 	 * @return
 	 */
 	public List<MallCost> queryConditionSum(Query query);
+	
+	
+	/**
+	 * 物业费用批量删除
+	 * @param ids
+	 * @return
+	 */
+	public CommonResult batchDelete(String[] ids);
 }
 
 

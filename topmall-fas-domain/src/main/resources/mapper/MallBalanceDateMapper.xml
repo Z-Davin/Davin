@@ -20,11 +20,13 @@
            <result column="bunk_group_no" property="bunkGroupNo" jdbcType="VARCHAR" /> 
            <result column="balance_type" property="balanceType" jdbcType="TINYINT" />  
            <result column="points_calculate_flag" property="pointsCalculateFlag" jdbcType="TINYINT" />  
+           <result column="calculation_method" property="calculationMethod" jdbcType="TINYINT" />  
     </resultMap>      
     
     
     <sql id="column_list"> 
-        id,zone_no,company_no,mall_no,shop_no,end_date,status,close_date,create_time,create_user,update_time,update_user,remark,bunk_group_no,balance_type,points_calculate_flag
+        id,zone_no,company_no,mall_no,shop_no,end_date,status,close_date,create_time,create_user,update_time,update_user,remark,bunk_group_no,balance_type,points_calculate_flag,
+        calculation_method
     </sql>
 
     <sql id="condition">  1=1
@@ -211,6 +213,9 @@
 			<if test="pointsCalculateFlag != null">
 				points_calculate_flag,
 			</if>
+			<if test="calculationMethod != null">
+				calculation_method,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=","> 
 			<if test="id != null">
@@ -253,6 +258,9 @@
 			</if>
 			<if test="pointsCalculateFlag != null">
 				 #{pointsCalculateFlag},
+			</if>
+			<if test="calculationMethod != null">
+				#{calculationMethod},
 			</if>
 		</trim>
 	</insert>
@@ -301,6 +309,9 @@
 			</if>
 			<if test="pointsCalculateFlag != null">
 				points_calculate_flag = #{pointsCalculateFlag},
+			</if>
+			<if test="calculationMethod != null">
+				calculation_method = #{calculationMethod},
 			</if>
 		</set>
 		WHERE id = #{id}
