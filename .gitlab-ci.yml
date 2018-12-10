@@ -5,7 +5,9 @@ stages:
   - finish
 
 before_script:
-  - mkdir -p ./deploy  
+  - mkdir -p ./deploy
+  - git submodule sync --recursive
+  - git submodule update --init --recursive  
 cache:
   paths:
     - deploy/*.zip
@@ -24,7 +26,7 @@ build:
   tags:
     - tsc
   only:
-    - /^dev-.*$/
+    - /^dev.*$/
 
 deploy:
   stage: deploy
@@ -45,12 +47,15 @@ docker:
     - build
   script:
     - cd ./docker
+    - export HELM_ACCOUNT=${HELM_ACCOUNT}
+    - export HELM_PASSWORD=${HELM_PASSWORD}
+    - export HELM_REPOSITORY=${HELM_REPOSITORY}
     - echo "./build.sh ${DOCKER_REPOSITORY} ${APP_NAME} ${CI_PIPELINE_IID}"
     - sh ./build.sh ${DOCKER_REPOSITORY} ${APP_NAME} ${CI_PIPELINE_IID}
   tags:
     - tsc
   only:
-    - /^dev-.*$/
+    - /^dev-docker.*/
       
 finish:
   stage: finish
