@@ -400,7 +400,7 @@ define(function (require, exports, module) {
 					},{
 						"name": "calculationMethod",
 						"type": "combocommon",
-						"label": "积分抵现是否结算",
+						"label": "计算方式",
 						"options":{
 							"width":200,
 							"required":true,
@@ -541,6 +541,8 @@ define(function (require, exports, module) {
 	        	formObj.find("input").attr("readOnly", true).addClass("readonly");
 	        	formObj.find(".easyui-combobox").combobox('disable');
 	        	formObj.find(".easyui-combogridmdm").combobox('disable');
+	        	formObj.find(".easyui-datebox").datebox('disable');
+	        	formObj.find(".easyui-combocommon").datebox('disable');
 	        	formObj.find(".easyui-datebox").datebox('disable');
 			 }else{
 		    	 formObj.find(".easyui-combobox").combobox('enable');

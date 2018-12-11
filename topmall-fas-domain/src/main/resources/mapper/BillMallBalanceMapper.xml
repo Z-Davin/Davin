@@ -405,7 +405,14 @@
     
     <select id="proMinimumSum" resultType="java.math.BigDecimal" parameterType="map">
     	SELECT
-			sum(d.pay_amount)
+    		<choose>
+    			<when test="params.calculationMethod">
+					sum(d.net_income_amount)
+				</when>
+    			<otherwise>
+    				sum(d.pay_amount) 
+    			</otherwise>
+    		</choose>
 		FROM 
 			pos_shop_day_sale a  
 		INNER JOIN 

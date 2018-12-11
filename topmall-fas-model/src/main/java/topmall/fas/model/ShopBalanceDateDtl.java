@@ -6,6 +6,8 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import cn.mercury.basic.query.Q;
+import cn.mercury.basic.query.Query;
 import cn.mercury.domain.BaseEntity;
 import cn.mercury.utils.JsonDateDeserializer$10;
 import cn.mercury.utils.JsonDateSerializer$10;
@@ -200,6 +202,10 @@ public class ShopBalanceDateDtl extends BaseEntity<String> {
 		counterCost.setSettleMonth(this.settleMonth);
 		counterCost.setSettleEndDate(this.settleEndDate);
 		counterCost.setSettleStartDate(this.settleStartDate);
+	}
+	
+	public Query baseQuery(){
+		return  Q.where("shopNo",this.shopNo).and("settleStartDate", this.settleStartDate).and("settleEndDate", this.settleEndDate).and("settleMonth", this.settleMonth).and("counterNo",this.counterNo);
 	}
 
 }
