@@ -312,6 +312,9 @@ public class BillMallBalanceManager extends BaseManager<BillMallBalance, String>
 		if(balanceDateDtl.getPointsCalculateFlag()==0){
 			query.and("pointsCalculateFlag", true);
 		}
+		if(balanceDateDtl.getCalculationMethod()==1){
+			query.and("calculationMethod", true);
+		}
 		BigDecimal proAmount = service.proMinimumSum(query);
 		if (null != proAmount) {
 			MallBalanceSummary mallBalanceSummary = new MallBalanceSummary();
