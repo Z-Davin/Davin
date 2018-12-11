@@ -15,6 +15,10 @@ define(function (require, exports, module) {
     	monthBalance(key){
     		return $.post( this.url + "/monthBalance", {'idList': key});
     	}
+    	
+    	cancel(key){
+    		return $.post( this.url + "/cancel", {'idList': key});
+    	}
 
     	findByParam(param){
         	return $.ajax({
@@ -53,7 +57,8 @@ define(function (require, exports, module) {
        	 var items = ['新增','查询','重置','导出'];
        	items = $.merge(items, [
     	          				{id: "btn-confirm", iconCls: 'icon  icon-file-text', text: '确认', value: 8, order: "8"},
-     	          				{id: "btn-monthBalance", iconCls: 'icon  icon-alarm', text: '月结', value: 51, order: "8"}
+     	          				{id: "btn-monthBalance", iconCls: 'icon  icon-alarm', text: '月结', value: 51, order: "8"},
+     	          				{id: "btn-cancel", iconCls: 'icon  icon-cancel-circle', text: '作废', value: 17, order: "8"}
     	                ]);
             return {
                 id: 'toolbar',
@@ -265,6 +270,14 @@ define(function (require, exports, module) {
 		                        "editor" : "readonlytext",
 		                        "formatter":(value)=>isNotBlank(value)?$.fas.datas.pointsCalculateFlag.first(c=>c.id == value).name:null
 		                    },{
+		                        "field": "calculationMethod",
+		                        "type": "textbox",
+		                        "title": "计算方式",
+		                        "width": 100,
+		                        "hidden": false,
+		                        "editor" : "readonlytext",
+		                        "formatter":(value)=>isNotBlank(value)?$.fas.datas.calculationMethod.first(c=>c.id == value).name:null
+		                    },{
 		                        "field": "remark",
 		                        "type": "textbox",
 		                        "title": "备注",
@@ -385,6 +398,15 @@ define(function (require, exports, module) {
 							"type":"pointsCalculateFlag"
 							}
 					},{
+						"name": "calculationMethod",
+						"type": "combocommon",
+						"label": "积分抵现是否结算",
+						"options":{
+							"width":200,
+							"required":true,
+							"type":"calculationMethod"
+							}
+					},{
 						"label":"备注",
 						"type":"textbox",
 						"name":"remark",
@@ -469,6 +491,33 @@ define(function (require, exports, module) {
 	         self.service.monthBalance(idList).then(c=>{
 	        	self.search();
 	        	showInfoMes(c,'月结');
+	         });
+		}
+		
+		cancel(){
+			let data = this.getSelectedRows();
+	        if(data == null || data.length == 0)
+	             return;
+	        var self = this;
+	     	var flag = true;
+	     	let idList='';
+	        for(let i = 0; i < data.length; i++){
+	        	self.service.findByParam({id:data[0].id}).then(c=>{
+	         		if(2!= c.status) {
+	         			showWarn("该数据不是生效状态,不能作废");
+	         			flag=false;
+	         			return false;
+	         		}else{
+	         			idList= idList +data[i].id + ",";
+	         		}
+	         	});
+	         }
+	         if(!flag){
+	        	 return;
+	         }
+	         self.service.cancel(idList).then(c=>{
+	        	self.search();
+	        	showInfoMes(c,'作废');
 	         });
 		}
 		

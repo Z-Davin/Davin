@@ -18,6 +18,9 @@ define(function (require, exports, module) {
         unConfirm(keys){
         	return $.post( this.url + "/unConfirm", {'ids': JSON.stringify(keys)});
         }
+        batchDelete(keys){
+        	return $.post( this.url + "/batchDelete", {'ids': JSON.stringify(keys)});
+        }
         
         findBySettle(params){
         	return $.ajax({

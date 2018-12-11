@@ -20,11 +20,13 @@
            <result column="remark" property="remark" jdbcType="VARCHAR" />
            <result column="bunk_group_no" property="bunkGroupNo" jdbcType="VARCHAR" />   
            <result column="points_calculate_flag" property="pointsCalculateFlag" jdbcType="TINYINT" />  
+           <result column="calculation_method" property="calculationMethod" jdbcType="TINYINT" />  
     </resultMap>      
     
     
     <sql id="column_list"> 
-        id,zone_no,company_no,shop_no,mall_no,settle_month,settle_start_date,settle_end_date,check_date,pay_ticket_date,payment_date,create_time,status,remark,bunk_group_no,points_calculate_flag
+        id,zone_no,company_no,shop_no,mall_no,settle_month,settle_start_date,settle_end_date,check_date,pay_ticket_date,payment_date,create_time,status,remark,bunk_group_no,points_calculate_flag,
+        calculation_method
     </sql>
 
     <sql id="condition">  1=1
@@ -76,6 +78,12 @@
     		</if>
     		<if test="null!=params.bunkGroupNo and ''!=params.bunkGroupNo">
     			And bunk_group_no=#{params.bunkGroupNo}
+    		</if>
+    		<if test="null!=params.pointsCalculateFlag and ''!=params.pointsCalculateFlag">
+    			And points_calculate_flag=#{params.pointsCalculateFlag}
+    		</if>
+    		<if test="null!=params.calculationMethod and ''!=params.calculationMethod">
+    			And calculation_method=#{params.calculationMethod}
     		</if>
         </if>
     </sql>
@@ -204,6 +212,9 @@
 			<if test="pointsCalculateFlag != null">
 				points_calculate_flag,
 			</if>
+			<if test="calculationMethod != null">
+				calculation_method,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=","> 
 			<if test="id != null">
@@ -253,6 +264,9 @@
 			</if>
 			<if test="pointsCalculateFlag != null">
 				 #{pointsCalculateFlag},
+			</if>
+			<if test="calculationMethod != null">
+				#{calculationMethod},
 			</if>
 		</trim>
 	</insert>
@@ -304,6 +318,9 @@
 			</if>
 			<if test="pointsCalculateFlag != null">
 				points_calculate_flag = #{pointsCalculateFlag},
+			</if>
+			<if test="calculationMethod != null">
+				calculation_method = #{calculationMethod},
 			</if>
 		</set>
 		WHERE id = #{id}

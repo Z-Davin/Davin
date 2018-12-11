@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import cn.mercury.annotation.JsonVariable;
+import cn.mercury.basic.query.PageResult;
+import cn.mercury.basic.query.Pagenation;
 import cn.mercury.basic.query.Query;
 import cn.mercury.manager.IManager;
 import cn.mercury.utils.JsonUtils;
@@ -117,5 +119,21 @@ public class CounterCostController extends BaseFasController<CounterCost, String
 		String billNo = shopBalanceDateDtl.getCounterNo() + "-" + newSettleMonth;
 		CommonStaticManager.insertUnAccountBill(billNo,shopBalanceDateDtl.getZoneNo() ,BillTypeEnums.RECALULATE_DAY_SALE,Integer.parseInt(shopBalanceDateDtl.getSettleMonth()),0,1);
 		return CommonResult.getSucessResult();
+	}
+	
+	
+	@RequestMapping("/list")
+	@Override
+	public PageResult<CounterCost> selectByPage(Query query, Pagenation page) {
+		long total = page.getTotal();
+		if (total < 0) {
+			total = getManager().selectCount(query);
+		}
+		if(!CommonUtil.hasValue(query.getSort())){
+			query.orderby("update_time",true);
+		}
+		List<CounterCost> rows = getManager().selectByPage(query, page);
+		List<CounterCost> saleCost = manager.queryConditionSum(query);
+		return new PageResult<>(rows, total,saleCost);
 	}
 }

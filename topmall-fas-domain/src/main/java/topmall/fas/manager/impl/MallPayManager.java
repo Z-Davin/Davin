@@ -31,12 +31,11 @@ public class MallPayManager extends BaseManager<MallPay,String> implements IMall
 
 	@Override
 	public void generateMallPayData(MallBalanceDateDtl mallBalanceDateDtl) {
-		Query query = Query.Where("mallNo", mallBalanceDateDtl.getMallNo())
-				.and("shopNo",mallBalanceDateDtl.getShopNo())
-				.and("settleStartDate", mallBalanceDateDtl.getSettleStartDate())
-				.and("settleEndDate", mallBalanceDateDtl.getSettleEndDate())
-				.and("settleMonth", mallBalanceDateDtl.getSettleMonth())
-				.and("bunkGroupNo", mallBalanceDateDtl.getBunkGroupNo());
+		Query query = mallBalanceDateDtl.baseQuery();
+		if(1==mallBalanceDateDtl.getCalculationMethod()){
+			//表示按照净收入
+			query.and("calculationMethod", true);
+		}
 		//查询支付明细
 		List<MallPay> mallPayList = service.selectMallPayList(query);
 		//将数据插入到支付明细表中

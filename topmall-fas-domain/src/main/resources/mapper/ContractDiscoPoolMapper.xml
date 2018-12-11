@@ -415,6 +415,7 @@
 			con_cu_contract_disco
 		WHERE
 			bill_no = #{params.billNo}
+
 		AND end_date &gt;= #{params.startDate}
 		AND start_date &lt;= #{params.endDate} 
     </select> 
@@ -474,8 +475,16 @@
     
      <select id="selectGroupShopDaySaleDataForMall" resultType="topmall.fas.vo.CounterDaySale" parameterType="map">
     	SELECT 
-    		 A.counter_no,right(b.division_no,2) as price_type,c.mall_rate_value rate_value,a.sale_date,
-    		 sum(d.pay_amount) settle_amount,sum(if(d.pay_no='P60',d.pay_amount,0)) points_amount,'0' as type
+    		 A.counter_no,right(b.division_no,2) as price_type,c.mall_rate_value rate_value,a.sale_date,    		
+    		 <choose>
+    			<when test="params.calculationMethod">
+    				sum(d.net_income_amount) settle_amount,sum(if(d.pay_no='P60',d.pay_amount,0)) points_amount,
+    			</when>
+    			<otherwise>
+    				sum(d.pay_amount) settle_amount,sum(if(d.pay_no='P60',d.net_income_amount,0)) points_amount,
+    			</otherwise>
+    		 </choose>
+    		 '0' as type
     	FROM
     		pos_shop_day_sale A INNER JOIN mdm_sale_code B
     	ON  A.counter_no = B.counter_no AND A.sale_code_no = B.sale_code_no

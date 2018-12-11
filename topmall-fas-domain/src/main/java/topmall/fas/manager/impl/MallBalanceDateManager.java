@@ -72,6 +72,7 @@ public class MallBalanceDateManager extends BaseManager<MallBalanceDate, String>
 	 * @see topmall.fas.manager.IMallBalanceDateManager#monthBalance(java.lang.String)
 	 */
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = ManagerException.class)
 	public void monthBalance(String idList) throws Exception {
 		String[] ids = idList.split(",");
 		for (String id : ids) {
@@ -113,6 +114,17 @@ public class MallBalanceDateManager extends BaseManager<MallBalanceDate, String>
 	@Override
 	public MallBalanceDate findByUnique(Query query) {
 		return service.findByUnique(query);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void cancel(String idList) {
+		String[] ids = idList.split(",");
+		for (String id : ids) {
+			MallBalanceDate mallBalanceDate = findByPrimaryKey(id);
+			mallBalanceDate.setStatus(StatusEnums.CANCEL.getStatus());
+			update(mallBalanceDate);
+		}
 	}
 
 }

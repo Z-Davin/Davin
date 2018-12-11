@@ -311,7 +311,15 @@
 		SELECT
 		bg.company_no mall_no, sds.shop_no, #{params.settleMonth} settle_month, 
 		#{params.settleStartDate} settle_start_date, #{params.settleEndDate} settle_end_date, 
-		sdsd.pay_no, sdsd.pay_name, pay.paid_way, sum(sdsd.pay_amount) pay_amount,
+		sdsd.pay_no, sdsd.pay_name, pay.paid_way,
+		<choose>
+   			<when test="params.calculationMethod">
+   				sum(sdsd.net_income_amount) pay_amount,
+   			</when>
+   			<otherwise>
+   				sum(sdsd.pay_amount) pay_amount,
+   			</otherwise>
+    	</choose>
 		#{params.bunkGroupNo} bunk_group_no
 		from pos_shop_day_sale sds INNER JOIN pos_shop_day_sale_dtl sdsd
 		on sds.bill_no = sdsd.bill_no 

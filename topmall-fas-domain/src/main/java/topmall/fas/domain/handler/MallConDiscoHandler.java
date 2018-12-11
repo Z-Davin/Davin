@@ -70,8 +70,11 @@ public class MallConDiscoHandler {
 		Query query = Query.Where("balanceDateId", mallBalanceDateDtl.getId());
 		//部类编码,税率,票扣标识,账扣标识,时间维度分组查询 
 		List<ContractDiscoPool> contractGroupDiscoPoolList = service.selectGroupContractDiscoData(query);
-		Query q = Q.where("shopNo", mallBalanceDateDtl.getShopNo()).and("mallNo", mallBalanceDateDtl.getMallNo())
-				.and("settleStartDate", mallBalanceDateDtl.getSettleStartDate()).and("settleEndDate", mallBalanceDateDtl.getSettleEndDate()).and("bunkGroupNo", mallBalanceDateDtl.getBunkGroupNo());
+		Query q = mallBalanceDateDtl.baseQuery();
+		if(1==mallBalanceDateDtl.getCalculationMethod()){
+			//表示按照净收入
+			q.and("calculationMethod", true);
+		}
 		list = service.selectGroupShopDaySaleDataForMall(q);
 		for(CounterDaySale daySale :list){
 			for (ContractDiscoPool discoPool : contractGroupDiscoPoolList) {

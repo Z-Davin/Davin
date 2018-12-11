@@ -70,6 +70,7 @@ public class MallBalanceDateDtlManager extends BaseManager<MallBalanceDateDtl, S
 			mallBalanceDateDtl.setCompanyNo(mallBalanceDate.getCompanyNo());
 			mallBalanceDateDtl.setBunkGroupNo(mallBalanceDate.getBunkGroupNo());
 			mallBalanceDateDtl.setPointsCalculateFlag(mallBalanceDate.getPointsCalculateFlag());
+			mallBalanceDateDtl.setCalculationMethod(mallBalanceDate.getCalculationMethod());
 			//	
 			Date currentDate = DateUtil.getFirstDayOfMonth(new Date());//结算月 取当前月日期第一天20170801
 			Date prevDate = DateUtil.getFirstDayOfMonth(DateUtil.addMonth(currentDate, -1));//结算月上一个月1号  20170701
