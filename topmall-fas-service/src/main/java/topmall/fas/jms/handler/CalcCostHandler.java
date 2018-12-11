@@ -82,8 +82,8 @@ public class CalcCostHandler extends BaseBillPoolHandler {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 				settleEndDate = sdf.parse(String.valueOf(batch));
 			} catch (Exception e1) {
-				errorMsg = "生成物业费用失败:批次号有无  " + batch;
-				logger.error(errorMsg+e1.getMessage());
+				errorMsg = "生成物业费用失败:批次号有无  " + batch + e1.getMessage();
+				logger.error(errorMsg);
 				throw new ManagerException(e1.getMessage());
 			}
 			Query query = Q.where("shopNo", keys[0]).and("mallNo", keys[1]).and("bunkGroupNo", keys[2])
@@ -95,8 +95,8 @@ public class CalcCostHandler extends BaseBillPoolHandler {
 				try {
 					mallCostManager.generateMallCost(mallBalanceDateDtl);
 				} catch (Exception e) {
-					errorMsg = "生成物业费用出错:" + mallBalanceDateDtl.toString();
-					logger.error(errorMsg+e.getMessage());
+					errorMsg = "生成物业费用出错:" + mallBalanceDateDtl.toString()+e.getMessage();
+					logger.error(errorMsg);
 					throw new ManagerException(e.getMessage());
 				}
 			}
