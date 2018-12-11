@@ -228,6 +228,10 @@ public class ShopBalanceDateDtlManager extends BaseManager<ShopBalanceDateDtl, S
 				contractMainDto.setHasEnaleItem(false);
 			}
 		} else {
+			
+			
+			
+			
 			logger.info("结算期：" + shopBalanceDateDtl.toString() + " 内未获取到有效的合同");
 		}
 		return contractMainDto;

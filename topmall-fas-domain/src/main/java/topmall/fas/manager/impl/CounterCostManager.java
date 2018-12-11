@@ -45,8 +45,10 @@ import topmall.framework.core.CodingRuleHelper;
 import topmall.framework.manager.BaseManager;
 import topmall.framework.security.Authorization;
 import topmall.framework.service.IService;
+import topmall.mdm.model.Counter;
 import topmall.mdm.model.Deduction;
 import topmall.mdm.model.Depayment;
+import topmall.mdm.open.api.ICounterApiService;
 import topmall.mdm.open.api.IDeductionApiService;
 import topmall.mdm.open.api.IDepaymentApiService;
 
@@ -88,6 +90,9 @@ public class CounterCostManager extends BaseManager<CounterCost, String> impleme
 
 	@Reference
 	private IDepaymentApiService depaymentApiService;
+
+	@Reference
+	private ICounterApiService counterApiService;
 
 	protected IService<CounterCost, String> getService() {
 		return service;
@@ -256,10 +261,24 @@ public class CounterCostManager extends BaseManager<CounterCost, String> impleme
 			shopBalanceDateDtl.setStatus(StatusEnums.GENERATE_COST.getStatus());
 			shopBalanceDateDtlManager.update(shopBalanceDateDtl);
 		} else {
-			logger.info("未获取到有效合同, 生成费用失败, 店铺" + shopBalanceDateDtl.getShopNo() + "专柜  "
-					+ shopBalanceDateDtl.getCounterNo());
-			throw new ManagerException(
-					"卖场  " + shopBalanceDateDtl.getShopNo() + "专柜  " + shopBalanceDateDtl.getCounterNo() + "没有有效的合同");
+
+			Query query = Q.where("shopNo", shopBalanceDateDtl.getShopNo()).and("counterNo",
+					shopBalanceDateDtl.getCounterNo());
+			Counter counter = counterApiService.findByParam(query);
+
+			// 如果装柜的状态是3 待清退状态 ，那就直接计算费用不用获取合同状态
+			if (StatusEnums.CONFIRM.getStatus().equals(counter.getStatus().intValue())) {
+
+				//专柜是待清退状态，只生成专柜销售费用
+				contractDiscoPoolManager.createContractDiscoCost(shopBalanceDateDtl, false, null);
+
+			} else {
+
+				logger.info("未获取到有效合同, 生成费用失败, 店铺" + shopBalanceDateDtl.getShopNo() + "专柜  "
+						+ shopBalanceDateDtl.getCounterNo());
+				throw new ManagerException("卖场  " + shopBalanceDateDtl.getShopNo() + "专柜  "
+						+ shopBalanceDateDtl.getCounterNo() + "没有有效的合同");
+			}
 		}
 	}
 
@@ -291,10 +310,22 @@ public class CounterCostManager extends BaseManager<CounterCost, String> impleme
 			shopBalanceDateDtl.setStatus(StatusEnums.GENERATE_COST.getStatus());
 			shopBalanceDateDtlManager.update(shopBalanceDateDtl);
 		} else {
-			logger.info("未获取到有效合同, 生成费用失败, 卖场->" + shopBalanceDateDtl.getShopNo() + "专柜->"
-					+ shopBalanceDateDtl.getCounterNo());
-			throw new ManagerException(
-					"卖场  " + shopBalanceDateDtl.getShopNo() + "专柜  " + shopBalanceDateDtl.getCounterNo() + "没有有效的合同");
+			Query query = Q.where("shopNo", shopBalanceDateDtl.getShopNo()).and("counterNo",
+					shopBalanceDateDtl.getCounterNo());
+			Counter counter = counterApiService.findByParam(query);
+
+			// 如果装柜的状态是3 待清退状态 ，那就直接计算费用不用获取合同状态
+			if (StatusEnums.CONFIRM.getStatus().equals(counter.getStatus().intValue())) {
+
+				//专柜是待清退状态，只生成专柜销售费用
+				contractDiscoPoolManager.createContractDiscoCost(shopBalanceDateDtl, false, null);
+
+			} else {
+				logger.info("未获取到有效合同, 生成费用失败, 卖场->" + shopBalanceDateDtl.getShopNo() + "专柜->"
+						+ shopBalanceDateDtl.getCounterNo());
+				throw new ManagerException("卖场  " + shopBalanceDateDtl.getShopNo() + "专柜  "
+						+ shopBalanceDateDtl.getCounterNo() + "没有有效的合同");
+			}
 		}
 		return result;
 	}
@@ -321,7 +352,7 @@ public class CounterCostManager extends BaseManager<CounterCost, String> impleme
 
 		OtherCalculateHandler otherCalculateHandler = new OtherCalculateHandler(shopBalanceDateDtl,
 				contractOtherPoolManager);
- 		List<CounterCost> otherCostList = otherCalculateHandler.calculateCost(isHisCost);
+		List<CounterCost> otherCostList = otherCalculateHandler.calculateCost(isHisCost);
 
 		// 获取合同主表表头信息  未达保底，不计算抽成(0-否，1-是)
 		short unGuaraUnProfit = contractMainDto.getUnGuaraUnProfit();
@@ -429,15 +460,15 @@ public class CounterCostManager extends BaseManager<CounterCost, String> impleme
 						+ shopBalanceDateDtl.getCounterNo() + "已经生成了非制单状态的结算单,不能生成费用...");
 			}
 		}
-		
+
 		List<ShopBalanceDateDtl> dtlLlist = shopBalanceDateDtlManager.selectByParams(query);
-		for(ShopBalanceDateDtl dtl: dtlLlist){
+		for (ShopBalanceDateDtl dtl : dtlLlist) {
 			if (dtl.getStatus() == StatusEnums.GENERATE_BALANCE.getStatus()) {
 				throw new ManagerException("卖场->" + shopBalanceDateDtl.getShopNo() + "专柜："
 						+ shopBalanceDateDtl.getCounterNo() + "已经生成了结算单,请先删除结算单,再重算费用");
 			}
 		}
-		
+
 		billCounterBalanceService.deleteByParams(query);
 		query.and("source", 1);//生成方式(1系统生产, 2店铺录入,3手工提交)'
 		counterSaleCostService.deleteByParams(query);
@@ -545,6 +576,10 @@ public class CounterCostManager extends BaseManager<CounterCost, String> impleme
 			List<CounterCost> counterHisCost = service.selectByParams(query);
 			changeSettleMonth(counterHisCost, newDateDtl, true);
 			batchSave(counterHisCost, null, null);
+		} else {
+			logger.info("未获取到有效合同, 生成费用失败, 卖场->" + oldDateDtl.getShopNo() + "专柜->" + oldDateDtl.getCounterNo());
+			throw new ManagerException(
+					"卖场  " + oldDateDtl.getShopNo() + "专柜  " + oldDateDtl.getCounterNo() + "没有有效的合同");
 		}
 	}
 
