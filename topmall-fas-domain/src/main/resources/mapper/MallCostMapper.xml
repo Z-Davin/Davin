@@ -5,7 +5,8 @@
     
     <resultMap id="baseResultMap" type="topmall.fas.model.MallCost">
            <id column="id" property="id" jdbcType="VARCHAR" />  
-           <result column="ref_id" property="refId" jdbcType="VARCHAR" />  
+           <result column="ref_id" property="refId" jdbcType="VARCHAR" />
+           <result column="ref_type" property="refType" jdbcType="TINYINT" />  
            <result column="balance_bill_no" property="balanceBillNo" jdbcType="VARCHAR" />  
            <result column="seq_id" property="seqId" jdbcType="VARCHAR" />  
            <result column="company_no" property="companyNo" jdbcType="VARCHAR" />  
@@ -45,7 +46,7 @@
     
     
     <sql id="column_list"> 
-        id,ref_id,balance_bill_no,seq_id,company_no,shop_no,mall_no,cost_no,settle_month,settle_start_date,settle_end_date,status,able_amount,able_sum,tax_amount,tax_flag,tax_rate,bill_debit,account_debit,create_time,create_user,auditor,audit_time,remark,source,update_time,
+        id,ref_id,ref_type,balance_bill_no,seq_id,company_no,shop_no,mall_no,cost_no,settle_month,settle_start_date,settle_end_date,status,able_amount,able_sum,tax_amount,tax_flag,tax_rate,bill_debit,account_debit,create_time,create_user,auditor,audit_time,remark,source,update_time,
         mall_amount,diff_amount,diff_reason,adjust_amount,pre_diff_amount,cur_diff_amount,parent_id,back_amount,settle_status,bunk_group_no
     </sql>
 
@@ -63,6 +64,9 @@
     		</if>
     		<if test="null!=params.refId and ''!=params.refId">
     			And ref_id=#{params.refId}
+    		</if>
+    		<if test="null!=params.refType and ''!=params.refType">
+    			And ref_type=#{params.refType}
     		</if>
     		<if test="null!=params.balanceBillNo and ''!=params.balanceBillNo">
     			And balance_bill_no=#{params.balanceBillNo}
@@ -245,6 +249,9 @@
 			<if test="refId != null">
 				ref_id,
 			</if>
+			<if test="refType != null">
+				ref_type,
+			</if>
 			<if test="balanceBillNo != null">
 				balance_bill_no,
 			</if>
@@ -349,6 +356,9 @@
 			</if>
 			<if test="refId != null">
 				 #{refId},
+			</if>
+			<if test="refType != null">
+				#{refType},
 			</if>
 			<if test="balanceBillNo != null">
 				 #{balanceBillNo},
@@ -455,6 +465,9 @@
 		<set>
 			<if test="refId != null">
 				ref_id = #{refId},
+			</if>
+			<if test="refType != null">
+				ref_type = #{refType},
 			</if>
 			<if test="balanceBillNo != null">
 				balance_bill_no = #{balanceBillNo},
