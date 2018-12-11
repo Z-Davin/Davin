@@ -412,10 +412,8 @@
 			con_cu_contract_rent
 		WHERE
 			bill_no = #{params.billNo}
-		AND ((start_date &lt;= #{params.startDate} AND end_date &gt;= #{params.startDate})
-		  OR (start_date &lt;= #{params.endDate} AND end_date &gt;= #{params.endDate})
-		  OR (start_date &lt;= #{params.startDate} AND end_date &gt;= #{params.endDate})
-		  OR (start_date &gt;= #{params.startDate} AND end_date &lt;= #{params.endDate}))
+		AND end_date &gt;= #{params.startDate}
+		AND start_date &lt;= #{params.endDate} 
     
     </select>     
 </mapper>
