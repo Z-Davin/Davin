@@ -6,11 +6,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import com.google.common.base.Function;
+import java.util.stream.Collectors;
 import cn.mercury.basic.UUID;
 import cn.mercury.basic.query.Q;
 import cn.mercury.basic.query.Query;
 import cn.mercury.manager.ManagerException;
+import topmall.fas.enums.AccountDebitEnums;
+import topmall.fas.enums.BillDebitEnums;
 import topmall.fas.enums.StatusEnums;
 import topmall.fas.manager.ISystemConfigManager;
 import topmall.fas.manager.impl.CommonStaticManager;
@@ -21,7 +23,6 @@ import topmall.fas.model.CounterSaleCostDtl;
 import topmall.fas.model.ShopBalanceDateDtl;
 import topmall.fas.service.IContractDiscoPoolService;
 import topmall.fas.util.CommonUtil;
-import topmall.fas.util.GroupByUtils;
 import topmall.fas.util.PublicConstans;
 import topmall.fas.vo.CounterDaySale;
 import topmall.mdm.model.Counter;
@@ -48,14 +49,11 @@ public class ContractDiscoHandler {
 	private BigDecimal reduceDiffAmount= new BigDecimal(0);
 	//否是历史费用重算
 	private boolean isHisCost;
-	
 	//新结算期明细(用于历史费用重算)
 	private ShopBalanceDateDtl newDateDtl;
 	//纸袋数量
 	private Integer bagQty =0;
-	
 	private IDepaymentApiService depaymentApiService;
-	
 	
 	public ContractDiscoHandler(ShopBalanceDateDtl shopBalanceDateDtl,IContractDiscoPoolService service,String seqId,boolean isHisCost,ShopBalanceDateDtl newDateDtl){
 		this.shopBalanceDateDtl=shopBalanceDateDtl;
@@ -77,8 +75,7 @@ public class ContractDiscoHandler {
 		//部类编码,税率,票扣标识,账扣标识,时间维度分组查询 财务结算期专柜合同扣率池表
 		List<ContractDiscoPool> contractGroupDiscoPoolList = service.selectGroupContractDiscoData(query);
 		//从日结表 根据 部类编码,销售时间,活动,商品折扣,扣率 维度分组 
-		baseQuery = Q.where("counterNo", shopBalanceDateDtl.getCounterNo()).and("shopNo", shopBalanceDateDtl.getShopNo()).and("isHisCost", isHisCost)
-				.and("settleStartDate", shopBalanceDateDtl.getSettleStartDate()).and("settleEndDate", shopBalanceDateDtl.getSettleEndDate());
+		baseQuery =shopBalanceDateDtl.baseQuery().and("isHisCost", isHisCost); 
 		list = service.selectGroupShopDaySaleData(baseQuery);
 		for (CounterDaySale daySale : list) {
 			for (ContractDiscoPool discoPool : contractGroupDiscoPoolList) {
@@ -111,6 +108,14 @@ public class ContractDiscoHandler {
 				daySale.setRaxRate(fullPrice.getRaxRate());//税率
 				break;
 			}
+			//1、待清退的专柜发生退货 销售结算时【账扣】统一按 账扣 处理。
+			//2、待清退的专柜发生退货 销售结算时【票扣】统一按 票扣 处理。
+			//3、待清退的专柜发生退货 销售结算时【税率】统一按 16 。
+			if(!CommonUtil.hasValue(contractGroupDiscoPoolList)){
+				daySale.setAccountDebit(AccountDebitEnums.ACCOUNT.getValue());//账扣标识
+				daySale.setBillDebit(BillDebitEnums.YES.getValue());//票扣标识
+				daySale.setRaxRate(new BigDecimal(16));//税率
+			}
 		}
 		bagQty =service.bagSaleQty(baseQuery);
 	}
@@ -121,14 +126,7 @@ public class ContractDiscoHandler {
 	 */
 	public List<CounterSaleCost> calculateSaleCost(){
 		List<CounterSaleCost> saleCostList =  new ArrayList<>();
-		Map<String, List<CounterDaySale>> counterDayList = GroupByUtils.groupByKey(list,
-				new Function<CounterDaySale, String>() {
-					@Override
-					public String apply(CounterDaySale dtl) {
-						//部类编码+商品折扣+税率+票扣标识+账扣标识 分组
-						return dtl.getSaleCostKey();
-					}
-				});
+		Map<String, List<CounterDaySale>> counterDayList=list.stream().collect(Collectors.groupingBy(CounterDaySale::getSaleCostKey));
 		for (Entry<String, List<CounterDaySale>> entry : counterDayList.entrySet()) {
 			List<CounterDaySale> dtls = entry.getValue();
 			CounterSaleCost saleCost = new CounterSaleCost();
@@ -217,14 +215,7 @@ public class ContractDiscoHandler {
 	 */
 	public List<CounterSaleCostDtl> calculateSaleCostDtl(){
 		List<CounterSaleCostDtl> saleCostDtlList = new ArrayList<>();
-		Map<String, List<CounterDaySale>> counterDayList = GroupByUtils.groupByKey(list,
-				new Function<CounterDaySale, String>() {
-					@Override
-					public String apply(CounterDaySale dtl) {
-						//部类编码+商品折扣+税率+票扣标识+账扣标识 +销售日期 分组
-						return dtl.getSaleCostDtlKey();
-					}
-				});
+		Map<String, List<CounterDaySale>> counterDayList=list.stream().collect(Collectors.groupingBy(CounterDaySale::getSaleCostDtlKey));
 		for (Entry<String, List<CounterDaySale>> entry : counterDayList.entrySet()) {
 			List<CounterDaySale> dtls = entry.getValue();
 			CounterSaleCostDtl saleCostDtl = new CounterSaleCostDtl();
@@ -294,7 +285,6 @@ public class ContractDiscoHandler {
 			saleCostDtl.setActualStartDate(shopBalanceDateDtl.getSettleStartDate());
 			saleCostDtl.setActualEndDate(shopBalanceDateDtl.getSettleEndDate());
 		}
-		
 		return saleCostDtlList;
 	}
 	

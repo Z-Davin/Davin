@@ -578,7 +578,6 @@ define(function (require, exports, module) {
             if (data == null || data.length == 0)
                 return;
             let keys = _.map(data,function(e){ return e.id; });
-			let params = {ids:"'"+keys.join("','")+"'",targetStatus:1};
 			 this.service.selectByParams(params).then(d=>{
 	            	if(!d||d.length<1){
 						$.messager.confirm("确认", "确定要反确认当前所选单据吗？",function (r) {
