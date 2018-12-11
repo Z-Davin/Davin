@@ -415,10 +415,9 @@
 			con_cu_contract_disco
 		WHERE
 			bill_no = #{params.billNo}
-		AND ((start_date &lt;= #{params.startDate} AND end_date &gt;= #{params.startDate})
-		  OR (start_date &lt;= #{params.endDate} AND end_date &gt;= #{params.endDate})
-		  OR (start_date &lt;= #{params.startDate} AND end_date &gt;= #{params.endDate})
-		  OR (start_date &gt;= #{params.startDate} AND end_date &lt;= #{params.endDate}))	
+
+		AND end_date &gt;= #{params.startDate}
+		AND start_date &lt;= #{params.endDate} 
     </select> 
     
     <select id="selectGroupContractDiscoData"  resultType="topmall.fas.model.ContractDiscoPool"  parameterType="map">
@@ -476,7 +475,7 @@
     
      <select id="selectGroupShopDaySaleDataForMall" resultType="topmall.fas.vo.CounterDaySale" parameterType="map">
     	SELECT 
-    		 A.counter_no,right(b.division_no,2) as price_type,c.mall_rate_value rate_value,a.sale_date,
+    		 A.counter_no,right(b.division_no,2) as price_type,c.mall_rate_value rate_value,a.sale_date,    		
     		 <choose>
     			<when test="params.calculationMethod">
     				sum(d.net_income_amount) settle_amount,sum(if(d.pay_no='P60',d.pay_amount,0)) points_amount,
