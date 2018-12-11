@@ -542,6 +542,8 @@ define(function (require, exports, module) {
 	        	formObj.find(".easyui-combobox").combobox('disable');
 	        	formObj.find(".easyui-combogridmdm").combobox('disable');
 	        	formObj.find(".easyui-datebox").datebox('disable');
+	        	formObj.find(".easyui-combocommon").datebox('disable');
+	        	formObj.find(".easyui-datebox").datebox('disable');
 			 }else{
 		    	 formObj.find(".easyui-combobox").combobox('enable');
 		    	 formObj.find(".easyui-combogridmdm").combobox('enable');
