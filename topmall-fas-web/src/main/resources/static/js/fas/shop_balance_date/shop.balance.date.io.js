@@ -107,7 +107,6 @@ define(function (require, exports, module) {
 			let mdmUrl = config.mdmUrl;
 			var query = Q.Or(Q.Equals('name', row.counterNo),Q.Equals("counterNo", row.counterNo));
 			var params = {
-				status : 1,
 				_q:JSON.stringify(query)
 			};
 			
@@ -123,7 +122,6 @@ define(function (require, exports, module) {
 			
 			var shopQuery = Q.Equals("shopNo", shopNo);
 			var shopParams = {
-				status : 1,
 				_q:JSON.stringify(shopQuery)
 			};
 			let shopDate = service.getMdmData(mdmUrl, "shop", shopParams);
