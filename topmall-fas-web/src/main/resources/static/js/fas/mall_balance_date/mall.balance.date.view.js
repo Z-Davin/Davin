@@ -400,7 +400,7 @@ define(function (require, exports, module) {
 					},{
 						"name": "calculationMethod",
 						"type": "combocommon",
-						"label": "积分抵现是否结算",
+						"label": "计算方式",
 						"options":{
 							"width":200,
 							"required":true,
