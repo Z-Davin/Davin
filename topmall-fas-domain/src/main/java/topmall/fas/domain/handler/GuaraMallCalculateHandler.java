@@ -137,7 +137,7 @@ public class GuaraMallCalculateHandler extends BaseMallCalculateHandler<Contract
 			if (1 == baseNumber.shortValue()) { // 获取净收入
 				rechonBaseAmount = posSaleSumCostDto.getNetIncomeSumAmount().subtract(cashCost);
 			} else if (2 == baseNumber.shortValue()) { // 获取毛收入
-				rechonBaseAmount = posSaleSumCostDto.getSaleSumAmount().subtract(cashCost);
+				rechonBaseAmount = posSaleSumCostDto.getSaleSumAmount();
 			}
 
 			// 当保底金额小于等于保底基数时，保底费用为0
