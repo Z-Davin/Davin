@@ -152,7 +152,7 @@ public class GuaraMallCalculateHandler extends BaseMallCalculateHandler<Contract
 				if (1 == baseCalculateNum.shortValue()) {//毛收入(实收金额)
 					baseCalculateAmount = posSaleSumCostDto.getSaleSumAmount().subtract(cashCost);
 				} else if (4 == baseCalculateNum.shortValue()) { // 净收入
-					baseCalculateAmount = posSaleSumCostDto.getNetIncomeSumAmount().subtract(cashCost);
+					baseCalculateAmount = posSaleSumCostDto.getNetIncomeSumAmount();
 				}
 
 				Query saleProfitQuery = Q.where("shopNo", mallBalanceDateDtl.getShopNo())
