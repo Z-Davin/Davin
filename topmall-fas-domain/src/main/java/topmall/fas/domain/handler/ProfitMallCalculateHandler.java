@@ -123,7 +123,7 @@ public class ProfitMallCalculateHandler extends BaseMallCalculateHandler<Contrac
 				if (1 == reckonBase.shortValue()) {
 					rechonBaseCost = posSaleSumCostDto.getSaleSumAmount().subtract(cashCost);
 				} else if (2 == reckonBase.shortValue()) {
-					rechonBaseCost = posSaleSumCostDto.getNetIncomeSumAmount().subtract(cashCost);
+					rechonBaseCost = posSaleSumCostDto.getNetIncomeSumAmount();
 				}
 
 				//根据阶梯扣算出扣率值

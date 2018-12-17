@@ -138,14 +138,7 @@ public class OtherMallCalculateHandler extends BaseMallCalculateHandler<Contract
 				} else if (2 == chargingBase.shortValue()) {
 					PosSaleSumCostDto posSaleSumCostDto = mallDaySaleApiService.selectSaleDataSum(saleDataQuery, freeCostList);
 					freeCost = mallDaySaleApiService.queryFreeCost(saleDataQuery, freeCostList);
-					
-					BigDecimal cashCost = new BigDecimal(0);
-					// 查询积分抵现的金额,根据结算期明细的结算标识来判断积分抵现是否参与计算
-					if(0 == mallBalanceDateDtl.getPointsCalculateFlag()) {
-						saleDataQuery.setPayNo("P60");
-						cashCost = mallDaySaleApiService.queryBalancePaySum(saleDataQuery, null);
-					}
-					chargingBaseCost = posSaleSumCostDto.getNetIncomeSumAmount().subtract(cashCost);//净收入
+					chargingBaseCost = posSaleSumCostDto.getNetIncomeSumAmount();//净收入
 				} else if (3 == chargingBase.shortValue()) {
 					String[] payNoList = contractOtherPool.getPayNo().split(",");
 					IStatement is = Q.In("dtl.payNo", payNoList);
