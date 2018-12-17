@@ -577,6 +577,7 @@ define(function (require, exports, module) {
             let data = this.getSelectedRows();
             if (data == null || data.length == 0)
                 return;
+            var self = this;
             let keys = _.map(data,function(e){ return e.id; });
             let params = {ids:"'"+keys.join("','")+"'",targetStatus:1};
 			 this.service.selectByParams(params).then(d=>{
@@ -584,7 +585,7 @@ define(function (require, exports, module) {
 						$.messager.confirm("确认", "确定要删除当前所选单据吗？",function (r) {
 							if (r) {
 								fas.common.loading("show", "正在处理中......");
-								self.service.delete(keys).then(d=>{
+								self.service.batchDelete(keys).then(d=>{
 									fas.common.loading();
 									self.search();
 									if(d.errorCode=="0000"){

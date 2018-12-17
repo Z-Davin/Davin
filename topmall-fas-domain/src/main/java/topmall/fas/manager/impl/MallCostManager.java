@@ -495,7 +495,8 @@ public class MallCostManager extends BaseManager<MallCost, String> implements IM
 		return service.queryConditionSum(query);
 	}
 
-	@Override@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public CommonResult batchDelete(String[] ids) {
 		for(int i=0;i<ids.length;i++){
 			service.deleteByPrimaryKey(ids[i]);

@@ -72,7 +72,7 @@ public class MallCostController extends BaseFasController<MallCost,String> {
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value = "/batchDelete")
 	public CommonResult batchDelete(@JsonVariable String[] ids) {
-		return manager.batchUnConfirm(ids);
+		return manager.batchDelete(ids);
 	}
 	
 	/**
